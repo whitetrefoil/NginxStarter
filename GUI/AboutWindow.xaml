@@ -1,0 +1,13 @@
+﻿<Window x:Class="GUI.AboutWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="AboutWindow" Height="300" Width="300" WindowStyle="None">
+    <Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition/>
+			<RowDefinition/>
+			<RowDefinition/>
+		</Grid.RowDefinitions>
+		<Button Name="btnClose" Grid.Row="2" Content="关闭" Width="80" Height="30" Click="btnClose_Click" />
+	</Grid>
+</Window>
