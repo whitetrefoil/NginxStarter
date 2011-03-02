@@ -38,10 +38,10 @@
 							<ColumnDefinition/>
 						</Grid.ColumnDefinitions>
 						<Button Name="btnNStart" Content="启动(_S)" Width="80" Click="btnNStart_Click" />
-						<Button Name="btnNReload" Grid.Column="1" Content="重置(_R)" Width="80" IsEnabled="False" Click="btnNReload_Click" />
-						<Button Name="btnNRestart" Grid.Column="2" Content="重启(_E)" Width="80" IsEnabled="False" Click="btnNRestart_Click" />
-						<Button Name="btnNQuit" Grid.Column="3" Content="关闭(_Q)" Width="80" IsEnabled="False" Click="btnNQuit_Click" />
-						<Button Name="btnNStop" Grid.Column="4" Content="强制结束(_S)" Width="80" IsEnabled="False" Click="btnNStop_Click" />
+						<Button Name="btnNReload" Grid.Column="1" Content="重置(_R)" Width="80" Click="btnNReload_Click" />
+						<Button Name="btnNRestart" Grid.Column="2" Content="重启(_E)" Width="80" Click="btnNRestart_Click" />
+						<Button Name="btnNQuit" Grid.Column="3" Content="关闭(_Q)" Width="80" Click="btnNQuit_Click" />
+						<Button Name="btnNStop" Grid.Column="4" Content="强制结束(_S)" Width="80" Click="btnNStop_Click" />
 					</Grid>
 				</Grid>
     		</TabItem>

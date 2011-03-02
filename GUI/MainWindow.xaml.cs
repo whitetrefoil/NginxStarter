@@ -100,7 +100,7 @@ namespace GUI
 			}
 		}
 		private void buttonEnabledChange(bool isStarted)
-		{
+		{/*
 			if (isStarted)
 			{
 				btnNStart.IsEnabled = false;
@@ -116,7 +116,7 @@ namespace GUI
 				btnNRestart.IsEnabled = false;
 				btnNQuit.IsEnabled = false;
 				btnNStop.IsEnabled = false;
-			}
+			}*/
 		}
 
 		private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
