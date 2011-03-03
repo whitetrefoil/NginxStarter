@@ -23,11 +23,13 @@ namespace GUI
 		private static string _nginxPath;
 		private static System.Diagnostics.ProcessStartInfo _nginxInfo;
 		private static System.Diagnostics.Process _nginx;
+        private static NotifyIcon _notifyIcon;
 
 		public MainWindow()
 		{
 			InitializeComponent();
 		}
+
 
 		private bool nginxStart()
 		{
@@ -164,5 +166,19 @@ namespace GUI
 		{
 			if (this.nginxStop()) buttonEnabledChange(false);
 		}
+
+        private void Window_StateChanged(object sender, EventArgs e)
+        {
+            if (this.WindowState == WindowState.Minimized)
+            {
+                _notifyIcon = new NotifyIcon(this);
+                this.ShowInTaskbar = false;
+            }
+            else
+            {
+                this.ShowInTaskbar = true;
+                if(_notifyIcon != null) _notifyIcon.Dispose();
+            }
+        }
 	}
 }
