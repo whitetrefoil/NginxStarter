@@ -13,7 +13,7 @@
     					<RowDefinition Height="Auto"/>
     				</Grid.RowDefinitions>
     				<ScrollViewer>
-						<TextBlock TextWrapping="Wrap">
+						<TextBlock Name="txtNginx" TextWrapping="Wrap">
 							<TextBlock.Text>
 								这里暂时没有内容……
 							</TextBlock.Text>

@@ -11,6 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Configuration;
 using Microsoft.Win32;
 
 namespace GUI
@@ -24,11 +25,18 @@ namespace GUI
 		private static System.Diagnostics.ProcessStartInfo _nginxInfo;
 		private static System.Diagnostics.Process _nginx;
         private static NotifyIcon _notifyIcon;
+        private static RegistryKey _registryKey;
 
 		public MainWindow()
 		{
 			InitializeComponent();
-		}
+            _registryKey = Registry.CurrentUser.CreateSubKey("Software\\WhiteTrefoil\\NginxStarterGUI", RegistryKeyPermissionCheck.ReadWriteSubTree);
+            if (_registryKey.GetValue("nginxpath", string.Empty).ToString() != string.Empty)
+            {
+                this.txtNPath.Text = _registryKey.GetValue("nginxpath", string.Empty).ToString();
+                _nginxPath = _registryKey.GetValue("nginxpath", string.Empty).ToString();
+            }
+        }
 
 
 		private bool nginxStart()
@@ -42,7 +50,8 @@ namespace GUI
 			try
 			{
 				_nginx = System.Diagnostics.Process.Start(_nginxInfo);
-				return true;
+                _registryKey.SetValue("nginxpath", _nginxPath);
+                return true;
 			}
 			catch
 			{
@@ -56,7 +65,8 @@ namespace GUI
 			{
 				_nginxInfo.Arguments = "-s stop";
 				System.Diagnostics.Process.Start(_nginxInfo);
-				return true;
+                _registryKey.SetValue("nginxpath", _nginxPath);
+                return true;
 			}
 			catch
 			{
@@ -69,7 +79,8 @@ namespace GUI
 			{
 				_nginxInfo.Arguments = "-s quit";
 				System.Diagnostics.Process.Start(_nginxInfo);
-				return true;
+                _registryKey.SetValue("nginxpath", _nginxPath);
+                return true;
 			}
 			catch
 			{
@@ -79,11 +90,13 @@ namespace GUI
 		private void nginxReload()
 		{
 			_nginxInfo.Arguments = "-s reload";
-		}
+            _registryKey.SetValue("nginxpath", _nginxPath);
+        }
 		private void nginxRestart()
 		{
 			_nginxInfo.Arguments = "-s restart";
-		}
+            _registryKey.SetValue("nginxpath", _nginxPath);
+        }
 		
 
 		private void btnNStart_Click(object sender, RoutedEventArgs e)
@@ -123,6 +136,7 @@ namespace GUI
 
 		private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
 		{
+            _registryKey.Close();
 			if (_nginx != null)
 			{
 				_nginx.Close();
@@ -140,7 +154,7 @@ namespace GUI
 		{
 			OpenFileDialog ofd = new OpenFileDialog();
 			ofd.InitialDirectory = System.IO.Directory.GetCurrentDirectory();
-			ofd.Filter = "执行文件|*.exe|所有文件|*.*";
+			ofd.Filter = "Nginx默认执行文件|nginx.exe|所有执行文件|*.exe|所有文件|*.*";
 			if (ofd.ShowDialog() == true)
 			{
 				txtNPath.Text = ofd.FileName;
