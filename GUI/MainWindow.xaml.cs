@@ -39,7 +39,7 @@ namespace GUI
         }
 
 
-		private bool nginxStart()
+		public bool nginxStart()
 		{
 			_nginxInfo = new System.Diagnostics.ProcessStartInfo();
 			_nginxInfo.Arguments = string.Empty;
@@ -59,7 +59,7 @@ namespace GUI
 				return false;
 			}
 		}
-		private bool nginxStop()
+		public bool nginxStop()
 		{
 			try
 			{
@@ -73,7 +73,7 @@ namespace GUI
 				return false;
 			}
 		}
-		private bool nginxQuit()
+		public bool nginxQuit()
 		{
 			try
 			{
@@ -87,12 +87,12 @@ namespace GUI
 				return false;
 			}
 		}
-		private void nginxReload()
+        public void nginxReload()
 		{
 			_nginxInfo.Arguments = "-s reload";
             _registryKey.SetValue("nginxpath", _nginxPath);
         }
-		private void nginxRestart()
+        public void nginxRestart()
 		{
 			_nginxInfo.Arguments = "-s restart";
             _registryKey.SetValue("nginxpath", _nginxPath);
@@ -103,7 +103,7 @@ namespace GUI
 		{
 			if (txtNPath.Text == String.Empty)
 			{
-				MessageBox.Show("请输入nginx.exe文件的路径！");
+                this.btnNBrowse_Click(sender, e);
 			}
 			else
 			{
@@ -149,9 +149,8 @@ namespace GUI
 				}
 			}
 		}
-
-		private void btnNBrowse_Click(object sender, RoutedEventArgs e)
-		{
+        public void nginxBrowse()
+        {
 			OpenFileDialog ofd = new OpenFileDialog();
 			ofd.InitialDirectory = System.IO.Directory.GetCurrentDirectory();
 			ofd.Filter = "Nginx默认执行文件|nginx.exe|所有执行文件|*.exe|所有文件|*.*";
@@ -160,7 +159,10 @@ namespace GUI
 				txtNPath.Text = ofd.FileName;
 			}
 		}
-
+        private void btnNBrowse_Click(object sender, RoutedEventArgs e)
+        {
+            this.nginxBrowse();
+        }
 		private void btnNReload_Click(object sender, RoutedEventArgs e)
 		{
 			this.nginxReload();

@@ -43,5 +43,35 @@ namespace GUI
             mainWindow.Close();
             this.Dispose();
         }
+
+        private void menuItemOStart_Click(object sender, EventArgs e)
+        {
+            mainWindow.nginxStart();
+        }
+
+        private void menuItemOReload_Click(object sender, EventArgs e)
+        {
+            mainWindow.nginxReload();
+        }
+
+        private void menuItemORestart_Click(object sender, EventArgs e)
+        {
+            mainWindow.nginxRestart();
+        }
+
+        private void menuItemOQuit_Click(object sender, EventArgs e)
+        {
+            mainWindow.nginxQuit();
+        }
+
+        private void menuItemOStop_Click(object sender, EventArgs e)
+        {
+            mainWindow.nginxStop();
+        }
+
+        private void menuItemOBrowse_Click(object sender, EventArgs e)
+        {
+            mainWindow.nginxBrowse();
+        }
     }
 }

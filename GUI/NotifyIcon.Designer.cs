@@ -34,18 +34,18 @@
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.menuItemResume = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.menuItemExit = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.menuItemOpration = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStripOpration = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.menuItemOStart = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuItemOBrowse = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.menuItemOReload = new System.Windows.Forms.ToolStripMenuItem();
             this.menuItemORestart = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuItemOQuit = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuItemOExit = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuItemOBrowse = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
+            this.menuItemOQuit = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuItemOStop = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.menuItemExit = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStrip1.SuspendLayout();
             this.contextMenuStripOpration.SuspendLayout();
             // 
@@ -80,18 +80,6 @@
             this.toolStripSeparator1.Name = "toolStripSeparator1";
             this.toolStripSeparator1.Size = new System.Drawing.Size(97, 6);
             // 
-            // menuItemExit
-            // 
-            this.menuItemExit.Name = "menuItemExit";
-            this.menuItemExit.Size = new System.Drawing.Size(100, 22);
-            this.menuItemExit.Text = "退出";
-            this.menuItemExit.Click += new System.EventHandler(this.menuItemExit_Click);
-            // 
-            // toolStripSeparator2
-            // 
-            this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(97, 6);
-            // 
             // menuItemOpration
             // 
             this.menuItemOpration.DropDown = this.contextMenuStripOpration;
@@ -109,56 +97,73 @@
             this.menuItemORestart,
             this.toolStripSeparator3,
             this.menuItemOQuit,
-            this.menuItemOExit});
+            this.menuItemOStop});
             this.contextMenuStripOpration.Name = "contextMenuStripOpration";
-            this.contextMenuStripOpration.OwnerItem = this.menuItemOpration;
-            this.contextMenuStripOpration.Size = new System.Drawing.Size(110, 126);
+            this.contextMenuStripOpration.Size = new System.Drawing.Size(110, 148);
             // 
             // menuItemOStart
             // 
             this.menuItemOStart.Name = "menuItemOStart";
             this.menuItemOStart.Size = new System.Drawing.Size(109, 22);
             this.menuItemOStart.Text = "启动";
-            // 
-            // menuItemOReload
-            // 
-            this.menuItemOReload.Name = "menuItemOReload";
-            this.menuItemOReload.Size = new System.Drawing.Size(109, 22);
-            this.menuItemOReload.Text = "重置";
-            // 
-            // menuItemORestart
-            // 
-            this.menuItemORestart.Name = "menuItemORestart";
-            this.menuItemORestart.Size = new System.Drawing.Size(109, 22);
-            this.menuItemORestart.Text = "重启";
-            // 
-            // menuItemOQuit
-            // 
-            this.menuItemOQuit.Name = "menuItemOQuit";
-            this.menuItemOQuit.Size = new System.Drawing.Size(109, 22);
-            this.menuItemOQuit.Text = "关闭";
-            // 
-            // menuItemOExit
-            // 
-            this.menuItemOExit.Name = "menuItemOExit";
-            this.menuItemOExit.Size = new System.Drawing.Size(109, 22);
-            this.menuItemOExit.Text = "强退";
+            this.menuItemOStart.Click += new System.EventHandler(this.menuItemOStart_Click);
             // 
             // menuItemOBrowse
             // 
             this.menuItemOBrowse.Name = "menuItemOBrowse";
             this.menuItemOBrowse.Size = new System.Drawing.Size(109, 22);
             this.menuItemOBrowse.Text = "浏览...";
+            this.menuItemOBrowse.Click += new System.EventHandler(this.menuItemOBrowse_Click);
+            // 
+            // toolStripSeparator4
+            // 
+            this.toolStripSeparator4.Name = "toolStripSeparator4";
+            this.toolStripSeparator4.Size = new System.Drawing.Size(106, 6);
+            // 
+            // menuItemOReload
+            // 
+            this.menuItemOReload.Name = "menuItemOReload";
+            this.menuItemOReload.Size = new System.Drawing.Size(109, 22);
+            this.menuItemOReload.Text = "重置";
+            this.menuItemOReload.Click += new System.EventHandler(this.menuItemOReload_Click);
+            // 
+            // menuItemORestart
+            // 
+            this.menuItemORestart.Name = "menuItemORestart";
+            this.menuItemORestart.Size = new System.Drawing.Size(109, 22);
+            this.menuItemORestart.Text = "重启";
+            this.menuItemORestart.Click += new System.EventHandler(this.menuItemORestart_Click);
             // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
             this.toolStripSeparator3.Size = new System.Drawing.Size(106, 6);
             // 
-            // toolStripSeparator4
+            // menuItemOQuit
             // 
-            this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(106, 6);
+            this.menuItemOQuit.Name = "menuItemOQuit";
+            this.menuItemOQuit.Size = new System.Drawing.Size(109, 22);
+            this.menuItemOQuit.Text = "关闭";
+            this.menuItemOQuit.Click += new System.EventHandler(this.menuItemOQuit_Click);
+            // 
+            // menuItemOStop
+            // 
+            this.menuItemOStop.Name = "menuItemOStop";
+            this.menuItemOStop.Size = new System.Drawing.Size(109, 22);
+            this.menuItemOStop.Text = "强退";
+            this.menuItemOStop.Click += new System.EventHandler(this.menuItemOStop_Click);
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(97, 6);
+            // 
+            // menuItemExit
+            // 
+            this.menuItemExit.Name = "menuItemExit";
+            this.menuItemExit.Size = new System.Drawing.Size(100, 22);
+            this.menuItemExit.Text = "退出";
+            this.menuItemExit.Click += new System.EventHandler(this.menuItemExit_Click);
             this.contextMenuStrip1.ResumeLayout(false);
             this.contextMenuStripOpration.ResumeLayout(false);
 
@@ -181,6 +186,6 @@
         private System.Windows.Forms.ToolStripMenuItem menuItemORestart;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
         private System.Windows.Forms.ToolStripMenuItem menuItemOQuit;
-        private System.Windows.Forms.ToolStripMenuItem menuItemOExit;
+        private System.Windows.Forms.ToolStripMenuItem menuItemOStop;
     }
 }
