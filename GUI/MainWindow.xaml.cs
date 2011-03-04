@@ -152,7 +152,14 @@ namespace GUI
         public void nginxBrowse()
         {
 			OpenFileDialog ofd = new OpenFileDialog();
-			ofd.InitialDirectory = System.IO.Directory.GetCurrentDirectory();
+            if (_nginxPath != string.Empty)
+            {
+                ofd.InitialDirectory = _nginxPath;
+            }
+            else
+            {
+                ofd.InitialDirectory = System.IO.Directory.GetCurrentDirectory();
+            }
 			ofd.Filter = "Nginx默认执行文件|nginx.exe|所有执行文件|*.exe|所有文件|*.*";
 			if (ofd.ShowDialog() == true)
 			{
