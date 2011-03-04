@@ -53,3 +53,4 @@ using System.Windows;
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("0.0.*")]
 [assembly: AssemblyFileVersion("0.0.0.3")]
+[assembly: NeutralResourcesLanguageAttribute("zh-Hans")]

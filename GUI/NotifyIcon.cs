@@ -30,14 +30,18 @@ namespace GUI
             InitializeComponent();
         }
 
-        private void contextMenuStrip1_Opening(object sender, CancelEventArgs e)
-        {
-
-        }
-
         private void notifyIcon1_MouseDoubleClick(object sender, System.Windows.Forms.MouseEventArgs e)
         {
-            mainWindow.WindowState = System.Windows.WindowState.Normal;
+            mainWindow.WindowState = WindowState.Normal;
+        }
+        private void menuItemResume_Click(object sender, System.EventArgs e)
+        {
+            mainWindow.WindowState = WindowState.Normal;
+        }
+        private void menuItemExit_Click(object sender, System.EventArgs e)
+        {
+            mainWindow.Close();
+            this.Dispose();
         }
     }
 }
