@@ -144,9 +144,6 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="NginxStarterGUI.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="NginxStarter.ico" />
   </ItemGroup>
   <ItemGroup>
