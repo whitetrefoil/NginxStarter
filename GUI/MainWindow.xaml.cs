@@ -11,6 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Runtime.Serialization;
 using System.Configuration;
 using Microsoft.Win32;
 
@@ -19,25 +20,49 @@ namespace GUI
 	/// <summary>
 	/// MainWindow.xaml 的交互逻辑
 	/// </summary>
+
+    [Serializable]
+    public class Settings : ISerializable
+    {
+        public string nginxPath { get; set; }
+        public string _nginxConfigPath { get; set; }
+        public string _phpPath { get; set; }
+        public string _phpConfigPath { get; set; }
+        public bool? _phpUseIniFile { get; set; }
+        public short _phpPort { get; set; }
+        public string _phpLocal { get; set; }
+    }
+
 	public partial class MainWindow : Window
 	{
 		private static string _nginxPath;
-		private static System.Diagnostics.ProcessStartInfo _nginxInfo;
+        private static string _nginxConfigPath;
+        private static string _phpPath;
+        private static string _phpConfigPath;
+        private static bool? _phpUseIniFile;
+        private static short _phpPort;
+        private static string _phpLocal;
+        private static System.Diagnostics.ProcessStartInfo _nginxInfo;
 		private static System.Diagnostics.Process _nginx;
         private static NotifyIcon _notifyIcon;
         private static RegistryKey _registryKey;
 
 		public MainWindow()
 		{
+            _settings["nginxPath"] = "test";
 			InitializeComponent();
             _registryKey = Registry.CurrentUser.CreateSubKey("Software\\WhiteTrefoil\\NginxStarterGUI", RegistryKeyPermissionCheck.ReadWriteSubTree);
-            if (_registryKey.GetValue("nginxpath", string.Empty).ToString() != string.Empty)
-            {
-                this.txtNPath.Text = _registryKey.GetValue("nginxpath", string.Empty).ToString();
-                _nginxPath = _registryKey.GetValue("nginxpath", string.Empty).ToString();
-            }
+            this.txtNPath.Text = _registryKey.GetValue("nginxpath", string.Empty).ToString();
+            _nginxPath = _registryKey.GetValue("nginxpath", string.Empty).ToString();
+            this.txtNConfigPath.Text = _registryKey.GetValue("nginxconfigpath", string.Empty).ToString();
+            _nginxConfigPath = _registryKey.GetValue("nginxconfigpath", string.Empty).ToString();
         }
 
+        private void saveRegistry()
+        {
+            _registryKey.SetValue("nginxpath", _nginxPath);
+            _registryKey.SetValue("nginxConfigPath", _nginxConfigPath);
+        }
 
 		public bool nginxStart()
 		{
@@ -149,23 +174,50 @@ namespace GUI
 				}
 			}
 		}
-        public void nginxBrowse()
+        public string nginxBrowse()
         {
 			OpenFileDialog ofd = new OpenFileDialog();
-            if (_nginxPath != string.Empty)
+            if (_nginxPath != null || _nginxPath != string.Empty)
             {
                 ofd.InitialDirectory = _nginxPath;
             }
             else
             {
-                ofd.InitialDirectory = System.IO.Directory.GetCurrentDirectory();
+                ofd.InitialDirectory = AppDomain.CurrentDomain.BaseDirectory;
             }
 			ofd.Filter = "Nginx默认执行文件|nginx.exe|所有执行文件|*.exe|所有文件|*.*";
 			if (ofd.ShowDialog() == true)
 			{
 				txtNPath.Text = ofd.FileName;
+                return ofd.FileName;
 			}
+            else
+            {
+                return string.Empty;
+            }
 		}
+        public string nginxConfigBrowse()
+        {
+            OpenFileDialog ofd = new OpenFileDialog();
+            if (_nginxConfigPath != null || _nginxConfigPath != string.Empty)
+            {
+                ofd.InitialDirectory = _nginxConfigPath;
+            }
+            else
+            {
+                ofd.InitialDirectory = AppDomain.CurrentDomain.BaseDirectory + "\\conf";
+            }
+            ofd.Filter = "Nginx默认配置文件|nginx.conf|所有配置文件|*.conf|所有文件|*.*";
+            if (ofd.ShowDialog() == true)
+            {
+                txtNConfigPath.Text = ofd.FileName;
+                return ofd.FileName;
+            }
+            else
+            {
+                return string.Empty;
+            }
+        }
         private void btnNBrowse_Click(object sender, RoutedEventArgs e)
         {
             this.nginxBrowse();
@@ -202,6 +254,11 @@ namespace GUI
                 this.ShowInTaskbar = true;
                 if(_notifyIcon != null) _notifyIcon.Dispose();
             }
+        }
+
+        private void btnNConfigBrowse_Click(object sender, RoutedEventArgs e)
+        {
+            this.nginxConfigBrowse();
         }
 	}
 }

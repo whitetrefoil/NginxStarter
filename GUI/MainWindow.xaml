@@ -33,7 +33,7 @@
 		    					</Grid.ColumnDefinitions>
 								<Label>nginx.conf 位置：</Label>
 								<TextBox Name="txtNConfigPath" Grid.Column="1" Margin="2,4"/>
-								<Button Name="btnNConfigBrowse" Grid.Column="2" Margin="4">浏览...(_C)</Button>
+								<Button Name="btnNConfigBrowse" Grid.Column="2" Margin="4" Click="btnNConfigBrowse_Click">浏览...(_C)</Button>
 		    					<Label Grid.Row="1">nginx.exe 位置：</Label>
 								<TextBox Name="txtNPath" Grid.Row="1" Grid.Column="1" Margin="2,4" />
 								<Button Name="btnNBrowse" Grid.Row="1" Grid.Column="2" Content="浏览...(_B)" Width="70" Margin="4" Click="btnNBrowse_Click" />
