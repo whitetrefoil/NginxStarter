@@ -57,11 +57,11 @@
 								<ColumnDefinition Width="Auto"/>
 							</Grid.ColumnDefinitions>
 							<Label>PHP.ini 位置：</Label>
-							<TextBox Grid.Column="1" Margin="2,4"/>
-							<Button Grid.Column="2" Width="70" Margin="4">浏览...(_I)</Button>
+							<TextBox Name="txtPConfigPath" Grid.Column="1" Margin="2,4"/>
+							<Button Name="btnPConfigBrowse" Grid.Column="2" Width="70" Margin="4">浏览...(_I)</Button>
 							<Label Grid.Row="1">PHP-CGI.exe 位置：</Label>
-							<TextBox Grid.Row="1" Grid.Column="1" Name="txtPPath" Margin="2,4"/>
-							<Button Grid.Row="1" Grid.Column="2" Name="btnPBrowse" Width="70" Margin="4">浏览...(_B)</Button>
+							<TextBox Name="txtPPath" Grid.Row="1" Grid.Column="1" Margin="2,4"/>
+							<Button Name="btnPBrowse" Grid.Row="1" Grid.Column="2" Width="70" Margin="4">浏览...(_B)</Button>
 						</Grid>
 						<Grid Margin="0,2">
 							<Grid.ColumnDefinitions>
@@ -70,10 +70,10 @@
 								<ColumnDefinition/>
 								<ColumnDefinition/>
 							</Grid.ColumnDefinitions>
-							<Button  Width="80">启动(_S)</Button>
-							<Button Grid.Column="1"  Width="80">重启(_R)</Button>
-							<Button Grid.Column="2"  Width="80">关闭(_X)</Button>
-							<Button Grid.Column="3"  Width="80" IsEnabled="False">高级(_A)</Button>
+							<Button Name="btnPStart" Width="80">启动(_S)</Button>
+							<Button Name="btnPRestart" Grid.Column="1" Width="80">重启(_R)</Button>
+							<Button Name="btnPStop" Grid.Column="2" Width="80">关闭(_X)</Button>
+							<Button Name="btnPAdvance" Grid.Column="3" Width="80" IsEnabled="False">高级(_A)</Button>
 						</Grid>
 					</StackPanel>
 					<Border DockPanel.Dock="Right" Width="150" BorderThickness="1,0,0,0" Margin="4">
