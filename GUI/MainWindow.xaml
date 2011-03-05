@@ -12,13 +12,11 @@
     					<RowDefinition Height="Auto"/>
     					<RowDefinition Height="Auto"/>
     				</Grid.RowDefinitions>
-    				<ScrollViewer>
-						<TextBlock Name="txtNginx" TextWrapping="Wrap">
-							<TextBlock.Text>
-								这里暂时没有内容……
-							</TextBlock.Text>
-						</TextBlock>
-					</ScrollViewer>
+					<TextBlock Name="txtNginx" TextWrapping="Wrap">
+						<TextBlock.Text>
+							这里暂时没有内容……
+						</TextBlock.Text>
+					</TextBlock>
     				<Grid Grid.Row="1" Margin="0,2">
     					<Grid.ColumnDefinitions>
     						<ColumnDefinition Width="Auto"/>
@@ -46,14 +44,77 @@
 				</Grid>
     		</TabItem>
     		<TabItem Header="PHP-CGI">
-    			<Grid>
-					<TextBlock>
-						<TextBlock.Text>
-							敬请期待～
-						</TextBlock.Text>
-					</TextBlock>
-				</Grid>
+    			<DockPanel>
+    				<StackPanel DockPanel.Dock="Bottom">
+						<Grid Margin="0,2">
+							<Grid.RowDefinitions>
+								<RowDefinition/>
+								<RowDefinition/>
+							</Grid.RowDefinitions>
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="Auto"/>
+								<ColumnDefinition/>
+								<ColumnDefinition Width="Auto"/>
+							</Grid.ColumnDefinitions>
+							<Label>PHP.ini 位置：</Label>
+							<TextBox Grid.Column="1" Margin="2,4"/>
+							<Button Grid.Column="2" Width="70" Margin="4">浏览...(_I)</Button>
+							<Label Grid.Row="1">PHP-CGI.exe 位置：</Label>
+							<TextBox Grid.Row="1" Grid.Column="1" Name="txtPPath" Margin="2,4"/>
+							<Button Grid.Row="1" Grid.Column="2" Name="btnPBrowse" Width="70" Margin="4">浏览...(_B)</Button>
+						</Grid>
+						<Grid Margin="0,2">
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition/>
+								<ColumnDefinition/>
+								<ColumnDefinition/>
+								<ColumnDefinition/>
+							</Grid.ColumnDefinitions>
+							<Button  Width="80">启动(_S)</Button>
+							<Button Grid.Column="1"  Width="80">重启(_R)</Button>
+							<Button Grid.Column="2"  Width="80">关闭(_X)</Button>
+							<Button Grid.Column="3"  Width="80" IsEnabled="False">高级(_A)</Button>
+						</Grid>
+					</StackPanel>
+					<Border DockPanel.Dock="Right" Width="150" BorderThickness="1,0,0,0" Margin="4">
+						<Border.BorderBrush>
+							<LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+								<GradientStop Color="White"/>
+								<GradientStop Color="#FFC2C2C2" Offset="0.5"/>
+								<GradientStop Color="White" Offset="1"/>
+							</LinearGradientBrush>
+						</Border.BorderBrush>
+						<Grid VerticalAlignment="Center" Margin="4">
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="Auto"/>
+								<ColumnDefinition/>
+							</Grid.ColumnDefinitions>
+							<Grid.RowDefinitions>
+								<RowDefinition Height="auto"/>
+								<RowDefinition Height="auto"/>
+								<RowDefinition Height="auto"/>
+							</Grid.RowDefinitions>
+							<Label>端口：</Label>
+							<TextBox Grid.Column="1" Margin="2,4"/>
+							<Label Grid.Row="1">主机：</Label>
+							<TextBox Grid.Row="1" Grid.Column="1" Margin="2,4"/>
+							<CheckBox Grid.Row="2" Grid.ColumnSpan="2" Margin="4,8">不加载php.ini</CheckBox>
+						</Grid>
+					</Border>
+					<Grid>
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition/>
+							<ColumnDefinition Width="Auto"/>
+						</Grid.ColumnDefinitions>
+						<TextBlock>
+							<TextBlock.Text>
+								敬请期待～
+							</TextBlock.Text>
+						</TextBlock>
+					</Grid>
+				</DockPanel>
     		</TabItem>
+			<TabItem Header="关于" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"/>
     	</TabControl>
     </Grid>
 </Window>
