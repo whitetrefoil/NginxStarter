@@ -1,4 +1,4 @@
-﻿namespace GUI
+﻿namespace NginxStarterGUI
 {
     partial class NotifyIcon
     {

@@ -7,7 +7,7 @@ using System.Text;
 using System.Drawing;
 using System.Windows;
 
-namespace GUI
+namespace NginxStarterGUI
 {
     public partial class NotifyIcon : Component
     {

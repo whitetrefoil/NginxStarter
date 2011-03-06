@@ -17,71 +17,150 @@ using System.Xml.Serialization;
 using System.IO;
 using Microsoft.Win32;
 
-namespace GUI
+namespace NginxStarterGUI
 {
+
 	/// <summary>
 	/// MainWindow.xaml 的交互逻辑
 	/// </summary>
-
-    [Serializable]
-    public class Settings : ISerializable
-    {
-        public string nginxPath { get; set; }
-        public string nginxConfigPath { get; set; }
-        public string phpPath { get; set; }
-        public string phpConfigPath { get; set; }
-        public bool? phpUseIniFile { get; set; }
-        public short phpPort { get; set; }
-        public string phpLocal { get; set; }
-    }
-
 	public partial class MainWindow : Window
 	{
-        private static Settings _settings;
-        private static string _configFilePath;
+		private static Settings _settings;
+		private static bool _inGreenMode = false;
+		private static string _configFilePath;
 		private static string _nginxPath;
-        private static string _nginxConfigPath;
-        private static string _phpPath;
-        private static string _phpConfigPath;
-        private static bool? _phpUseIniFile;
-        private static short _phpPort;
-        private static string _phpLocal;
-        private static System.Diagnostics.ProcessStartInfo _nginxInfo;
+		private static string _nginxConfigPath;
+		private static string _phpPath;
+		private static string _phpConfigPath;
+		private static bool? _phpUseIniFile;
+		private static short _phpPort;
+		private static string _phpLocal;
+		private static System.Diagnostics.ProcessStartInfo _nginxInfo;
 		private static System.Diagnostics.Process _nginx;
-        private static NotifyIcon _notifyIcon;
-        private static RegistryKey _registryKey;
+		private static NotifyIcon _notifyIcon;
+		private static RegistryKey _registryKey;
 
 		public MainWindow()
 		{
-            readConfigFile();
+			_configFilePath = AppDomain.CurrentDomain.BaseDirectory + "Nginx Starter GUI.config.xml";
+			_settings = readConfigFile();
 			InitializeComponent();
-            _registryKey = Registry.CurrentUser.CreateSubKey("Software\\WhiteTrefoil\\NginxStarterGUI", RegistryKeyPermissionCheck.ReadWriteSubTree);
-            this.txtNPath.Text = _registryKey.GetValue("nginxpath", string.Empty).ToString();
-            _nginxPath = _registryKey.GetValue("nginxpath", string.Empty).ToString();
-            this.txtNConfigPath.Text = _registryKey.GetValue("nginxconfigpath", string.Empty).ToString();
-            _nginxConfigPath = _registryKey.GetValue("nginxconfigpath", string.Empty).ToString();
-        }
+			_registryKey = Registry.CurrentUser.CreateSubKey("Software\\WhiteTrefoil\\NginxStarterGUI", RegistryKeyPermissionCheck.ReadWriteSubTree);
+			this.txtNPath.Text = _registryKey.GetValue("nginxpath", string.Empty).ToString();
+			_nginxPath = _registryKey.GetValue("nginxpath", string.Empty).ToString();
+			this.txtNConfigPath.Text = _registryKey.GetValue("nginxconfigpath", string.Empty).ToString();
+			_nginxConfigPath = _registryKey.GetValue("nginxconfigpath", string.Empty).ToString();
+		}
 
-        private void readConfigFile()
-        {
-            _configFilePath = AppDomain.CurrentDomain.BaseDirectory + "Nginx Starter GUI.config.xml";
-            try
-            {
-                FileStream file = File.Open(_configFilePath, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.Read);
-            }
-            catch
-            {
-                MessageBox.Show("读取配置文件失败且无法创建，请确认是否拥有在程序运行目录下的读、写、新建文件权限，或与系统管理员联系！", "读取配置文件出错", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-        }
+		/// <summary>
+		/// 从指定文件路径读取程序设置
+		/// </summary>
+		/// <param name="configFilePath"></param>
+		/// <returns>返回程序设置类</returns>
+		private Settings readConfigFile(string configFilePath)
+		{
+			try
+			{
+				using (FileStream fs = File.Open(configFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+				{
+					XmlSerializer formatter = new XmlSerializer(typeof(Settings));
+					return (Settings)formatter.Deserialize(fs);
+				}
+			}
+			catch (FileNotFoundException)
+			{
+				File.Create(configFilePath);
+				return null;
+			}
+			catch (FileFormatException)
+			{
+				MessageBoxResult mb = MessageBox.Show("设置文件格式错误，是否重建？\n选“是”将备份原有文件后新建设置文件，选“否”将继续运行，但是将不会保存设置。", "设置文件格式错误", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+				if (mb == MessageBoxResult.OK)
+				{
+					return null; // 创建新的设置文件
+				}
+				else
+				{
+					_inGreenMode = true;
+					return null;
+				}
+			}
+			catch (FileLoadException)
+			{
+				MessageBox.Show("设置文件无法读取，请检查您的权限！程序将继续运行，但是不会保存设置！", "读取设置文件出错", MessageBoxButton.OK, MessageBoxImage.Error);
+				_inGreenMode = true;
+				return null;
+			}
+			catch
+			{
+				MessageBox.Show("读取设置文件失败且无法创建，请检查您的权限！程序将继续运行，但是不会保存设置！", "读取设置文件出错", MessageBoxButton.OK, MessageBoxImage.Error);
+				_inGreenMode = true;
+				return null;
+			}
+		}
 
-        private void saveRegistry()
-        {
-            _registryKey.SetValue("nginxpath", _nginxPath);
-            _registryKey.SetValue("nginxConfigPath", _nginxConfigPath);
-            XmlSerializer s = new XmlSerializer(typeof(Settings));
-        }
-        
+		/// <summary>
+		/// 从MainWindow类中设置的默认路径读取设置文件
+		/// </summary>
+		/// <returns>返回程序设置类</returns>
+		private Settings readConfigFile()
+		{
+			return this.readConfigFile(_configFilePath);
+		}
+
+		/// <summary>
+		/// 将指定程序设置，保存到指定设置文件
+		/// </summary>
+		/// <param name="settings">程序设置</param>
+		/// <param name="configFilePath">设置文件路径</param>
+		private void saveConfigFile(Settings settings, string configFilePath)
+		{
+			try
+			{
+				using (FileStream fs = File.Open(configFilePath, FileMode.OpenOrCreate, FileAccess.Write, FileShare.Read))
+				{
+					XmlSerializer formatter = new XmlSerializer(typeof(Settings));
+					formatter.Serialize(fs, settings);
+				}
+			}
+			catch
+			{
+				MessageBox.Show("保存设置文件失败，您本次的设置可能不会被保存，请确认是否拥有在程序运行目录下的读、写、新建文件权限，或与系统管理员联系！", "保存设置文件出错", MessageBoxButton.OK, MessageBoxImage.Error);
+			}
+		}
+
+		/// <summary>
+		/// 将指定程序设置，保存到MainWindow类中的默认设置文件路径
+		/// </summary>
+		/// <param name="settings">程序设置</param>
+		private void saveConfigFile(Settings settings)
+		{
+			this.saveConfigFile(settings, _configFilePath);
+		}
+
+		/// <summary>
+		/// 将MainWindow类中的当前设置，保存到指定设置文件
+		/// </summary>
+		/// <param name="configFilePath">设置文件路径</param>
+		private void saveConfigFile(string configFilePath)
+		{
+			this.saveConfigFile(_settings, configFilePath);
+		}
+
+		/// <summary>
+		/// 将MainWindow类中的当前设置，保存到MainWindow类中的默认设置文件路径
+		/// </summary>
+		private void saveConfigFile()
+		{
+			this.saveConfigFile(_settings, _configFilePath);
+		}
+
+		private void saveRegistry()
+		{
+			_registryKey.SetValue("nginxpath", _nginxPath);
+			_registryKey.SetValue("nginxConfigPath", _nginxConfigPath);
+		}
+
 		public bool nginxStart()
 		{
 			_nginxInfo = new System.Diagnostics.ProcessStartInfo();
@@ -93,8 +172,8 @@ namespace GUI
 			try
 			{
 				_nginx = System.Diagnostics.Process.Start(_nginxInfo);
-                _registryKey.SetValue("nginxpath", _nginxPath);
-                return true;
+				_registryKey.SetValue("nginxpath", _nginxPath);
+				return true;
 			}
 			catch
 			{
@@ -108,8 +187,8 @@ namespace GUI
 			{
 				_nginxInfo.Arguments = "-s stop";
 				System.Diagnostics.Process.Start(_nginxInfo);
-                _registryKey.SetValue("nginxpath", _nginxPath);
-                return true;
+				_registryKey.SetValue("nginxpath", _nginxPath);
+				return true;
 			}
 			catch
 			{
@@ -122,31 +201,31 @@ namespace GUI
 			{
 				_nginxInfo.Arguments = "-s quit";
 				System.Diagnostics.Process.Start(_nginxInfo);
-                _registryKey.SetValue("nginxpath", _nginxPath);
-                return true;
+				_registryKey.SetValue("nginxpath", _nginxPath);
+				return true;
 			}
 			catch
 			{
 				return false;
 			}
 		}
-        public void nginxReload()
+		public void nginxReload()
 		{
 			_nginxInfo.Arguments = "-s reload";
-            _registryKey.SetValue("nginxpath", _nginxPath);
-        }
-        public void nginxRestart()
+			_registryKey.SetValue("nginxpath", _nginxPath);
+		}
+		public void nginxRestart()
 		{
 			_nginxInfo.Arguments = "-s restart";
-            _registryKey.SetValue("nginxpath", _nginxPath);
-        }
-		
+			_registryKey.SetValue("nginxpath", _nginxPath);
+		}
+
 
 		private void btnNStart_Click(object sender, RoutedEventArgs e)
 		{
 			if (txtNPath.Text == String.Empty)
 			{
-                this.btnNBrowse_Click(sender, e);
+				this.btnNBrowse_Click(sender, e);
 			}
 			else
 			{
@@ -179,7 +258,8 @@ namespace GUI
 
 		private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
 		{
-            _registryKey.Close();
+			this.saveConfigFile();
+			_registryKey.Close();
 			if (_nginx != null)
 			{
 				_nginx.Close();
@@ -192,54 +272,54 @@ namespace GUI
 				}
 			}
 		}
-        public string nginxBrowse()
-        {
+		public string nginxBrowse()
+		{
 			OpenFileDialog ofd = new OpenFileDialog();
-            if (_nginxPath != null || _nginxPath != string.Empty)
-            {
-                ofd.InitialDirectory = _nginxPath;
-            }
-            else
-            {
-                ofd.InitialDirectory = AppDomain.CurrentDomain.BaseDirectory;
-            }
+			if (_nginxPath != null || _nginxPath != string.Empty)
+			{
+				ofd.InitialDirectory = _nginxPath;
+			}
+			else
+			{
+				ofd.InitialDirectory = AppDomain.CurrentDomain.BaseDirectory;
+			}
 			ofd.Filter = "Nginx默认执行文件|nginx.exe|所有执行文件|*.exe|所有文件|*.*";
 			if (ofd.ShowDialog() == true)
 			{
 				txtNPath.Text = ofd.FileName;
-                return ofd.FileName;
+				return ofd.FileName;
 			}
-            else
-            {
-                return string.Empty;
-            }
+			else
+			{
+				return string.Empty;
+			}
 		}
-        public string nginxConfigBrowse()
-        {
-            OpenFileDialog ofd = new OpenFileDialog();
-            if (_nginxConfigPath != null || _nginxConfigPath != string.Empty)
-            {
-                ofd.InitialDirectory = _nginxConfigPath;
-            }
-            else
-            {
-                ofd.InitialDirectory = AppDomain.CurrentDomain.BaseDirectory + "\\conf";
-            }
-            ofd.Filter = "Nginx默认配置文件|nginx.conf|所有配置文件|*.conf|所有文件|*.*";
-            if (ofd.ShowDialog() == true)
-            {
-                txtNConfigPath.Text = ofd.FileName;
-                return ofd.FileName;
-            }
-            else
-            {
-                return string.Empty;
-            }
-        }
-        private void btnNBrowse_Click(object sender, RoutedEventArgs e)
-        {
-            this.nginxBrowse();
-        }
+		public string nginxConfigBrowse()
+		{
+			OpenFileDialog ofd = new OpenFileDialog();
+			if (_nginxConfigPath != null || _nginxConfigPath != string.Empty)
+			{
+				ofd.InitialDirectory = _nginxConfigPath;
+			}
+			else
+			{
+				ofd.InitialDirectory = AppDomain.CurrentDomain.BaseDirectory + "\\conf";
+			}
+			ofd.Filter = "Nginx默认设置文件|nginx.conf|所有设置文件|*.conf|所有文件|*.*";
+			if (ofd.ShowDialog() == true)
+			{
+				txtNConfigPath.Text = ofd.FileName;
+				return ofd.FileName;
+			}
+			else
+			{
+				return string.Empty;
+			}
+		}
+		private void btnNBrowse_Click(object sender, RoutedEventArgs e)
+		{
+			this.nginxBrowse();
+		}
 		private void btnNReload_Click(object sender, RoutedEventArgs e)
 		{
 			this.nginxReload();
@@ -260,23 +340,23 @@ namespace GUI
 			if (this.nginxStop()) buttonEnabledChange(false);
 		}
 
-        private void Window_StateChanged(object sender, EventArgs e)
-        {
-            if (this.WindowState == WindowState.Minimized)
-            {
-                _notifyIcon = new NotifyIcon(this);
-                this.ShowInTaskbar = false;
-            }
-            else
-            {
-                this.ShowInTaskbar = true;
-                if(_notifyIcon != null) _notifyIcon.Dispose();
-            }
-        }
+		private void Window_StateChanged(object sender, EventArgs e)
+		{
+			if (this.WindowState == WindowState.Minimized)
+			{
+				_notifyIcon = new NotifyIcon(this);
+				this.ShowInTaskbar = false;
+			}
+			else
+			{
+				this.ShowInTaskbar = true;
+				if (_notifyIcon != null) _notifyIcon.Dispose();
+			}
+		}
 
-        private void btnNConfigBrowse_Click(object sender, RoutedEventArgs e)
-        {
-            this.nginxConfigBrowse();
-        }
+		private void btnNConfigBrowse_Click(object sender, RoutedEventArgs e)
+		{
+			this.nginxConfigBrowse();
+		}
 	}
 }
