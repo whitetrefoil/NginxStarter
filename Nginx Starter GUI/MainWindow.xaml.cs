@@ -30,6 +30,8 @@ namespace NginxStarterGUI
 		private static string _configFilePath;
 		private static System.Diagnostics.ProcessStartInfo _nginxInfo;
 		private static System.Diagnostics.Process _nginx;
+		private static System.Diagnostics.ProcessStartInfo _phpInfo;
+		private static System.Diagnostics.Process _php;
 		private static NotifyIcon _notifyIcon;
 
 		public MainWindow()
@@ -195,7 +197,7 @@ namespace NginxStarterGUI
 			_nginxInfo = new System.Diagnostics.ProcessStartInfo();
 			_nginxInfo.Arguments = string.Empty;
 			if (this.txtNConfigPath.Text != string.Empty)
-				_nginxInfo.Arguments += this.txtNConfigPath;
+				_nginxInfo.Arguments += " -c " + this.txtNConfigPath;
 			_nginxInfo.FileName = this.txtNPath.Text;
 			_nginxInfo.WorkingDirectory = this.txtNPath.Text.Substring(0, _settings.nginxPath.LastIndexOf('\\'));
 			_nginxInfo.CreateNoWindow = true;
@@ -258,30 +260,7 @@ namespace NginxStarterGUI
 			else
 			{
 				_settings.nginxPath = txtNPath.Text;
-				if (nginxStart())
-				{
-					buttonEnabledChange(true);
-				}
 			}
-		}
-		private void buttonEnabledChange(bool isStarted)
-		{/*
-			if (isStarted)
-			{
-				btnNStart.IsEnabled = false;
-				btnNReload.IsEnabled = true;
-				btnNRestart.IsEnabled = true;
-				btnNQuit.IsEnabled = true;
-				btnNStop.IsEnabled = true;
-			}
-			else
-			{
-				btnNStart.IsEnabled = true;
-				btnNReload.IsEnabled = false;
-				btnNRestart.IsEnabled = false;
-				btnNQuit.IsEnabled = false;
-				btnNStop.IsEnabled = false;
-			}*/
 		}
 
 		public string nginxBrowse()
@@ -344,12 +323,12 @@ namespace NginxStarterGUI
 
 		private void btnNQuit_Click(object sender, RoutedEventArgs e)
 		{
-			if (this.nginxQuit()) buttonEnabledChange(false);
+			this.nginxQuit();
 		}
 
 		private void btnNStop_Click(object sender, RoutedEventArgs e)
 		{
-			if (this.nginxStop()) buttonEnabledChange(false);
+			this.nginxStop();
 		}
 
 		private void Window_StateChanged(object sender, EventArgs e)
@@ -370,5 +349,74 @@ namespace NginxStarterGUI
 		{
 			this.nginxConfigBrowse();
 		}
+
+		public bool phpStart()
+		{
+			int port = 0;
+			if (this.txtPPort.Text != string.Empty)
+			{
+				try
+				{
+					port = Convert.ToUInt16(this.txtPPath.Text);
+				}
+				catch
+				{
+					MessageBox.Show("端口号请填入一个整数！", "端口号错误", MessageBoxButton.OK, MessageBoxImage.Error);
+					return false;
+				}
+			}
+			_phpInfo = new System.Diagnostics.ProcessStartInfo();
+			_phpInfo.Arguments = string.Empty;
+			if (this.txtPConfigPath.Text != string.Empty)
+				_phpInfo.Arguments += " -c " + this.txtPConfigPath;
+			if (port != 0)
+				if (this.txtPHost.Text != string.Empty)
+					_phpInfo.Arguments += " -b " + this.txtPHost.Text + ":" + port.ToString();
+				else
+					_phpInfo.Arguments += " -b " + port.ToString();
+			if (this.chkPUseIniFile.IsChecked != null && this.chkPUseIniFile.IsChecked == true)
+				_phpInfo.Arguments += " -n";
+			_phpInfo.FileName = this.txtPPath.Text;
+			_phpInfo.WorkingDirectory = this.txtNPath.Text.Substring(0, _settings.phpPath.LastIndexOf('\\'));
+			_phpInfo.CreateNoWindow = true;
+			_phpInfo.UseShellExecute = false;
+			try
+			{
+				_php = System.Diagnostics.Process.Start(_phpInfo);
+				_settings.phpPath = this.txtPPath.Text;
+				_settings.phpConfigPath = this.txtPConfigPath.Text;
+				_settings.phpHost = this.txtPHost.Text;
+				_settings.phpPort = port;
+				_settings.phpUseIniFile = this.chkPUseIniFile.IsChecked;
+				return true;
+			}
+			catch
+			{
+				MessageBox.Show("启动失败！");
+				return false;
+			}
+		}
+
+		public bool phpRestart()
+		{
+			if (phpStop())
+				return phpStart();
+			else
+				return false;
+		}
+
+		public bool phpStop()
+		{
+			try
+			{
+				_php.Dispose();
+				return true;
+			}
+			catch
+			{
+				return false;
+			}
+		}
+
 	}
 }
