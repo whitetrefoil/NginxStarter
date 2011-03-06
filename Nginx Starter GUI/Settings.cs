@@ -16,7 +16,18 @@ namespace NginxStarterGUI
 		public string phpPath { get; set; }
 		public string phpConfigPath { get; set; }
 		public bool? phpUseIniFile { get; set; }
-		public short phpPort { get; set; }
-		public string phpLocal { get; set; }
+		public short? phpPort { get; set; }
+		public string phpHost { get; set; }
+
+		public Settings()
+		{
+			nginxPath = string.Empty;
+			nginxConfigPath = string.Empty;
+			phpPath = string.Empty;
+			phpConfigPath = string.Empty;
+			phpUseIniFile = false;
+			phpPort = null;
+			phpHost = string.Empty;
+		}
 	}
 }

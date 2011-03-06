@@ -108,10 +108,10 @@
 								<RowDefinition Height="auto"/>
 							</Grid.RowDefinitions>
 							<Label>端口：</Label>
-							<TextBox Grid.Column="1" Margin="2,4"/>
+							<TextBox Name="txtPPort" Grid.Column="1" Margin="2,4"/>
 							<Label Grid.Row="1">主机：</Label>
-							<TextBox Grid.Row="1" Grid.Column="1" Margin="2,4"/>
-							<CheckBox Grid.Row="2" Grid.ColumnSpan="2" Margin="4,8">不加载php.ini</CheckBox>
+							<TextBox Name="txtPHost" Grid.Row="1" Grid.Column="1" Margin="2,4"/>
+							<CheckBox Name="chkPUseIniFile" Grid.Row="2" Grid.ColumnSpan="2" Margin="4,8">不加载php.ini</CheckBox>
 						</Grid>
 					</Border>
 					<Grid>
