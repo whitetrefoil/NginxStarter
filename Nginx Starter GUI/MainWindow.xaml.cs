@@ -64,20 +64,26 @@ namespace NginxStarterGUI
 				using (FileStream fs = File.Open(configFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
 				{
 					XmlSerializer formatter = new XmlSerializer(typeof(Settings));
-					return (Settings)formatter.Deserialize(fs);
+					Settings settings = (Settings)formatter.Deserialize(fs);
+					fs.Close();
+					return settings;
 				}
 			}
 			catch (FileNotFoundException)
 			{
-				File.Create(configFilePath);
+				createConfigFile(configFilePath);
 				return null;
 			}
-			catch (FileFormatException)
+			catch (InvalidOperationException e)
 			{
-				MessageBoxResult mb = MessageBox.Show("设置文件格式错误，是否重建？\n选“是”将备份原有文件后新建设置文件，选“否”将继续运行，但是将不会保存设置。", "设置文件格式错误", MessageBoxButton.YesNo, MessageBoxImage.Warning);
-				if (mb == MessageBoxResult.OK)
+				MessageBoxResult mb = MessageBox.Show(
+					"设置文件格式错误，是否重建？\n选“是”将备份原有文件后新建设置文件，如果已有备份文件，将会将其替换，选“否”将继续运行，但是将不会保存设置。\n错误详情：" + e.Message,
+					"设置文件格式错误", MessageBoxButton.YesNo, MessageBoxImage.Warning
+				);
+				if (mb == MessageBoxResult.Yes)
 				{
-					return null; // 创建新的设置文件
+					createConfigFile(configFilePath);
+					return null;
 				}
 				else
 				{
@@ -93,8 +99,6 @@ namespace NginxStarterGUI
 			}
 			catch
 			{
-				MessageBox.Show("读取设置文件失败且无法创建，请检查您的权限！程序将继续运行，但是不会保存设置！", "读取设置文件出错", MessageBoxButton.OK, MessageBoxImage.Error);
-				_inGreenMode = true;
 				return null;
 			}
 		}
@@ -115,6 +119,8 @@ namespace NginxStarterGUI
 		/// <param name="configFilePath">设置文件路径</param>
 		private void saveConfigFile(Settings settings, string configFilePath)
 		{
+			if (_inGreenMode == true)
+				return;
 			try
 			{
 				using (FileStream fs = File.Open(configFilePath, FileMode.OpenOrCreate, FileAccess.Write, FileShare.Read))
@@ -123,9 +129,9 @@ namespace NginxStarterGUI
 					formatter.Serialize(fs, settings);
 				}
 			}
-			catch
+			catch(Exception e)
 			{
-				MessageBox.Show("保存设置文件失败，您本次的设置可能不会被保存，请确认是否拥有在程序运行目录下的读、写、新建文件权限，或与系统管理员联系！", "保存设置文件出错", MessageBoxButton.OK, MessageBoxImage.Error);
+				MessageBox.Show("保存设置文件失败，您本次的设置可能不会被保存，请确认是否拥有在程序运行目录下的读、写、新建文件权限，或与系统管理员联系！\n错误详情：" + e.Message, "保存设置文件出错", MessageBoxButton.OK, MessageBoxImage.Error);
 			}
 		}
 
@@ -153,6 +159,21 @@ namespace NginxStarterGUI
 		private void saveConfigFile()
 		{
 			this.saveConfigFile(_settings, _configFilePath);
+		}
+
+		private void createConfigFile(string configFilePath)
+		{
+			if (File.Exists(configFilePath))
+			{
+				if (File.Exists(configFilePath + ".bak"))
+					File.Delete(configFilePath + ".bak");
+				File.Move(configFilePath, configFilePath + ".bak");
+			}
+			File.Create(configFilePath).Close();
+		}
+		private void createConfigFile()
+		{
+			createConfigFile(_configFilePath);
 		}
 
 		private void saveRegistry()

@@ -9,7 +9,7 @@ namespace NginxStarterGUI
 	/// 储存程序设置的类
 	/// </summary>
 	[Serializable]
-	class Settings
+	public class Settings
 	{
 		public string nginxPath { get; set; }
 		public string nginxConfigPath { get; set; }
