@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nginx Starter GUI", "GUI\Nginx Starter GUI.csproj", "{3985D179-8AB1-47E8-BFFF-5A6FCD2E1ECA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nginx Starter GUI", "Nginx Starter GUI\Nginx Starter GUI.csproj", "{3985D179-8AB1-47E8-BFFF-5A6FCD2E1ECA}"
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "NginxEmulator", "NginxEmulator\NginxEmulator.fsproj", "{D9D7A5C2-5803-45CC-9754-7C56531F5B66}"
 EndProject

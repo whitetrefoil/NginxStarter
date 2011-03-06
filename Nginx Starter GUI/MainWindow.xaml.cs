@@ -12,7 +12,9 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Runtime.Serialization;
-using System.Configuration;
+using System.Xml.Linq;
+using System.Xml.Serialization;
+using System.IO;
 using Microsoft.Win32;
 
 namespace GUI
@@ -25,16 +27,18 @@ namespace GUI
     public class Settings : ISerializable
     {
         public string nginxPath { get; set; }
-        public string _nginxConfigPath { get; set; }
-        public string _phpPath { get; set; }
-        public string _phpConfigPath { get; set; }
-        public bool? _phpUseIniFile { get; set; }
-        public short _phpPort { get; set; }
-        public string _phpLocal { get; set; }
+        public string nginxConfigPath { get; set; }
+        public string phpPath { get; set; }
+        public string phpConfigPath { get; set; }
+        public bool? phpUseIniFile { get; set; }
+        public short phpPort { get; set; }
+        public string phpLocal { get; set; }
     }
 
 	public partial class MainWindow : Window
 	{
+        private static Settings _settings;
+        private static string _configFilePath;
 		private static string _nginxPath;
         private static string _nginxConfigPath;
         private static string _phpPath;
@@ -49,7 +53,7 @@ namespace GUI
 
 		public MainWindow()
 		{
-            _settings["nginxPath"] = "test";
+            readConfigFile();
 			InitializeComponent();
             _registryKey = Registry.CurrentUser.CreateSubKey("Software\\WhiteTrefoil\\NginxStarterGUI", RegistryKeyPermissionCheck.ReadWriteSubTree);
             this.txtNPath.Text = _registryKey.GetValue("nginxpath", string.Empty).ToString();
@@ -58,12 +62,26 @@ namespace GUI
             _nginxConfigPath = _registryKey.GetValue("nginxconfigpath", string.Empty).ToString();
         }
 
+        private void readConfigFile()
+        {
+            _configFilePath = AppDomain.CurrentDomain.BaseDirectory + "Nginx Starter GUI.config.xml";
+            try
+            {
+                FileStream file = File.Open(_configFilePath, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.Read);
+            }
+            catch
+            {
+                MessageBox.Show("读取配置文件失败且无法创建，请确认是否拥有在程序运行目录下的读、写、新建文件权限，或与系统管理员联系！", "读取配置文件出错", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
         private void saveRegistry()
         {
             _registryKey.SetValue("nginxpath", _nginxPath);
             _registryKey.SetValue("nginxConfigPath", _nginxConfigPath);
+            XmlSerializer s = new XmlSerializer(typeof(Settings));
         }
-
+        
 		public bool nginxStart()
 		{
 			_nginxInfo = new System.Diagnostics.ProcessStartInfo();
