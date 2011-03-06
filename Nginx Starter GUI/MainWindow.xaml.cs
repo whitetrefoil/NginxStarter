@@ -194,13 +194,17 @@ namespace NginxStarterGUI
 		{
 			_nginxInfo = new System.Diagnostics.ProcessStartInfo();
 			_nginxInfo.Arguments = string.Empty;
-			_nginxInfo.FileName = _settings.nginxPath;
-			_nginxInfo.WorkingDirectory = _settings.nginxPath.Substring(0, _settings.nginxPath.LastIndexOf('\\'));
+			if (this.txtNConfigPath.Text != string.Empty)
+				_nginxInfo.Arguments += this.txtNConfigPath;
+			_nginxInfo.FileName = this.txtNPath.Text;
+			_nginxInfo.WorkingDirectory = this.txtNPath.Text.Substring(0, _settings.nginxPath.LastIndexOf('\\'));
 			_nginxInfo.CreateNoWindow = true;
 			_nginxInfo.UseShellExecute = false;
 			try
 			{
 				_nginx = System.Diagnostics.Process.Start(_nginxInfo);
+				_settings.nginxPath = this.txtNPath.Text;
+				_settings.nginxConfigPath = this.txtNConfigPath.Text;
 				return true;
 			}
 			catch
