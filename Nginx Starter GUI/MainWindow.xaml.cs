@@ -255,12 +255,15 @@ namespace NginxStarterGUI
 		{
 			if (txtNPath.Text == String.Empty)
 			{
-				this.btnNBrowse_Click(sender, e);
+				if(this.nginxBrowse() != string.Empty)
+					this.btnNStart_Click(sender, e);
 			}
 			else
 			{
 				_settings.nginxPath = txtNPath.Text;
+				this.nginxStart();
 			}
+
 		}
 
 		public string nginxBrowse()
