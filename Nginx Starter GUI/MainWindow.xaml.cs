@@ -419,7 +419,7 @@ namespace NginxStarterGUI
 		{
 			try
 			{
-				_php.Dispose();
+				_php.Kill();
 				return true;
 			}
 			catch
