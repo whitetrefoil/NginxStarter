@@ -215,6 +215,7 @@ namespace NginxStarterGUI
 				return false;
 			}
 		}
+
 		public bool nginxStop()
 		{
 			try
@@ -228,6 +229,7 @@ namespace NginxStarterGUI
 				return false;
 			}
 		}
+
 		public bool nginxQuit()
 		{
 			try
@@ -241,29 +243,15 @@ namespace NginxStarterGUI
 				return false;
 			}
 		}
+
 		public void nginxReload()
 		{
 			_nginxInfo.Arguments = "-s reload";
 		}
+
 		public void nginxRestart()
 		{
 			_nginxInfo.Arguments = "-s restart";
-		}
-
-
-		private void btnNStart_Click(object sender, RoutedEventArgs e)
-		{
-			if (txtNPath.Text == String.Empty)
-			{
-				if(this.nginxBrowse() != string.Empty)
-					this.btnNStart_Click(sender, e);
-			}
-			else
-			{
-				_settings.nginxPath = txtNPath.Text;
-				this.nginxStart();
-			}
-
 		}
 
 		public string nginxBrowse()
@@ -278,6 +266,7 @@ namespace NginxStarterGUI
 				ofd.InitialDirectory = AppDomain.CurrentDomain.BaseDirectory;
 			}
 			ofd.Filter = "Nginx默认执行文件|nginx.exe|所有执行文件|*.exe|所有文件|*.*";
+			ofd.Title = "选择Nginx执行文件";
 			if (ofd.ShowDialog() == true)
 			{
 				txtNPath.Text = ofd.FileName;
@@ -288,6 +277,7 @@ namespace NginxStarterGUI
 				return string.Empty;
 			}
 		}
+
 		public string nginxConfigBrowse()
 		{
 			OpenFileDialog ofd = new OpenFileDialog();
@@ -300,6 +290,7 @@ namespace NginxStarterGUI
 				ofd.InitialDirectory = AppDomain.CurrentDomain.BaseDirectory + "\\conf";
 			}
 			ofd.Filter = "Nginx默认设置文件|nginx.conf|所有设置文件|*.conf|所有文件|*.*";
+			ofd.Title = "选择Nginx主配置文件";
 			if (ofd.ShowDialog() == true)
 			{
 				txtNConfigPath.Text = ofd.FileName;
@@ -310,10 +301,31 @@ namespace NginxStarterGUI
 				return string.Empty;
 			}
 		}
+
+		private void btnNStart_Click(object sender, RoutedEventArgs e)
+		{
+			if (txtNPath.Text == String.Empty)
+			{
+				if(this.nginxBrowse() != string.Empty)
+					this.btnNStart_Click(sender, e);
+			}
+			else
+			{
+				_settings.nginxPath = txtNPath.Text;
+				this.nginxStart();
+			}
+		}
+
 		private void btnNBrowse_Click(object sender, RoutedEventArgs e)
 		{
 			this.nginxBrowse();
 		}
+
+		private void btnNConfigBrowse_Click(object sender, RoutedEventArgs e)
+		{
+			this.nginxConfigBrowse();
+		}
+
 		private void btnNReload_Click(object sender, RoutedEventArgs e)
 		{
 			this.nginxReload();
@@ -348,11 +360,6 @@ namespace NginxStarterGUI
 			}
 		}
 
-		private void btnNConfigBrowse_Click(object sender, RoutedEventArgs e)
-		{
-			this.nginxConfigBrowse();
-		}
-
 		public bool phpStart()
 		{
 			int port = 0;
@@ -380,7 +387,7 @@ namespace NginxStarterGUI
 			if (this.chkPUseIniFile.IsChecked != null && this.chkPUseIniFile.IsChecked == true)
 				_phpInfo.Arguments += " -n";
 			_phpInfo.FileName = this.txtPPath.Text;
-			_phpInfo.WorkingDirectory = this.txtNPath.Text.Substring(0, _settings.phpPath.LastIndexOf('\\'));
+			_phpInfo.WorkingDirectory = this.txtPPath.Text.Substring(0, _settings.phpPath.LastIndexOf('\\'));
 			_phpInfo.CreateNoWindow = true;
 			_phpInfo.UseShellExecute = false;
 			try
@@ -393,7 +400,7 @@ namespace NginxStarterGUI
 				_settings.phpUseIniFile = this.chkPUseIniFile.IsChecked;
 				return true;
 			}
-			catch
+			catch (Exception e)
 			{
 				MessageBox.Show("启动失败！");
 				return false;
@@ -419,6 +426,88 @@ namespace NginxStarterGUI
 			{
 				return false;
 			}
+		}
+
+		public string phpBrowse()
+		{
+			OpenFileDialog ofd = new OpenFileDialog();
+			if (_settings.phpPath != null || _settings.phpPath != string.Empty)
+			{
+				ofd.InitialDirectory = _settings.phpPath;
+			}
+			else
+			{
+				ofd.InitialDirectory = AppDomain.CurrentDomain.BaseDirectory;
+			}
+			ofd.Filter = "PHP-CGI默认执行文件|php-cgi.exe|所有执行文件|*.exe|所有文件|*.*";
+			ofd.Title = "选择PHP-CGI执行文件";
+			if (ofd.ShowDialog() == true)
+			{
+				txtPPath.Text = ofd.FileName;
+				return ofd.FileName;
+			}
+			else
+			{
+				return string.Empty;
+			}
+		}
+
+		public string phpConfigBrowse()
+		{
+			OpenFileDialog ofd = new OpenFileDialog();
+			if (_settings.phpConfigPath != null || _settings.phpConfigPath != string.Empty)
+			{
+				ofd.InitialDirectory = _settings.phpConfigPath;
+			}
+			else
+			{
+				ofd.InitialDirectory = AppDomain.CurrentDomain.BaseDirectory;
+			}
+			ofd.Filter = "PHP默认设置文件|php.ini|所有设置文件|*.ini|所有文件|*.*";
+			ofd.Title = "选择PHP配置文件（php.ini）";
+			if (ofd.ShowDialog() == true)
+			{
+				this.txtPConfigPath.Text = ofd.FileName;
+				return ofd.FileName;
+			}
+			else
+			{
+				return string.Empty;
+			}
+		}
+
+		private void btnPStart_Click(object sender, RoutedEventArgs e)
+		{
+			if (txtPPath.Text == String.Empty)
+			{
+				if (this.phpBrowse() != string.Empty)
+					this.btnPStart_Click(sender, e);
+			}
+			else
+			{
+				_settings.phpPath = txtPPath.Text;
+				this.phpStart();
+			}
+		}
+
+		private void btnPRestart_Click(object sender, RoutedEventArgs e)
+		{
+			this.phpRestart();
+		}
+
+		private void btnPStop_Click(object sender, RoutedEventArgs e)
+		{
+			this.phpStop();
+		}
+
+		private void btnPConfigBrowse_Click(object sender, RoutedEventArgs e)
+		{
+			this.phpConfigBrowse();
+		}
+
+		private void btnPBrowse_Click(object sender, RoutedEventArgs e)
+		{
+			this.phpBrowse();
 		}
 
 	}
