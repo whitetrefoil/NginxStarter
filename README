@@ -1,5 +1,14 @@
 这是一个自学.Net/WPF编程而新建的项目，作为Windows下启动、关闭Nginx的一个GUI，基本没有实际意义。
 
+Changelog:
+
+0.0.2.1
+
+Added: 加入了CoffeeScript、LESS、Sass的标签页，完成了CoffeeScript标签页的样式设计，但是均没有功能无法使用
+Added: 启动Nginx之前“重启”、“退出”等按钮（包括任务栏图标菜单）将被禁用，启动Nginx后“启动”、“浏览”等按钮会被禁用
+Added: 强制退出Nginx后追加杀死所有nginx.exe进程的操作
+Fixed: 现在退出（Quit）能正常运行了，Reload和Restart未经测试
+
 TODO：
 
 更改程序META信息
@@ -13,3 +22,4 @@ TODO：
 跟踪建立的进程
 跟踪输出的日志文件
 尝试用F#重写
+*添加对CoffeeScript、LESS、Sass的支持
