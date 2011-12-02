@@ -9,69 +9,97 @@ using System.Windows;
 
 namespace NginxStarterGUI
 {
-    public partial class NotifyIcon : Component
-    {
-        private static MainWindow mainWindow;
+	public partial class NotifyIcon : Component
+	{
+		private static MainWindow _mainWindow;
+		private static bool _isNginxStarted;
 
-        public NotifyIcon()
-        {
-            InitializeComponent();
-        }
-        public NotifyIcon(MainWindow window)
-            : this()
-        {
-            mainWindow = window;
-        }
+		public NotifyIcon(MainWindow window, bool isNginxStarted = false)
+		{
+			_mainWindow = window;
+			_isNginxStarted = isNginxStarted;
+			InitializeComponent();
+			if (_isNginxStarted)
+				this.changeOptionsAfterNginxStarted();
+			else
+				this.changeOptionsAfterNginxStoped();
+		}
 
-        public NotifyIcon(IContainer container)
-        {
-            container.Add(this);
+		public NotifyIcon()
+		{
+			InitializeComponent();
+		}
 
-            InitializeComponent();
-        }
+		public NotifyIcon(IContainer container)
+		{
+			container.Add(this);
 
-        private void notifyIcon1_MouseDoubleClick(object sender, System.Windows.Forms.MouseEventArgs e)
-        {
-            mainWindow.WindowState = WindowState.Normal;
-        }
-        private void menuItemResume_Click(object sender, System.EventArgs e)
-        {
-            mainWindow.WindowState = WindowState.Normal;
-        }
-        private void menuItemExit_Click(object sender, System.EventArgs e)
-        {
-            mainWindow.Close();
-            this.Dispose();
-        }
+			InitializeComponent();
+		}
 
-        private void menuItemOStart_Click(object sender, EventArgs e)
-        {
-			mainWindow.btnNStart_Click(null, null);
-        }
+		private void notifyIcon1_MouseDoubleClick(object sender, System.Windows.Forms.MouseEventArgs e)
+		{
+			_mainWindow.WindowState = WindowState.Normal;
+		}
+		private void menuItemResume_Click(object sender, System.EventArgs e)
+		{
+			_mainWindow.WindowState = WindowState.Normal;
+		}
+		private void menuItemExit_Click(object sender, System.EventArgs e)
+		{
+			_mainWindow.Close();
+			this.Dispose();
+		}
 
-        private void menuItemOReload_Click(object sender, EventArgs e)
-        {
-            mainWindow.btnNReload_Click(null, null);
-        }
+		private void menuItemOStart_Click(object sender, EventArgs e)
+		{
+			_mainWindow.btnNStart_Click(null, null);
+			changeOptionsAfterNginxStarted();
+		}
 
-        private void menuItemORestart_Click(object sender, EventArgs e)
-        {
-            mainWindow.btnNRestart_Click(null, null);
-        }
+		private void menuItemOReload_Click(object sender, EventArgs e)
+		{
+			_mainWindow.btnNReload_Click(null, null);
+		}
 
-        private void menuItemOQuit_Click(object sender, EventArgs e)
-        {
-            mainWindow.btnNQuit_Click(null, null);
-        }
+		private void menuItemORestart_Click(object sender, EventArgs e)
+		{
+			_mainWindow.btnNRestart_Click(null, null);
+		}
 
-        private void menuItemOStop_Click(object sender, EventArgs e)
-        {
-            mainWindow.btnNStop_Click(null, null);
-        }
+		private void menuItemOQuit_Click(object sender, EventArgs e)
+		{
+			_mainWindow.btnNQuit_Click(null, null);
+			changeOptionsAfterNginxStoped();
+		}
 
-        private void menuItemOBrowse_Click(object sender, EventArgs e)
-        {
-            mainWindow.btnNBrowse_Click(null, null);
-        }
-    }
+		private void menuItemOStop_Click(object sender, EventArgs e)
+		{
+			_mainWindow.btnNStop_Click(null, null);
+			changeOptionsAfterNginxStoped();
+		}
+
+		private void menuItemOBrowse_Click(object sender, EventArgs e)
+		{
+			_mainWindow.btnNBrowse_Click(null, null);
+		}
+
+		private void changeOptionsAfterNginxStarted()
+		{
+			menuItemOReload.Enabled = true;
+			menuItemORestart.Enabled = true;
+			menuItemOQuit.Enabled = true;
+			menuItemOStart.Enabled = false;
+			menuItemOBrowse.Enabled = false;
+		}
+
+		private void changeOptionsAfterNginxStoped()
+		{
+			menuItemOReload.Enabled = false;
+			menuItemORestart.Enabled = false;
+			menuItemOQuit.Enabled = false;
+			menuItemOStart.Enabled = true;
+			menuItemOBrowse.Enabled = true;
+		}
+	}
 }

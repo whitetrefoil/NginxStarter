@@ -205,8 +205,39 @@ namespace NginxStarterGUI
 				{
 					_settings.nginxPath = txtNPath.Text;
 					_settings.nginxConfigPath = txtNConfigPath.Text;
+					this.changeButtonsStatusAfterNginxStarted();
 				}
 			}
+		}
+
+		/// <summary>
+		/// Nginx启动后激活一些按钮，禁止另一些按钮
+		/// </summary>
+		private void changeButtonsStatusAfterNginxStarted()
+		{
+			btnNStart.IsEnabled = false;
+			btnNBrowse.IsEnabled = false;
+			btnNConfigBrowse.IsEnabled = false;
+			txtNPath.IsEnabled = false;
+			txtNConfigPath.IsEnabled = false;
+			btnNReload.IsEnabled = true;
+			btnNRestart.IsEnabled = true;
+			btnNQuit.IsEnabled = true;
+		}
+
+		/// <summary>
+		/// Nginx退出后激活一些按钮，禁止另一些按钮
+		/// </summary>
+		private void changeButtonsStatusAfterNginxStoped()
+		{
+			btnNStart.IsEnabled = true;
+			btnNBrowse.IsEnabled = true;
+			btnNConfigBrowse.IsEnabled = true;
+			txtNPath.IsEnabled = true;
+			txtNConfigPath.IsEnabled = true;
+			btnNReload.IsEnabled = false;
+			btnNRestart.IsEnabled = false;
+			btnNQuit.IsEnabled = false;
 		}
 
 		/// <summary>
@@ -298,11 +329,13 @@ namespace NginxStarterGUI
 		public void btnNQuit_Click(object sender, RoutedEventArgs e)
 		{
 			_nginx.quit();
+			changeButtonsStatusAfterNginxStoped();
 		}
 
 		public void btnNStop_Click(object sender, RoutedEventArgs e)
 		{
 			_nginx.stop();
+			changeButtonsStatusAfterNginxStoped();
 		}
 
 		private void Window_StateChanged(object sender, EventArgs e)
