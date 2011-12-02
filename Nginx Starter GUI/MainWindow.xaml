@@ -1,6 +1,7 @@
-﻿<Window x:Class="NginxStarterGUI.MainWindow"
+﻿<Window
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" x:Class="NginxStarterGUI.MainWindow"
         Title="Nginx Starter GUI" Height="350" Width="525"
 		Closing="Window_Closing" IsEnabled="True" StateChanged="Window_StateChanged" Icon="/Nginx%20Starter%20GUI;component/NginxStarter.ico">
 	<Window.Resources>
@@ -31,12 +32,12 @@
 		    						<ColumnDefinition/>
 		    						<ColumnDefinition Width="Auto"/>
 		    					</Grid.ColumnDefinitions>
-								<Label>nginx.conf 位置：</Label>
-								<TextBox Name="txtNConfigPath" Grid.Column="1" Margin="2,4"/>
-								<Button Name="btnNConfigBrowse" Grid.Column="2" Margin="4" Click="btnNConfigBrowse_Click">浏览...(_C)</Button>
-		    					<Label Grid.Row="1">nginx.exe 位置：</Label>
-								<TextBox Name="txtNPath" Grid.Row="1" Grid.Column="1" Margin="2,4" />
-								<Button Name="btnNBrowse" Grid.Row="1" Grid.Column="2" Content="浏览...(_B)" Width="70" Margin="4" Click="btnNBrowse_Click" />
+								<Label Content="nginx.conf 位置："/>
+								<TextBox x:Name="txtNConfigPath" Grid.Column="1" Margin="2,4"/>
+								<Button x:Name="btnNConfigBrowse" Grid.Column="2" Margin="4" Click="btnNConfigBrowse_Click" Content="浏览...(_C)"/>
+		    					<Label Grid.Row="1" Content="nginx.exe 位置："/>
+								<TextBox x:Name="txtNPath" Grid.Row="1" Grid.Column="1" Margin="2,4" />
+								<Button x:Name="btnNBrowse" Grid.Row="1" Grid.Column="2" Content="浏览...(_B)" Width="70" Margin="4" Click="btnNBrowse_Click" />
 							</Grid>
 							<Grid Margin="0,2">
 								<Grid.ColumnDefinitions>
@@ -46,18 +47,16 @@
 									<ColumnDefinition/>
 									<ColumnDefinition/>
 								</Grid.ColumnDefinitions>
-								<Button Name="btnNStart" Content="启动(_S)" Width="80" Click="btnNStart_Click" />
-								<Button Name="btnNReload" Grid.Column="1" Content="重置(_R)" Width="80" Click="btnNReload_Click" />
-								<Button Name="btnNRestart" Grid.Column="2" Content="重启(_E)" Width="80" Click="btnNRestart_Click" />
-								<Button Name="btnNQuit" Grid.Column="3" Content="关闭(_Q)" Width="80" Click="btnNQuit_Click" />
-								<Button Name="btnNStop" Grid.Column="4" Content="强制结束(_X)" Width="80" Click="btnNStop_Click" />
+								<Button x:Name="btnNStart" Content="启动(_S)" Width="80" Click="btnNStart_Click" />
+								<Button x:Name="btnNReload" Grid.Column="1" Content="重置(_R)" Width="80" Click="btnNReload_Click" />
+								<Button x:Name="btnNRestart" Grid.Column="2" Content="重启(_E)" Width="80" Click="btnNRestart_Click" />
+								<Button x:Name="btnNQuit" Grid.Column="3" Content="关闭(_Q)" Width="80" Click="btnNQuit_Click" />
+								<Button x:Name="btnNStop" Grid.Column="4" Content="强制结束(_X)" Width="80" Click="btnNStop_Click" />
 							</Grid>
 						</StackPanel>
 					</Border>
-					<TextBlock Name="txtNginx" TextWrapping="Wrap">
-						<TextBlock.Text>
-							这里暂时没有内容……
-						</TextBlock.Text>
+					<TextBlock x:Name="txtNginx" TextWrapping="Wrap">
+						<TextBlock.Text>这里暂时没有内容……</TextBlock.Text>
 					</TextBlock>
 				</DockPanel>
     		</TabItem>
@@ -75,12 +74,12 @@
 									<ColumnDefinition/>
 									<ColumnDefinition Width="Auto"/>
 								</Grid.ColumnDefinitions>
-								<Label>PHP.ini 位置：</Label>
-								<TextBox Name="txtPConfigPath" Grid.Column="1" Margin="2,4"/>
-								<Button Name="btnPConfigBrowse" Grid.Column="2" Width="70" Margin="4" Click="btnPConfigBrowse_Click">浏览...(_C)</Button>
-								<Label Grid.Row="1">PHP-CGI.exe 位置：</Label>
-								<TextBox Name="txtPPath" Grid.Row="1" Grid.Column="1" Margin="2,4"/>
-								<Button Name="btnPBrowse" Grid.Row="1" Grid.Column="2" Width="70" Margin="4" Click="btnPBrowse_Click">浏览...(_B)</Button>
+								<Label Content="PHP.ini 位置："/>
+								<TextBox x:Name="txtPConfigPath" Grid.Column="1" Margin="2,4"/>
+								<Button x:Name="btnPConfigBrowse" Grid.Column="2" Width="70" Margin="4" Click="btnPConfigBrowse_Click" Content="浏览...(_C)"/>
+								<Label Grid.Row="1" Content="PHP-CGI.exe 位置："/>
+								<TextBox x:Name="txtPPath" Grid.Row="1" Grid.Column="1" Margin="2,4"/>
+								<Button x:Name="btnPBrowse" Grid.Row="1" Grid.Column="2" Width="70" Margin="4" Click="btnPBrowse_Click" Content="浏览...(_B)"/>
 							</Grid>
 						</Border>
 						<Grid Margin="0,2">
@@ -90,10 +89,10 @@
 								<ColumnDefinition/>
 								<ColumnDefinition/>
 							</Grid.ColumnDefinitions>
-							<Button Name="btnPStart" Width="80" Click="btnPStart_Click">启动(_S)</Button>
-							<Button Name="btnPRestart" Grid.Column="1" Width="80" Click="btnPRestart_Click">重启(_R)</Button>
-							<Button Name="btnPStop" Grid.Column="2" Width="80" Click="btnPStop_Click">关闭(_X)</Button>
-							<Button Name="btnPAdvance" Grid.Column="3" Width="80" IsEnabled="False">高级(_A)</Button>
+							<Button x:Name="btnPStart" Width="80" Click="btnPStart_Click" Content="启动(_S)"/>
+							<Button x:Name="btnPRestart" Grid.Column="1" Width="80" Click="btnPRestart_Click" Content="重启(_R)"/>
+							<Button x:Name="btnPStop" Grid.Column="2" Width="80" Click="btnPStop_Click" Content="关闭(_X)"/>
+							<Button x:Name="btnPAdvance" Grid.Column="3" Width="80" IsEnabled="False" Content="高级(_A)"/>
 						</Grid>
 					</StackPanel>
 					<Border DockPanel.Dock="Right" Width="150" BorderThickness="1,0,0,0" Margin="4" BorderBrush="{StaticResource brushSplitLineV}">
@@ -107,11 +106,11 @@
 								<RowDefinition Height="auto"/>
 								<RowDefinition Height="auto"/>
 							</Grid.RowDefinitions>
-							<Label>端口：</Label>
-							<TextBox Name="txtPPort" Grid.Column="1" Margin="2,4"/>
-							<Label Grid.Row="1">主机：</Label>
-							<TextBox Name="txtPHost" Grid.Row="1" Grid.Column="1" Margin="2,4"/>
-							<CheckBox Name="chkPUseIniFile" Grid.Row="2" Grid.ColumnSpan="2" Margin="4,8">不加载php.ini</CheckBox>
+							<Label Content="端口："/>
+							<TextBox x:Name="txtPPort" Grid.Column="1" Margin="2,4"/>
+							<Label Grid.Row="1" Content="主机："/>
+							<TextBox x:Name="txtPHost" Grid.Row="1" Grid.Column="1" Margin="2,4"/>
+							<CheckBox x:Name="chkPUseIniFile" Grid.Row="2" Grid.ColumnSpan="2" Margin="4,8" Content="不加载php.ini"/>
 						</Grid>
 					</Border>
 					<Grid>
@@ -119,11 +118,22 @@
 							<ColumnDefinition/>
 							<ColumnDefinition Width="Auto"/>
 						</Grid.ColumnDefinitions>
-						<TextBlock>目前功能还没有实装，只是把界面弄好了……</TextBlock>
+						<TextBlock><Run Text="目前功能还没有实装，只是把界面弄好了……"/></TextBlock>
 					</Grid>
 				</DockPanel>
     		</TabItem>
-			<TabItem Header="关于" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"/>
+    		<TabItem Header="CoffeeScript">
+    			<DockPanel/>
+    		</TabItem>
+    		<TabItem Header="LESS">
+    			<DockPanel/>
+    		</TabItem>
+    		<TabItem Header="SASS">
+    			<DockPanel></DockPanel>
+			</TabItem>
+    		<TabItem Header="关于">
+    			<Grid/>
+    		</TabItem>
     	</TabControl>
     </Grid>
 </Window>
