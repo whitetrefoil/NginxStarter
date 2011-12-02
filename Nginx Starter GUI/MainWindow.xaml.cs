@@ -16,6 +16,7 @@ using System.Xml.Linq;
 using System.Xml.Serialization;
 using System.IO;
 using Microsoft.Win32;
+using NginxStarterGUI.TargetProgramsInfo;
 
 namespace NginxStarterGUI
 {
@@ -28,11 +29,10 @@ namespace NginxStarterGUI
 		private static Settings _settings;
 		private static bool _inGreenMode = false;
 		private static string _configFilePath;
-		private static System.Diagnostics.ProcessStartInfo _nginxInfo;
-		private static System.Diagnostics.Process _nginx;
 		private static System.Diagnostics.ProcessStartInfo _phpInfo;
 		private static System.Diagnostics.Process _php;
 		private static NotifyIcon _notifyIcon;
+		private static Nginx _nginx;
 
 		public MainWindow()
 		{
@@ -192,72 +192,33 @@ namespace NginxStarterGUI
 			backupConfigFile(_configFilePath);
 		}
 
-		public bool nginxStart()
+		private void btnNStart_Click(object sender, RoutedEventArgs e)
 		{
-			_nginxInfo = new System.Diagnostics.ProcessStartInfo();
-			_nginxInfo.Arguments = string.Empty;
-			if (this.txtNConfigPath.Text != string.Empty)
-				_nginxInfo.Arguments += " -c " + this.txtNConfigPath;
-			_nginxInfo.FileName = this.txtNPath.Text;
-			_nginxInfo.WorkingDirectory = this.txtNPath.Text.Substring(0, _settings.nginxPath.LastIndexOf('\\'));
-			_nginxInfo.CreateNoWindow = true;
-			_nginxInfo.UseShellExecute = false;
-			try
+			if (txtNPath.Text == String.Empty)
 			{
-				_nginx = System.Diagnostics.Process.Start(_nginxInfo);
-				_settings.nginxPath = this.txtNPath.Text;
-				_settings.nginxConfigPath = this.txtNConfigPath.Text;
-				return true;
+				if (this.btnNBrowse_Click(sender, e))
+					this.btnNStart_Click(sender, e);
 			}
-			catch
+			else
 			{
-				MessageBox.Show("启动失败！");
-				return false;
+				if (_nginx.start())
+				{
+					_settings.nginxPath = txtNPath.Text;
+					_settings.nginxConfigPath = txtNConfigPath.Text;
+				}
 			}
 		}
 
-		public bool nginxStop()
-		{
-			try
-			{
-				_nginxInfo.Arguments = "-s stop";
-				System.Diagnostics.Process.Start(_nginxInfo);
-				return true;
-			}
-			catch
-			{
-				return false;
-			}
-		}
-
-		public bool nginxQuit()
-		{
-			try
-			{
-				_nginxInfo.Arguments = "-s quit";
-				System.Diagnostics.Process.Start(_nginxInfo);
-				return true;
-			}
-			catch
-			{
-				return false;
-			}
-		}
-
-		public void nginxReload()
-		{
-			_nginxInfo.Arguments = "-s reload";
-		}
-
-		public void nginxRestart()
-		{
-			_nginxInfo.Arguments = "-s restart";
-		}
-
-		public string nginxBrowse()
+		/// <summary>
+		/// 点击NginxExe文件浏览按钮
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		/// <returns>返回一个bool值表示是否选取文件成功</returns>
+		private bool btnNBrowse_Click(object sender, RoutedEventArgs e)
 		{
 			OpenFileDialog ofd = new OpenFileDialog();
-			if (_settings.nginxPath != null || _settings.nginxPath != string.Empty)
+			if (_settings.nginxPath != null && _settings.nginxPath != string.Empty)
 			{
 				ofd.InitialDirectory = _settings.nginxPath;
 			}
@@ -265,20 +226,26 @@ namespace NginxStarterGUI
 			{
 				ofd.InitialDirectory = AppDomain.CurrentDomain.BaseDirectory;
 			}
-			ofd.Filter = "Nginx默认执行文件|nginx.exe|所有执行文件|*.exe|所有文件|*.*";
-			ofd.Title = "选择Nginx执行文件";
+			ofd.Filter = Nginx._ofdExeFilter;
+			ofd.Title = Nginx._ofdExeTitle;
 			if (ofd.ShowDialog() == true)
 			{
 				txtNPath.Text = ofd.FileName;
-				return ofd.FileName;
+				return true;
 			}
 			else
 			{
-				return string.Empty;
+				return false;
 			}
 		}
 
-		public string nginxConfigBrowse()
+		/// <summary>
+		/// 点击Nginx配置文件浏览按钮
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		/// <returns>返回一个bool值表示是否选取文件成功</returns>
+		private bool btnNConfigBrowse_Click(object sender, RoutedEventArgs e)
 		{
 			OpenFileDialog ofd = new OpenFileDialog();
 			if (_settings.nginxConfigPath != null || _settings.nginxConfigPath != string.Empty)
@@ -289,61 +256,37 @@ namespace NginxStarterGUI
 			{
 				ofd.InitialDirectory = AppDomain.CurrentDomain.BaseDirectory + "\\conf";
 			}
-			ofd.Filter = "Nginx默认设置文件|nginx.conf|所有设置文件|*.conf|所有文件|*.*";
-			ofd.Title = "选择Nginx主配置文件";
+			ofd.Filter = Nginx._ofdConfigFileFilter;
+			ofd.Title = Nginx._ofdConfigFileTitle;
 			if (ofd.ShowDialog() == true)
 			{
 				txtNConfigPath.Text = ofd.FileName;
-				return ofd.FileName;
+				return true;
 			}
 			else
 			{
-				return string.Empty;
+				return false;
 			}
-		}
-
-		private void btnNStart_Click(object sender, RoutedEventArgs e)
-		{
-			if (txtNPath.Text == String.Empty)
-			{
-				if(this.nginxBrowse() != string.Empty)
-					this.btnNStart_Click(sender, e);
-			}
-			else
-			{
-				_settings.nginxPath = txtNPath.Text;
-				this.nginxStart();
-			}
-		}
-
-		private void btnNBrowse_Click(object sender, RoutedEventArgs e)
-		{
-			this.nginxBrowse();
-		}
-
-		private void btnNConfigBrowse_Click(object sender, RoutedEventArgs e)
-		{
-			this.nginxConfigBrowse();
 		}
 
 		private void btnNReload_Click(object sender, RoutedEventArgs e)
 		{
-			this.nginxReload();
+			_nginx.reload();
 		}
 
 		private void btnNRestart_Click(object sender, RoutedEventArgs e)
 		{
-			this.nginxRestart();
+			_nginx.restart();
 		}
 
 		private void btnNQuit_Click(object sender, RoutedEventArgs e)
 		{
-			this.nginxQuit();
+			_nginx.quit();
 		}
 
 		private void btnNStop_Click(object sender, RoutedEventArgs e)
 		{
-			this.nginxStop();
+			_nginx.stop();
 		}
 
 		private void Window_StateChanged(object sender, EventArgs e)
