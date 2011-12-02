@@ -48,9 +48,9 @@
 									<ColumnDefinition/>
 								</Grid.ColumnDefinitions>
 								<Button x:Name="btnNStart" Content="启动(_S)" Width="80" Click="btnNStart_Click" />
-								<Button x:Name="btnNReload" Grid.Column="1" Content="重置(_R)" Width="80" Click="btnNReload_Click" />
-								<Button x:Name="btnNRestart" Grid.Column="2" Content="重启(_E)" Width="80" Click="btnNRestart_Click" />
-								<Button x:Name="btnNQuit" Grid.Column="3" Content="关闭(_Q)" Width="80" Click="btnNQuit_Click" />
+								<Button x:Name="btnNReload" Grid.Column="1" Content="重置(_R)" Width="80" Click="btnNReload_Click" IsEnabled="False" />
+								<Button x:Name="btnNRestart" Grid.Column="2" Content="重启(_E)" Width="80" Click="btnNRestart_Click" IsEnabled="False" />
+								<Button x:Name="btnNQuit" Grid.Column="3" Content="关闭(_Q)" Width="80" Click="btnNQuit_Click" IsEnabled="False" />
 								<Button x:Name="btnNStop" Grid.Column="4" Content="强制结束(_X)" Width="80" Click="btnNStop_Click" />
 							</Grid>
 						</StackPanel>
@@ -61,7 +61,7 @@
 				</DockPanel>
     		</TabItem>
     		<TabItem Header="PHP-CGI">
-    			<DockPanel>
+    			<DockPanel IsEnabled="False">
     				<StackPanel DockPanel.Dock="Bottom">
     					<Border BorderThickness="0,1,0,0" BorderBrush="{StaticResource brushSplitLineH}">
 							<Grid Margin="0,2">
@@ -90,8 +90,8 @@
 								<ColumnDefinition/>
 							</Grid.ColumnDefinitions>
 							<Button x:Name="btnPStart" Width="80" Click="btnPStart_Click" Content="启动(_S)"/>
-							<Button x:Name="btnPRestart" Grid.Column="1" Width="80" Click="btnPRestart_Click" Content="重启(_R)"/>
-							<Button x:Name="btnPStop" Grid.Column="2" Width="80" Click="btnPStop_Click" Content="关闭(_X)"/>
+							<Button x:Name="btnPRestart" Grid.Column="1" Width="80" Click="btnPRestart_Click" Content="重启(_R)" IsEnabled="False"/>
+							<Button x:Name="btnPStop" Grid.Column="2" Width="80" Click="btnPStop_Click" Content="关闭(_X)" IsEnabled="False"/>
 							<Button x:Name="btnPAdvance" Grid.Column="3" Width="80" IsEnabled="False" Content="高级(_A)"/>
 						</Grid>
 					</StackPanel>
@@ -123,7 +123,62 @@
 				</DockPanel>
     		</TabItem>
     		<TabItem Header="CoffeeScript">
-    			<DockPanel/>
+    			<DockPanel>
+					<Border DockPanel.Dock="Bottom" BorderThickness="0,1,0,0" BorderBrush="{StaticResource brushSplitLineH}">
+	    				<StackPanel VerticalAlignment="Bottom">
+	    					<StackPanel Orientation="Horizontal">
+							</StackPanel>
+    						<Grid Margin="0,2">
+    							<Grid.RowDefinitions>
+    								<RowDefinition/>
+									<RowDefinition/>
+    								<RowDefinition/>
+									<RowDefinition/>
+								</Grid.RowDefinitions>			
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="Auto"/>
+									<ColumnDefinition/>
+									<ColumnDefinition Width="Auto"/>
+								</Grid.ColumnDefinitions>
+								<Label Content="node.exe 位置："/>
+								<TextBox Grid.Column="1" Margin="2,4"/>
+								<Button Content="浏览..." Grid.Column="2" Width="70" Margin="4"/>
+								<Label Content="coffee 位置：" Grid.Row="1"/>
+								<TextBox Grid.Column="1" Grid.Row="1" Margin="2,4"/>
+								<Button Content="浏览..." Grid.Column="2" Grid.Row="1" Width="70" Margin="4"/>
+								<Label Content="输入位置/文件：" Grid.Row="2"/>
+								<TextBox Grid.Column="1" Margin="2,4" Grid.Row="2"/>
+								<Button Content="浏览..." Grid.Column="2" Width="70" Margin="4" Grid.Row="2"/>
+								<Label Content="输出位置/文件：" Grid.Row="3"/>
+								<TextBox Grid.Column="1" Grid.Row="3" Margin="2,4"/>
+								<Button Content="浏览..." Grid.Column="2" Grid.Row="3" Width="70" Margin="4"/>
+							</Grid>
+							<Grid Margin="0,2">
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition/>
+									<ColumnDefinition/>
+									<ColumnDefinition/>
+								</Grid.ColumnDefinitions>
+								<Button Content="运行(_R)" Grid.Column="0" Width="80"/>
+								<Button Content="监听(_W)" Grid.Column="1" Width="80"/>
+								<Button Content="停止监听(_S)" Grid.Column="2" Width="80" IsEnabled="False"/>
+							</Grid>
+						</StackPanel>
+					</Border>
+					<Border DockPanel.Dock="Right" Width="150" BorderThickness="1,0,0,0" BorderBrush="{DynamicResource brushSplitLineV}">
+						<Grid VerticalAlignment="Center">
+							<Grid.RowDefinitions>
+								<RowDefinition/>
+								<RowDefinition/>
+							</Grid.RowDefinitions>
+							<CheckBox Content="node.exe已加入PATH" Margin="4" VerticalAlignment="Top"/>
+							<CheckBox Content="coffee全局安装" IsEnabled="False" Margin="4" VerticalAlignment="Top" Grid.Row="1"/>			
+						</Grid>
+					</Border>
+					<Canvas>
+						
+					</Canvas>
+    			</DockPanel>
     		</TabItem>
     		<TabItem Header="LESS">
     			<DockPanel/>
