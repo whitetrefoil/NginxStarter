@@ -46,32 +46,32 @@ namespace NginxStarterGUI
 
         private void menuItemOStart_Click(object sender, EventArgs e)
         {
-            mainWindow.nginxStart();
+			mainWindow.btnNStart_Click(null, null);
         }
 
         private void menuItemOReload_Click(object sender, EventArgs e)
         {
-            mainWindow.nginxReload();
+            mainWindow.btnNReload_Click(null, null);
         }
 
         private void menuItemORestart_Click(object sender, EventArgs e)
         {
-            mainWindow.nginxRestart();
+            mainWindow.btnNRestart_Click(null, null);
         }
 
         private void menuItemOQuit_Click(object sender, EventArgs e)
         {
-            mainWindow.nginxQuit();
+            mainWindow.btnNQuit_Click(null, null);
         }
 
         private void menuItemOStop_Click(object sender, EventArgs e)
         {
-            mainWindow.nginxStop();
+            mainWindow.btnNStop_Click(null, null);
         }
 
         private void menuItemOBrowse_Click(object sender, EventArgs e)
         {
-            mainWindow.nginxBrowse();
+            mainWindow.btnNBrowse_Click(null, null);
         }
     }
 }

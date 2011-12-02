@@ -53,14 +53,7 @@ namespace NginxStarterGUI
 			this.saveConfigFile();
 			if (_nginx != null)
 			{
-				_nginx.Close();
-				try
-				{
-					_nginx.Kill();
-				}
-				catch
-				{
-				}
+				_nginx.quit();
 			}
 		}
 
@@ -192,11 +185,18 @@ namespace NginxStarterGUI
 			backupConfigFile(_configFilePath);
 		}
 
-		private void btnNStart_Click(object sender, RoutedEventArgs e)
+		/// <summary>
+		/// 点击Nginx启动按钮
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		public void btnNStart_Click(object sender, RoutedEventArgs e)
 		{
+			_nginx = new Nginx(txtNPath.Text, txtNConfigPath.Text);
+
 			if (txtNPath.Text == String.Empty)
 			{
-				if (this.btnNBrowse_Click(sender, e))
+				if (this.btnNBrowse_Fxxk())
 					this.btnNStart_Click(sender, e);
 			}
 			else
@@ -214,8 +214,16 @@ namespace NginxStarterGUI
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
+		public void btnNBrowse_Click(object sender, RoutedEventArgs e)
+		{
+			this.btnNBrowse_Fxxk();
+		}
+
+		/// <summary>
+		/// 你妹的必须返回void！
+		/// </summary>
 		/// <returns>返回一个bool值表示是否选取文件成功</returns>
-		private bool btnNBrowse_Click(object sender, RoutedEventArgs e)
+		private bool btnNBrowse_Fxxk()
 		{
 			OpenFileDialog ofd = new OpenFileDialog();
 			if (_settings.nginxPath != null && _settings.nginxPath != string.Empty)
@@ -245,7 +253,15 @@ namespace NginxStarterGUI
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
 		/// <returns>返回一个bool值表示是否选取文件成功</returns>
-		private bool btnNConfigBrowse_Click(object sender, RoutedEventArgs e)
+		public void btnNConfigBrowse_Click(object sender, RoutedEventArgs e)
+		{
+			this.btnNConfigBrowse_Fxxk();
+		}
+
+		/// 你妹的必须返回void！
+		/// </summary>
+		/// <returns>返回一个bool值表示是否选取文件成功</returns>
+		private bool btnNConfigBrowse_Fxxk()
 		{
 			OpenFileDialog ofd = new OpenFileDialog();
 			if (_settings.nginxConfigPath != null || _settings.nginxConfigPath != string.Empty)
@@ -269,22 +285,22 @@ namespace NginxStarterGUI
 			}
 		}
 
-		private void btnNReload_Click(object sender, RoutedEventArgs e)
+		public void btnNReload_Click(object sender, RoutedEventArgs e)
 		{
 			_nginx.reload();
 		}
 
-		private void btnNRestart_Click(object sender, RoutedEventArgs e)
+		public void btnNRestart_Click(object sender, RoutedEventArgs e)
 		{
 			_nginx.restart();
 		}
 
-		private void btnNQuit_Click(object sender, RoutedEventArgs e)
+		public void btnNQuit_Click(object sender, RoutedEventArgs e)
 		{
 			_nginx.quit();
 		}
 
-		private void btnNStop_Click(object sender, RoutedEventArgs e)
+		public void btnNStop_Click(object sender, RoutedEventArgs e)
 		{
 			_nginx.stop();
 		}
