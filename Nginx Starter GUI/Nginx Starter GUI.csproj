@@ -93,6 +93,11 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Settings.cs" />
+    <Compile Include="TargetProgramsInfo\CoffeeScript.cs" />
+    <Compile Include="TargetProgramsInfo\Less.cs" />
+    <Compile Include="TargetProgramsInfo\Nginx.cs" />
+    <Compile Include="TargetProgramsInfo\PhpCgi.cs" />
+    <Compile Include="TargetProgramsInfo\Sass.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
