@@ -334,7 +334,10 @@ namespace NginxStarterGUI
 
 		public void btnNStop_Click(object sender, RoutedEventArgs e)
 		{
-			_nginx.stop();
+			if (_nginx == null)
+				Nginx._stop();
+			else
+				_nginx.stop();
 			changeButtonsStatusAfterNginxStoped();
 		}
 

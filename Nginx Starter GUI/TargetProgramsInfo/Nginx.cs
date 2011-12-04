@@ -68,7 +68,7 @@ namespace NginxStarterGUI.TargetProgramsInfo
 		/// 停止Nginx
 		/// </summary>
 		/// <returns>返回一个bool值表示停止成功与否</returns>
-		public bool stop()
+		public bool quit()
 		{
 			try
 			{
@@ -83,22 +83,36 @@ namespace NginxStarterGUI.TargetProgramsInfo
 			}
 		}
 
-		/// <summary>
-		/// 强制关闭所有nginx进程，
-		/// </summary>
-		/// <returns>返回一个bool值，该值只表示执行代码期间是否遇到错误，并不代表是否成功</returns>
-		public bool quit()
+		public static bool _stop()
 		{
 			try
 			{
-				this.processStartInfo.Arguments = "-s quit";
-				Process.Start(this.processStartInfo);
 				Process[] nginxs = Process.GetProcessesByName("nginx.exe");
 				foreach (Process nginx in nginxs)
 				{
 					nginx.Kill();
 				}
 				return true;
+			}
+			catch
+			{
+				return false;
+			}
+		}
+		/// <summary>
+		/// 强制关闭所有nginx进程，
+		/// </summary>
+		/// <returns>返回一个bool值，该值只表示执行代码期间是否遇到错误，并不代表是否成功</returns>
+		public bool stop()
+		{
+			try
+			{
+				this.processStartInfo.Arguments = "-s quit";
+				Process.Start(this.processStartInfo);
+				if (!Nginx._stop())
+					throw new Exception();
+				else
+					return true;
 			}
 			catch
 			{
