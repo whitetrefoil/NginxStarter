@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Text;
 using System.Windows;
 using Microsoft.Win32;
@@ -10,8 +9,8 @@ namespace NginxStarterGUI.TargetProgramsInfo
 {
 	class Nginx
 	{
-		private ProcessStartInfo nginxInfo;
-		private Process nginxProcess;
+		private ProcessStartInfo processStartInfo;
+		private Process process;
 		public string exePath { private get; set; }
 		public string configPath { private get; set; }
 		public const string _ofdExeFilter = "Nginx默认执行文件|nginx.exe|所有执行文件|*.exe|所有文件|*.*";
@@ -45,17 +44,17 @@ namespace NginxStarterGUI.TargetProgramsInfo
 		/// <returns>返回一个bool值表示启动成功与否</returns>
 		public bool start()
 		{
-			this.nginxInfo = new ProcessStartInfo();
-			this.nginxInfo.Arguments = string.Empty;
+			this.processStartInfo = new ProcessStartInfo();
+			this.processStartInfo.Arguments = string.Empty;
 			if (this.configPath != string.Empty)
-				this.nginxInfo.Arguments += " -c " + this.configPath;
-			this.nginxInfo.FileName = this.exePath;
-			this.nginxInfo.WorkingDirectory = this.exePath.Substring(0, this.exePath.LastIndexOf('\\'));
-			this.nginxInfo.CreateNoWindow = true;
-			this.nginxInfo.UseShellExecute = false;
+				this.processStartInfo.Arguments += " -c " + this.configPath;
+			this.processStartInfo.FileName = this.exePath;
+			this.processStartInfo.WorkingDirectory = this.exePath.Substring(0, this.exePath.LastIndexOf('\\'));
+			this.processStartInfo.CreateNoWindow = true;
+			this.processStartInfo.UseShellExecute = false;
 			try
 			{
-				this.nginxProcess = Process.Start(this.nginxInfo);
+				this.process = Process.Start(this.processStartInfo);
 				return true;
 			}
 			catch
@@ -73,8 +72,8 @@ namespace NginxStarterGUI.TargetProgramsInfo
 		{
 			try
 			{
-				this.nginxInfo.Arguments = "-s stop";
-				Process.Start(this.nginxInfo);
+				this.processStartInfo.Arguments = "-s stop";
+				Process.Start(this.processStartInfo);
 				return true;
 			}
 			catch
@@ -92,8 +91,8 @@ namespace NginxStarterGUI.TargetProgramsInfo
 		{
 			try
 			{
-				this.nginxInfo.Arguments = "-s quit";
-				Process.Start(this.nginxInfo);
+				this.processStartInfo.Arguments = "-s quit";
+				Process.Start(this.processStartInfo);
 				Process[] nginxs = Process.GetProcessesByName("nginx.exe");
 				foreach (Process nginx in nginxs)
 				{
@@ -114,8 +113,8 @@ namespace NginxStarterGUI.TargetProgramsInfo
 		{
 			try
 			{
-				this.nginxInfo.Arguments = "-s reload";
-				Process.Start(this.nginxInfo);
+				this.processStartInfo.Arguments = "-s reload";
+				Process.Start(this.processStartInfo);
 			}
 			catch
 			{ }
@@ -128,8 +127,8 @@ namespace NginxStarterGUI.TargetProgramsInfo
 		{
 			try
 			{
-				this.nginxInfo.Arguments = "-s restart";
-				Process.Start(this.nginxInfo);
+				this.processStartInfo.Arguments = "-s restart";
+				Process.Start(this.processStartInfo);
 			}
 			catch
 			{ }
