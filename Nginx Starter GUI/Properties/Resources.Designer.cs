@@ -59,5 +59,12 @@ namespace NginxStarterGUI.Properties {
                 resourceCulture = value;
             }
         }
+        
+        internal static System.Drawing.Icon NginxStarter {
+            get {
+                object obj = ResourceManager.GetObject("NginxStarter", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
     }
 }
