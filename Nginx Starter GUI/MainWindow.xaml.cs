@@ -395,7 +395,7 @@ namespace NginxStarterGUI
 				_settings.phpUseIniFile = this.chkPUseIniFile.IsChecked;
 				return true;
 			}
-			catch (Exception e)
+			catch
 			{
 				MessageBox.Show("启动失败！");
 				return false;
