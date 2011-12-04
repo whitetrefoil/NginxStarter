@@ -2,6 +2,13 @@
 
 Changelog:
 
+0.0.2.2
+
+Fixed: 解决了在启动Nginx之前点“强制退出”按钮导致崩溃的问题。
+Dev Info: 纠正了Nginx.cs文件中quit()和stop()方法名混乱的问题，现在方法名、按钮名、nginx自身命令行中quit、stop的含义均对应了
+
+----------
+
 0.0.2.1
 
 Added: 加入了CoffeeScript、LESS、Sass的标签页，完成了CoffeeScript标签页的样式设计，但是均没有功能无法使用
