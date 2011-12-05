@@ -159,7 +159,7 @@
 									<ColumnDefinition/>
 									<ColumnDefinition/>
 								</Grid.ColumnDefinitions>
-								<Button Content="运行(_R)" Grid.Column="0" Width="80"/>
+								<Button x:Name="btnCStart" Content="运行(_R)" Grid.Column="0" Width="80" Click="btnCStart_Click" />
 								<Button Content="监听(_W)" Grid.Column="1" Width="80"/>
 								<Button Content="停止监听(_S)" Grid.Column="2" Width="80" IsEnabled="False"/>
 							</Grid>
@@ -175,9 +175,9 @@
 							<CheckBox Content="coffee全局安装" IsEnabled="False" Margin="4" VerticalAlignment="Top" Grid.Row="1"/>			
 						</Grid>
 					</Border>
-					<Canvas>
-						
-					</Canvas>
+					<Grid>
+						<TextBox x:Name="txtCMain" Margin="0"></TextBox>
+					</Grid>
     			</DockPanel>
     		</TabItem>
     		<TabItem Header="LESS">

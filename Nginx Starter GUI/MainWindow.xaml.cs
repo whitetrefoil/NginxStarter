@@ -33,6 +33,7 @@ namespace NginxStarterGUI
 		private static System.Diagnostics.Process _php;
 		private static NotifyIcon _notifyIcon;
 		private static Nginx _nginx;
+		private static CoffeeScript _coffeeScript;
 
 		public MainWindow()
 		{
@@ -505,5 +506,11 @@ namespace NginxStarterGUI
 			this.phpBrowse();
 		}
 
+		private void btnCStart_Click(object sender, RoutedEventArgs e)
+		{
+			_coffeeScript = new CoffeeScript();
+			_coffeeScript.testStart();
+			txtCMain.Text = _coffeeScript.message;
+		}
 	}
 }
