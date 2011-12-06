@@ -40,13 +40,13 @@ namespace NginxStarterGUI
 			_configFilePath = AppDomain.CurrentDomain.BaseDirectory + "Nginx Starter GUI.config.xml";
 			_settings = readConfigFile();
 			InitializeComponent();
-			this.txtNPath.Text = _settings.nginx.nginxPath;
-			this.txtNConfigPath.Text = _settings.nginx.nginxConfigPath;
-			this.txtPPath.Text = _settings.php.phpPath;
-            this.txtPConfigPath.Text = _settings.php.phpConfigPath;
-            this.txtPHost.Text = _settings.php.phpHost;
-            this.txtPPort.Text = _settings.php.phpPort.ToString();
-            this.chkPUseIniFile.IsChecked = _settings.php.phpUseIniFile;
+			this.txtNPath.Text = _settings.nginx.path;
+			this.txtNConfigPath.Text = _settings.nginx.configPath;
+			this.txtPPath.Text = _settings.php.path;
+            this.txtPConfigPath.Text = _settings.php.configPath;
+            this.txtPHost.Text = _settings.php.host;
+            this.txtPPort.Text = _settings.php.port.ToString();
+            this.chkPUseIniFile.IsChecked = _settings.php.useIniFile;
 		}
 
 		private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
@@ -204,8 +204,8 @@ namespace NginxStarterGUI
 			{
 				if (_nginx.start())
 				{
-					_settings.nginx.nginxPath = txtNPath.Text;
-					_settings.nginx.nginxConfigPath = txtNConfigPath.Text;
+					_settings.nginx.path = txtNPath.Text;
+					_settings.nginx.configPath = txtNConfigPath.Text;
 					this.changeButtonsStatusAfterNginxStarted();
 				}
 			}
@@ -258,9 +258,9 @@ namespace NginxStarterGUI
 		private bool btnNBrowse_Fxxk()
 		{
 			OpenFileDialog ofd = new OpenFileDialog();
-            if (_settings.nginx.nginxPath != null && _settings.nginx.nginxPath != string.Empty)
+            if (_settings.nginx.path != null && _settings.nginx.path != string.Empty)
 			{
-                ofd.InitialDirectory = _settings.nginx.nginxPath;
+                ofd.InitialDirectory = _settings.nginx.path;
 			}
 			else
 			{
@@ -296,9 +296,9 @@ namespace NginxStarterGUI
 		private bool btnNConfigBrowse_Fxxk()
 		{
 			OpenFileDialog ofd = new OpenFileDialog();
-            if (_settings.nginx.nginxConfigPath != null || _settings.nginx.nginxConfigPath != string.Empty)
+            if (_settings.nginx.configPath != null || _settings.nginx.configPath != string.Empty)
 			{
-                ofd.InitialDirectory = _settings.nginx.nginxConfigPath;
+                ofd.InitialDirectory = _settings.nginx.configPath;
 			}
 			else
 			{
@@ -383,17 +383,17 @@ namespace NginxStarterGUI
 			if (this.chkPUseIniFile.IsChecked != null && this.chkPUseIniFile.IsChecked == true)
 				_phpInfo.Arguments += " -n";
 			_phpInfo.FileName = this.txtPPath.Text;
-            _phpInfo.WorkingDirectory = this.txtPPath.Text.Substring(0, _settings.php.phpPath.LastIndexOf('\\'));
+            _phpInfo.WorkingDirectory = this.txtPPath.Text.Substring(0, _settings.php.path.LastIndexOf('\\'));
 			_phpInfo.CreateNoWindow = true;
 			_phpInfo.UseShellExecute = false;
 			try
 			{
 				_php = System.Diagnostics.Process.Start(_phpInfo);
-				_settings.php.phpPath = this.txtPPath.Text;
-                _settings.php.phpConfigPath = this.txtPConfigPath.Text;
-                _settings.php.phpHost = this.txtPHost.Text;
-                _settings.php.phpPort = port;
-                _settings.php.phpUseIniFile = this.chkPUseIniFile.IsChecked;
+				_settings.php.path = this.txtPPath.Text;
+                _settings.php.configPath = this.txtPConfigPath.Text;
+                _settings.php.host = this.txtPHost.Text;
+                _settings.php.port = port;
+                _settings.php.useIniFile = this.chkPUseIniFile.IsChecked;
 				return true;
 			}
 			catch
@@ -427,9 +427,9 @@ namespace NginxStarterGUI
 		public string phpBrowse()
 		{
 			OpenFileDialog ofd = new OpenFileDialog();
-            if (_settings.php.phpPath != null || _settings.php.phpPath != string.Empty)
+            if (_settings.php.path != null || _settings.php.path != string.Empty)
 			{
-                ofd.InitialDirectory = _settings.php.phpPath;
+                ofd.InitialDirectory = _settings.php.path;
 			}
 			else
 			{
@@ -451,9 +451,9 @@ namespace NginxStarterGUI
 		public string phpConfigBrowse()
 		{
 			OpenFileDialog ofd = new OpenFileDialog();
-            if (_settings.php.phpConfigPath != null || _settings.php.phpConfigPath != string.Empty)
+            if (_settings.php.configPath != null || _settings.php.configPath != string.Empty)
 			{
-                ofd.InitialDirectory = _settings.php.phpConfigPath;
+                ofd.InitialDirectory = _settings.php.configPath;
 			}
 			else
 			{
@@ -481,7 +481,7 @@ namespace NginxStarterGUI
 			}
 			else
 			{
-                _settings.php.phpPath = txtPPath.Text;
+                _settings.php.path = txtPPath.Text;
 				this.phpStart();
 			}
 		}
