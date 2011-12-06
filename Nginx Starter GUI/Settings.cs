@@ -23,8 +23,8 @@ namespace NginxStarterGUI.Settings
 
     public class Nginx
     {
-        public string path { get; set; }
-        public string configPath { get; set; }
+        public string path;
+        public string configPath;
 
         public Nginx()
         {
@@ -35,11 +35,11 @@ namespace NginxStarterGUI.Settings
 
     public class Php
     {
-        public string path { get; set; }
-        public string configPath { get; set; }
-        public bool? useIniFile { get; set; }
-        public int? port { get; set; }
-        public string host { get; set; }
+        public string path;
+        public string configPath;
+        public bool? useIniFile;
+        public int? port;
+        public string host;
 
         public Php()
         {
