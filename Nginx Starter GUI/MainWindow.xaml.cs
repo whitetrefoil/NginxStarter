@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -11,10 +13,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using System.Runtime.Serialization;
 using System.Xml.Linq;
 using System.Xml.Serialization;
-using System.IO;
 using Microsoft.Win32;
 using NginxStarterGUI.TargetProgramsInfo;
 
@@ -26,7 +26,7 @@ namespace NginxStarterGUI
 	/// </summary>
 	public partial class MainWindow : Window
 	{
-		private static Settings _settings;
+		private static Settings.Settings _settings;
 		private static bool _inGreenMode = false;
 		private static string _configFilePath;
 		private static System.Diagnostics.ProcessStartInfo _phpInfo;
@@ -40,13 +40,13 @@ namespace NginxStarterGUI
 			_configFilePath = AppDomain.CurrentDomain.BaseDirectory + "Nginx Starter GUI.config.xml";
 			_settings = readConfigFile();
 			InitializeComponent();
-			this.txtNPath.Text = _settings.nginxPath;
-			this.txtNConfigPath.Text = _settings.nginxConfigPath;
-			this.txtPPath.Text = _settings.phpPath;
-			this.txtPConfigPath.Text = _settings.phpConfigPath;
-			this.txtPHost.Text = _settings.phpHost;
-			this.txtPPort.Text = _settings.phpPort.ToString();
-			this.chkPUseIniFile.IsChecked = _settings.phpUseIniFile;
+			this.txtNPath.Text = _settings.nginx.nginxPath;
+			this.txtNConfigPath.Text = _settings.nginx.nginxConfigPath;
+			this.txtPPath.Text = _settings.php.phpPath;
+            this.txtPConfigPath.Text = _settings.php.phpConfigPath;
+            this.txtPHost.Text = _settings.php.phpHost;
+            this.txtPPort.Text = _settings.php.phpPort.ToString();
+            this.chkPUseIniFile.IsChecked = _settings.php.phpUseIniFile;
 		}
 
 		private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
@@ -54,7 +54,7 @@ namespace NginxStarterGUI
 			this.saveConfigFile();
 			if (_nginx != null)
 			{
-				_nginx.quit();
+				
 			}
 		}
 
@@ -63,15 +63,15 @@ namespace NginxStarterGUI
 		/// </summary>
 		/// <param name="configFilePath"></param>
 		/// <returns>返回程序设置类</returns>
-		private Settings readConfigFile(string configFilePath)
+		private Settings.Settings readConfigFile(string configFilePath)
 		{
 			FileStream fs = null;
 			try
 			{
 				using (fs = File.Open(configFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
 				{
-					XmlSerializer formatter = new XmlSerializer(typeof(Settings));
-					Settings settings = (Settings)formatter.Deserialize(fs);
+                    XmlSerializer formatter = new XmlSerializer(typeof(Settings.Settings));
+                    Settings.Settings settings = (Settings.Settings)formatter.Deserialize(fs);
 					fs.Close();
 					if (settings == null)
 						throw new InvalidOperationException("设置文件里什么内容也没有保存");
@@ -80,7 +80,7 @@ namespace NginxStarterGUI
 			}
 			catch (FileNotFoundException)
 			{
-				return new Settings();
+                return new Settings.Settings();
 			}
 			catch (InvalidOperationException e)
 			{
@@ -91,23 +91,23 @@ namespace NginxStarterGUI
 				if (mb == MessageBoxResult.Yes)
 				{
 					backupConfigFile(configFilePath);
-					return new Settings();
+                    return new Settings.Settings();
 				}
 				else
 				{
 					_inGreenMode = true;
-					return new Settings();
+                    return new Settings.Settings();
 				}
 			}
 			catch (FileLoadException)
 			{
 				MessageBox.Show("设置文件无法读取，请检查您的权限！程序将继续运行，但是不会保存设置！", "读取设置文件出错", MessageBoxButton.OK, MessageBoxImage.Error);
 				_inGreenMode = true;
-				return new Settings();
+                return new Settings.Settings();
 			}
 			catch
 			{
-				return new Settings();
+                return new Settings.Settings();
 			}
 			finally
 			{
@@ -120,7 +120,7 @@ namespace NginxStarterGUI
 		/// 从MainWindow类中设置的默认路径读取设置文件
 		/// </summary>
 		/// <returns>返回程序设置类</returns>
-		private Settings readConfigFile()
+        private Settings.Settings readConfigFile()
 		{
 			return this.readConfigFile(_configFilePath);
 		}
@@ -130,7 +130,7 @@ namespace NginxStarterGUI
 		/// </summary>
 		/// <param name="settings">程序设置</param>
 		/// <param name="configFilePath">设置文件路径</param>
-		private void saveConfigFile(Settings settings, string configFilePath)
+        private void saveConfigFile(Settings.Settings settings, string configFilePath)
 		{
 			if (_inGreenMode == true)
 				return;
@@ -138,7 +138,7 @@ namespace NginxStarterGUI
 			{
 				using (FileStream fs = File.Open(configFilePath, FileMode.OpenOrCreate, FileAccess.Write, FileShare.Read))
 				{
-					XmlSerializer formatter = new XmlSerializer(typeof(Settings));
+                    XmlSerializer formatter = new XmlSerializer(typeof(Settings.Settings));
 					formatter.Serialize(fs, settings);
 				}
 			}
@@ -152,7 +152,7 @@ namespace NginxStarterGUI
 		/// 将指定程序设置，保存到MainWindow类中的默认设置文件路径
 		/// </summary>
 		/// <param name="settings">程序设置</param>
-		private void saveConfigFile(Settings settings)
+        private void saveConfigFile(Settings.Settings settings)
 		{
 			this.saveConfigFile(settings, _configFilePath);
 		}
@@ -204,8 +204,8 @@ namespace NginxStarterGUI
 			{
 				if (_nginx.start())
 				{
-					_settings.nginxPath = txtNPath.Text;
-					_settings.nginxConfigPath = txtNConfigPath.Text;
+					_settings.nginx.nginxPath = txtNPath.Text;
+					_settings.nginx.nginxConfigPath = txtNConfigPath.Text;
 					this.changeButtonsStatusAfterNginxStarted();
 				}
 			}
@@ -258,9 +258,9 @@ namespace NginxStarterGUI
 		private bool btnNBrowse_Fxxk()
 		{
 			OpenFileDialog ofd = new OpenFileDialog();
-			if (_settings.nginxPath != null && _settings.nginxPath != string.Empty)
+            if (_settings.nginx.nginxPath != null && _settings.nginx.nginxPath != string.Empty)
 			{
-				ofd.InitialDirectory = _settings.nginxPath;
+                ofd.InitialDirectory = _settings.nginx.nginxPath;
 			}
 			else
 			{
@@ -296,9 +296,9 @@ namespace NginxStarterGUI
 		private bool btnNConfigBrowse_Fxxk()
 		{
 			OpenFileDialog ofd = new OpenFileDialog();
-			if (_settings.nginxConfigPath != null || _settings.nginxConfigPath != string.Empty)
+            if (_settings.nginx.nginxConfigPath != null || _settings.nginx.nginxConfigPath != string.Empty)
 			{
-				ofd.InitialDirectory = _settings.nginxConfigPath;
+                ofd.InitialDirectory = _settings.nginx.nginxConfigPath;
 			}
 			else
 			{
@@ -383,17 +383,17 @@ namespace NginxStarterGUI
 			if (this.chkPUseIniFile.IsChecked != null && this.chkPUseIniFile.IsChecked == true)
 				_phpInfo.Arguments += " -n";
 			_phpInfo.FileName = this.txtPPath.Text;
-			_phpInfo.WorkingDirectory = this.txtPPath.Text.Substring(0, _settings.phpPath.LastIndexOf('\\'));
+            _phpInfo.WorkingDirectory = this.txtPPath.Text.Substring(0, _settings.php.phpPath.LastIndexOf('\\'));
 			_phpInfo.CreateNoWindow = true;
 			_phpInfo.UseShellExecute = false;
 			try
 			{
 				_php = System.Diagnostics.Process.Start(_phpInfo);
-				_settings.phpPath = this.txtPPath.Text;
-				_settings.phpConfigPath = this.txtPConfigPath.Text;
-				_settings.phpHost = this.txtPHost.Text;
-				_settings.phpPort = port;
-				_settings.phpUseIniFile = this.chkPUseIniFile.IsChecked;
+				_settings.php.phpPath = this.txtPPath.Text;
+                _settings.php.phpConfigPath = this.txtPConfigPath.Text;
+                _settings.php.phpHost = this.txtPHost.Text;
+                _settings.php.phpPort = port;
+                _settings.php.phpUseIniFile = this.chkPUseIniFile.IsChecked;
 				return true;
 			}
 			catch
@@ -427,9 +427,9 @@ namespace NginxStarterGUI
 		public string phpBrowse()
 		{
 			OpenFileDialog ofd = new OpenFileDialog();
-			if (_settings.phpPath != null || _settings.phpPath != string.Empty)
+            if (_settings.php.phpPath != null || _settings.php.phpPath != string.Empty)
 			{
-				ofd.InitialDirectory = _settings.phpPath;
+                ofd.InitialDirectory = _settings.php.phpPath;
 			}
 			else
 			{
@@ -451,9 +451,9 @@ namespace NginxStarterGUI
 		public string phpConfigBrowse()
 		{
 			OpenFileDialog ofd = new OpenFileDialog();
-			if (_settings.phpConfigPath != null || _settings.phpConfigPath != string.Empty)
+            if (_settings.php.phpConfigPath != null || _settings.php.phpConfigPath != string.Empty)
 			{
-				ofd.InitialDirectory = _settings.phpConfigPath;
+                ofd.InitialDirectory = _settings.php.phpConfigPath;
 			}
 			else
 			{
@@ -481,7 +481,7 @@ namespace NginxStarterGUI
 			}
 			else
 			{
-				_settings.phpPath = txtPPath.Text;
+                _settings.php.phpPath = txtPPath.Text;
 				this.phpStart();
 			}
 		}
