@@ -50,4 +50,24 @@ namespace NginxStarterGUI.Settings
             host = string.Empty;
         }
     }
+
+    public class Coffee
+    {
+        public string nodePath;
+        public string coffeePath;
+        public string inputPath;
+        public string outputPath;
+        public bool isNodeInPath;
+        public bool isCoffeeGlobal;
+
+        public Coffee()
+        {
+            nodePath = string.Empty;
+            coffeePath = string.Empty;
+            inputPath = string.Empty;
+            outputPath = string.Empty;
+            isNodeInPath = false;
+            isCoffeeGlobal = false;
+        }
+    }
 }
