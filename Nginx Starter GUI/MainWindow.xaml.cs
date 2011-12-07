@@ -17,6 +17,7 @@ using System.Xml.Linq;
 using System.Xml.Serialization;
 using Microsoft.Win32;
 using NginxStarterGUI.TargetProgramsInfo;
+using NginxStarterGUI.Classes;
 
 namespace NginxStarterGUI
 {
