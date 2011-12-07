@@ -1,7 +1,10 @@
 ﻿<Window
 	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-	xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" x:Class="NginxStarterGUI.MainWindow"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	mc:Ignorable="d"
+	x:Class="NginxStarterGUI.MainWindow"
 	Title="Nginx Starter GUI" Height="480" Width="640"
 		Closing="Window_Closing" IsEnabled="True" StateChanged="Window_StateChanged" Icon="Images/NginxStarter.ico">
 	<Window.Resources>
