@@ -1,8 +1,8 @@
 ﻿<Window
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" x:Class="NginxStarterGUI.MainWindow"
-        Title="Nginx Starter GUI" Height="480" Width="640"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" x:Class="NginxStarterGUI.MainWindow"
+	Title="Nginx Starter GUI" Height="480" Width="640"
 		Closing="Window_Closing" IsEnabled="True" StateChanged="Window_StateChanged" Icon="Images/NginxStarter.ico">
 	<Window.Resources>
 		<LinearGradientBrush x:Key="brushSplitLineV" StartPoint="0.5,0" EndPoint="0.5,1">
@@ -17,25 +17,25 @@
 		</LinearGradientBrush>
 	</Window.Resources>
     <Grid>
-    	<TabControl>
-    		<TabItem Header="Nginx">
-    			<DockPanel>
+	<TabControl>
+		<TabItem Header="Nginx">
+			<DockPanel>
 					<Border DockPanel.Dock="Bottom" BorderThickness="0,1,0,0" BorderBrush="{StaticResource brushSplitLineH}">
 						<StackPanel>
-		    				<Grid Margin="0,2">
-		    					<Grid.RowDefinitions>
-		    						<RowDefinition/>
+						<Grid Margin="0,2">
+							<Grid.RowDefinitions>
+								<RowDefinition/>
 									<RowDefinition/>			
 								</Grid.RowDefinitions>
-		    					<Grid.ColumnDefinitions>
-		    						<ColumnDefinition Width="Auto"/>
-		    						<ColumnDefinition/>
-		    						<ColumnDefinition Width="Auto"/>
-		    					</Grid.ColumnDefinitions>
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="Auto"/>
+								<ColumnDefinition/>
+								<ColumnDefinition Width="Auto"/>
+							</Grid.ColumnDefinitions>
 								<Label Content="nginx.conf 位置："/>
 								<TextBox x:Name="txtNConfigPath" Grid.Column="1" Margin="2,4"/>
 								<Button x:Name="btnNConfigBrowse" Grid.Column="2" Margin="4" Click="btnNConfigBrowse_Click" Content="浏览...(_C)"/>
-		    					<Label Grid.Row="1" Content="nginx.exe 位置："/>
+							<Label Grid.Row="1" Content="nginx.exe 位置："/>
 								<TextBox x:Name="txtNPath" Grid.Row="1" Grid.Column="1" Margin="2,4" />
 								<Button x:Name="btnNBrowse" Grid.Row="1" Grid.Column="2" Content="浏览...(_B)" Width="70" Margin="4" Click="btnNBrowse_Click" />
 							</Grid>
@@ -59,11 +59,11 @@
 						<TextBlock.Text>这里暂时没有内容……</TextBlock.Text>
 					</TextBlock>
 				</DockPanel>
-    		</TabItem>
-    		<TabItem Header="PHP-CGI">
-    			<DockPanel IsEnabled="False">
-    				<StackPanel DockPanel.Dock="Bottom">
-    					<Border BorderThickness="0,1,0,0" BorderBrush="{StaticResource brushSplitLineH}">
+		</TabItem>
+		<TabItem Header="PHP-CGI">
+			<DockPanel IsEnabled="False">
+				<StackPanel DockPanel.Dock="Bottom">
+					<Border BorderThickness="0,1,0,0" BorderBrush="{StaticResource brushSplitLineH}">
 							<Grid Margin="0,2">
 								<Grid.RowDefinitions>
 									<RowDefinition/>
@@ -121,18 +121,18 @@
 						<TextBlock><Run Text="目前功能还没有实装，只是把界面弄好了……"/></TextBlock>
 					</Grid>
 				</DockPanel>
-    		</TabItem>
-    		<TabItem Header="CoffeeScript">
-    			<DockPanel>
+		</TabItem>
+		<TabItem Header="CoffeeScript">
+			<DockPanel>
 					<Border DockPanel.Dock="Bottom" BorderThickness="0,1,0,0" BorderBrush="{StaticResource brushSplitLineH}">
-	    				<StackPanel VerticalAlignment="Bottom">
-	    					<StackPanel Orientation="Horizontal">
+					<StackPanel VerticalAlignment="Bottom">
+						<StackPanel Orientation="Horizontal">
 							</StackPanel>
-    						<Grid Margin="0,2">
-    							<Grid.RowDefinitions>
-    								<RowDefinition/>
+						<Grid Margin="0,2">
+							<Grid.RowDefinitions>
+								<RowDefinition/>
 									<RowDefinition/>
-    								<RowDefinition/>
+								<RowDefinition/>
 									<RowDefinition/>
 								</Grid.RowDefinitions>			
 								<Grid.ColumnDefinitions>
@@ -142,13 +142,13 @@
 								</Grid.ColumnDefinitions>
 								<Label Content="node.exe 位置："/>
 								<TextBox x:Name="txtCNodePath" Grid.Column="1" Margin="2,4"/>
-                                <Button x:Name="btnCNodePathBrowse" Content="浏览..." Grid.Column="2" Width="70" Margin="4"/>
+				<Button x:Name="btnCNodePathBrowse" Content="浏览..." Grid.Column="2" Width="70" Margin="4"/>
 								<Label Content="coffee 位置：" Grid.Row="1"/>
 								<TextBox x:Name="txtCCoffeePath" Grid.Column="1" Grid.Row="1" Margin="2,4"/>
-                                <Button x:Name="btnCCoffeePathBrowse" Content="浏览..." Grid.Column="2" Grid.Row="1" Width="70" Margin="4"/>
+				<Button x:Name="btnCCoffeePathBrowse" Content="浏览..." Grid.Column="2" Grid.Row="1" Width="70" Margin="4"/>
 								<Label Content="输入位置/文件：" Grid.Row="2"/>
 								<TextBox x:Name="txtCInputPath" Grid.Column="1" Margin="2,4" Grid.Row="2"/>
-                                <Button x:Name="btnCInputPathBrowse" Content="浏览..." Grid.Column="2" Width="70" Margin="4" Grid.Row="2"/>
+				<Button x:Name="btnCInputPathBrowse" Content="浏览..." Grid.Column="2" Width="70" Margin="4" Grid.Row="2"/>
 								<Label Content="输出位置/文件：" Grid.Row="3"/>
 								<TextBox x:Name="txtCOutputPath" Grid.Column="1" Grid.Row="3" Margin="2,4"/>
 								<Button x:Name="txtCOutputPathBrowse" Content="浏览..." Grid.Column="2" Grid.Row="3" Width="70" Margin="4"/>
@@ -178,17 +178,90 @@
 					<Grid>
 						<TextBlock x:Name="txtCMain" Margin="0"></TextBlock>
 					</Grid>
-    			</DockPanel>
-    		</TabItem>
-    		<TabItem Header="LESS">
-    			<DockPanel/>
-    		</TabItem>
-    		<TabItem Header="SASS">
-    			<DockPanel></DockPanel>
+			</DockPanel>
+		</TabItem>
+		<TabItem Header="LESS">
+			<DockPanel/>
+		</TabItem>
+		<TabItem Header="SASS">
+				<DockPanel>
+					<Border DockPanel.Dock="Bottom" BorderThickness="0,1,0,0" BorderBrush="{StaticResource brushSplitLineH}">
+						<StackPanel VerticalAlignment="Bottom">
+							<StackPanel Orientation="Horizontal">
+							</StackPanel>
+							<Grid Margin="0,2">
+								<Grid.RowDefinitions>
+									<RowDefinition/>
+									<RowDefinition/>
+									<RowDefinition/>
+									<RowDefinition/>
+								</Grid.RowDefinitions>
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="Auto"/>
+									<ColumnDefinition/>
+									<ColumnDefinition Width="Auto"/>
+								</Grid.ColumnDefinitions>
+								<Label Content="ruby 位置："/>
+								<TextBox x:Name="txtSRubyPath" Grid.Column="1" Margin="2,4"/>
+								<Button x:Name="btnSNodePathBrowse" Content="浏览..." Grid.Column="2" Width="70" Margin="4"/>
+								<Label Content="sass 位置：" Grid.Row="1"/>
+								<TextBox x:Name="txtSSassPath" Grid.Column="1" Grid.Row="1" Margin="2,4"/>
+								<Button x:Name="btnSCoffeePathBrowse" Content="浏览..." Grid.Column="2" Grid.Row="1" Width="70" Margin="4"/>
+								<Label Content="输入位置/文件：" Grid.Row="2"/>
+								<TextBox x:Name="txtSInputPath" Grid.Column="1" Margin="2,4" Grid.Row="2"/>
+								<Button x:Name="btnSInputPathBrowse" Content="浏览..." Grid.Column="2" Width="70" Margin="4" Grid.Row="2"/>
+								<Label Content="输出位置/文件：" Grid.Row="3"/>
+								<TextBox x:Name="txtSOutputPath" Grid.Column="1" Grid.Row="3" Margin="2,4"/>
+								<Button x:Name="txtSOutputPathBrowse" Content="浏览..." Grid.Column="2" Grid.Row="3" Width="70" Margin="4"/>
+							</Grid>
+							<Grid Margin="0,2">
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition/>
+									<ColumnDefinition/>
+									<ColumnDefinition/>
+								</Grid.ColumnDefinitions>
+								<Button x:Name="btnSStart" Content="运行(_R)" Grid.Column="0" Width="80" Click="btnCStart_Click" />
+								<Button x:Name="btnSWatch" Content="监听(_W)" Grid.Column="1" Width="80"/>
+								<Button x:Name="btnSStop" Content="停止监听(_S)" Grid.Column="2" Width="80" IsEnabled="False"/>
+							</Grid>
+						</StackPanel>
+					</Border>
+					<Border DockPanel.Dock="Right" Width="150" BorderThickness="1,0,0,0" BorderBrush="{DynamicResource brushSplitLineV}">
+						<Grid VerticalAlignment="Center">
+							<Grid.RowDefinitions>
+								<RowDefinition/>
+								<RowDefinition/>
+								<RowDefinition/>
+								<RowDefinition/>
+								<RowDefinition/>
+							</Grid.RowDefinitions>
+							<CheckBox x:Name="chkSRubyIsInPath" Content="Ruby 已加入PATH" Margin="4" VerticalAlignment="Top"/>
+							<CheckBox x:Name="chkSUseLF" Content="使用Unix换行符LF" Margin="4" Grid.Row="1"/>
+							<CheckBox x:Name="chkSForce" Content="覆盖目标文件中的更改" Margin="4" Grid.Row="2"/>
+							<CheckBox x:Name="chkSNoCache" Content="不生成缓存" Margin="4" Grid.Row="3"/>
+							<Grid Grid.Row="4">
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="Auto"/>
+									<ColumnDefinition Width="1*"/>
+								</Grid.ColumnDefinitions>
+								<Label Content="风格："/>
+								<ComboBox x:Name="cbxSStyle" Grid.Column="1" SelectedIndex="0" Margin="4">
+									<ComboBoxItem Content="nested"/>
+									<ComboBoxItem Content="compact"/>
+									<ComboBoxItem Content="compressed"/>
+									<ComboBoxItem Content="expanded"/>
+								</ComboBox>
+							</Grid>
+						</Grid>
+					</Border>
+					<Grid>
+						<TextBlock x:Name="txtSMain" Margin="0"></TextBlock>
+					</Grid>
+				</DockPanel>
 			</TabItem>
-    		<TabItem Header="关于">
-    			<Grid/>
-    		</TabItem>
-    	</TabControl>
+		<TabItem Header="关于">
+			<Grid/>
+		</TabItem>
+	</TabControl>
     </Grid>
 </Window>
