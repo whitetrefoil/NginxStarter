@@ -129,6 +129,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Classes\FindInPath.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="TargetProgramsInfo\CoffeeScript.cs" />
     <Compile Include="TargetProgramsInfo\Less.cs" />
