@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Text;
 using System.Windows;
-using Microsoft.Win32;
 
 namespace NginxStarterGUI.TargetProgramsInfo
 {
