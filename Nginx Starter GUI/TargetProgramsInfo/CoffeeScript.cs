@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Text;
 using System.Windows;
 using Microsoft.Win32;
+using NginxStarterGUI.Classes;
 
 namespace NginxStarterGUI.TargetProgramsInfo
 {
@@ -42,9 +43,11 @@ namespace NginxStarterGUI.TargetProgramsInfo
 		{
 			try
 			{
+				if (this.isCoffeeGlobal)
+					this.coffeePath = FindInPath.Find("coffee");
 				this.processStartInfo = new ProcessStartInfo();
-				//if (this.isCoffeeGlobal)
-				//    this.processStartInfo.FileName = "coffee";
+				if (this.isCoffeeGlobal)
+				    this.processStartInfo.FileName = FindInPath.Find("coffee");
 				//else
 				//{
 				//    this.processStartInfo.FileName = this.nodeJsPath;
@@ -64,6 +67,16 @@ namespace NginxStarterGUI.TargetProgramsInfo
 			{
 				return false;
 			}
+		}
+
+		public bool watch()
+		{
+			return true;
+		}
+
+		public bool stop()
+		{
+			return true;
 		}
 	}
 }

@@ -4,6 +4,7 @@ using System.Windows;
 using System.Xml.Serialization;
 using Microsoft.Win32;
 using NginxStarterGUI.TargetProgramsInfo;
+using System.Windows.Data;
 
 namespace NginxStarterGUI
 {
@@ -30,10 +31,10 @@ namespace NginxStarterGUI
 			this.txtNPath.Text = _settings.nginx.path;
 			this.txtNConfigPath.Text = _settings.nginx.configPath;
 			this.txtPPath.Text = _settings.php.path;
-            this.txtPConfigPath.Text = _settings.php.configPath;
-            this.txtPHost.Text = _settings.php.host;
-            this.txtPPort.Text = _settings.php.port.ToString();
-            this.chkPUseIniFile.IsChecked = _settings.php.useIniFile;
+			this.txtPConfigPath.Text = _settings.php.configPath;
+			this.txtPHost.Text = _settings.php.host;
+			this.txtPPort.Text = _settings.php.port.ToString();
+			this.chkPUseIniFile.IsChecked = _settings.php.useIniFile;
 		}
 
 		private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
@@ -41,7 +42,7 @@ namespace NginxStarterGUI
 			this.saveConfigFile();
 			if (_nginx != null)
 			{
-				
+
 			}
 		}
 
@@ -57,8 +58,8 @@ namespace NginxStarterGUI
 			{
 				using (fs = File.Open(configFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
 				{
-                    XmlSerializer formatter = new XmlSerializer(typeof(Settings.Settings));
-                    Settings.Settings settings = (Settings.Settings)formatter.Deserialize(fs);
+					XmlSerializer formatter = new XmlSerializer(typeof(Settings.Settings));
+					Settings.Settings settings = (Settings.Settings)formatter.Deserialize(fs);
 					fs.Close();
 					if (settings == null)
 						throw new InvalidOperationException("设置文件里什么内容也没有保存");
@@ -67,7 +68,7 @@ namespace NginxStarterGUI
 			}
 			catch (FileNotFoundException)
 			{
-                return new Settings.Settings();
+				return new Settings.Settings();
 			}
 			catch (InvalidOperationException e)
 			{
@@ -78,23 +79,23 @@ namespace NginxStarterGUI
 				if (mb == MessageBoxResult.Yes)
 				{
 					backupConfigFile(configFilePath);
-                    return new Settings.Settings();
+					return new Settings.Settings();
 				}
 				else
 				{
 					_inGreenMode = true;
-                    return new Settings.Settings();
+					return new Settings.Settings();
 				}
 			}
 			catch (FileLoadException)
 			{
 				MessageBox.Show("设置文件无法读取，请检查您的权限！程序将继续运行，但是不会保存设置！", "读取设置文件出错", MessageBoxButton.OK, MessageBoxImage.Error);
 				_inGreenMode = true;
-                return new Settings.Settings();
+				return new Settings.Settings();
 			}
 			catch
 			{
-                return new Settings.Settings();
+				return new Settings.Settings();
 			}
 			finally
 			{
@@ -107,7 +108,7 @@ namespace NginxStarterGUI
 		/// 从MainWindow类中设置的默认路径读取设置文件
 		/// </summary>
 		/// <returns>返回程序设置类</returns>
-        private Settings.Settings readConfigFile()
+		private Settings.Settings readConfigFile()
 		{
 			return this.readConfigFile(_configFilePath);
 		}
@@ -117,7 +118,7 @@ namespace NginxStarterGUI
 		/// </summary>
 		/// <param name="settings">程序设置</param>
 		/// <param name="configFilePath">设置文件路径</param>
-        private void saveConfigFile(Settings.Settings settings, string configFilePath)
+		private void saveConfigFile(Settings.Settings settings, string configFilePath)
 		{
 			if (_inGreenMode == true)
 				return;
@@ -125,7 +126,7 @@ namespace NginxStarterGUI
 			{
 				using (FileStream fs = File.Open(configFilePath, FileMode.OpenOrCreate, FileAccess.Write, FileShare.Read))
 				{
-                    XmlSerializer formatter = new XmlSerializer(typeof(Settings.Settings));
+					XmlSerializer formatter = new XmlSerializer(typeof(Settings.Settings));
 					formatter.Serialize(fs, settings);
 				}
 			}
@@ -139,7 +140,7 @@ namespace NginxStarterGUI
 		/// 将指定程序设置，保存到MainWindow类中的默认设置文件路径
 		/// </summary>
 		/// <param name="settings">程序设置</param>
-        private void saveConfigFile(Settings.Settings settings)
+		private void saveConfigFile(Settings.Settings settings)
 		{
 			this.saveConfigFile(settings, _configFilePath);
 		}
@@ -245,9 +246,9 @@ namespace NginxStarterGUI
 		private bool btnNBrowse_Fxxk()
 		{
 			OpenFileDialog ofd = new OpenFileDialog();
-            if (_settings.nginx.path != null && _settings.nginx.path != string.Empty)
+			if (_settings.nginx.path != null && _settings.nginx.path != string.Empty)
 			{
-                ofd.InitialDirectory = _settings.nginx.path;
+				ofd.InitialDirectory = _settings.nginx.path;
 			}
 			else
 			{
@@ -277,15 +278,16 @@ namespace NginxStarterGUI
 			this.btnNConfigBrowse_Fxxk();
 		}
 
+		/// <summary>
 		/// 你妹的必须返回void！
 		/// </summary>
 		/// <returns>返回一个bool值表示是否选取文件成功</returns>
 		private bool btnNConfigBrowse_Fxxk()
 		{
 			OpenFileDialog ofd = new OpenFileDialog();
-            if (_settings.nginx.configPath != null || _settings.nginx.configPath != string.Empty)
+			if (_settings.nginx.configPath != null || _settings.nginx.configPath != string.Empty)
 			{
-                ofd.InitialDirectory = _settings.nginx.configPath;
+				ofd.InitialDirectory = _settings.nginx.configPath;
 			}
 			else
 			{
@@ -370,17 +372,17 @@ namespace NginxStarterGUI
 			if (this.chkPUseIniFile.IsChecked != null && this.chkPUseIniFile.IsChecked == true)
 				_phpInfo.Arguments += " -n";
 			_phpInfo.FileName = this.txtPPath.Text;
-            _phpInfo.WorkingDirectory = this.txtPPath.Text.Substring(0, _settings.php.path.LastIndexOf('\\'));
+			_phpInfo.WorkingDirectory = this.txtPPath.Text.Substring(0, _settings.php.path.LastIndexOf('\\'));
 			_phpInfo.CreateNoWindow = true;
 			_phpInfo.UseShellExecute = false;
 			try
 			{
 				_php = System.Diagnostics.Process.Start(_phpInfo);
 				_settings.php.path = this.txtPPath.Text;
-                _settings.php.configPath = this.txtPConfigPath.Text;
-                _settings.php.host = this.txtPHost.Text;
-                _settings.php.port = port;
-                _settings.php.useIniFile = this.chkPUseIniFile.IsChecked;
+				_settings.php.configPath = this.txtPConfigPath.Text;
+				_settings.php.host = this.txtPHost.Text;
+				_settings.php.port = port;
+				_settings.php.useIniFile = this.chkPUseIniFile.IsChecked;
 				return true;
 			}
 			catch
@@ -414,9 +416,9 @@ namespace NginxStarterGUI
 		public string phpBrowse()
 		{
 			OpenFileDialog ofd = new OpenFileDialog();
-            if (_settings.php.path != null || _settings.php.path != string.Empty)
+			if (_settings.php.path != null || _settings.php.path != string.Empty)
 			{
-                ofd.InitialDirectory = _settings.php.path;
+				ofd.InitialDirectory = _settings.php.path;
 			}
 			else
 			{
@@ -438,9 +440,9 @@ namespace NginxStarterGUI
 		public string phpConfigBrowse()
 		{
 			OpenFileDialog ofd = new OpenFileDialog();
-            if (_settings.php.configPath != null || _settings.php.configPath != string.Empty)
+			if (_settings.php.configPath != null || _settings.php.configPath != string.Empty)
 			{
-                ofd.InitialDirectory = _settings.php.configPath;
+				ofd.InitialDirectory = _settings.php.configPath;
 			}
 			else
 			{
@@ -468,7 +470,7 @@ namespace NginxStarterGUI
 			}
 			else
 			{
-                _settings.php.path = txtPPath.Text;
+				_settings.php.path = txtPPath.Text;
 				this.phpStart();
 			}
 		}
@@ -493,11 +495,83 @@ namespace NginxStarterGUI
 			this.phpBrowse();
 		}
 
+		private void btnCNodePathBrowse_Click(object sender, RoutedEventArgs e)
+		{
+			this.btnCNodePathBrowse_Fxxk();
+		}
+
+		private bool btnCNodePathBrowse_Fxxk()
+		{
+			OpenFileDialog ofd = new OpenFileDialog();
+			if (_settings.coffee.nodePath != null && _settings.coffee.nodePath != string.Empty)
+			{
+				ofd.InitialDirectory = _settings.coffee.nodePath;
+			}
+			else
+			{
+				ofd.InitialDirectory = System.IO.Directory.GetCurrentDirectory();
+			}
+			ofd.Filter = CoffeeScript._ofdNodeJsFilter;
+			ofd.Title = CoffeeScript._ofdNodeJsTitle;
+			if (ofd.ShowDialog() == true)
+			{
+				txtCNodePath.Text = ofd.FileName;
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+
+		private void btnCCoffeePathBrowse_Click(object sender, RoutedEventArgs e)
+		{
+
+		}
+
+		private void btnCInputPathBrowse_Click(object sender, RoutedEventArgs e)
+		{
+
+		}
+
+		private void txtCOutputPathBrowse_Click(object sender, RoutedEventArgs e)
+		{
+
+		}
+
 		private void btnCStart_Click(object sender, RoutedEventArgs e)
 		{
 			_coffeeScript = new CoffeeScript();
 			_coffeeScript.testStart();
 			txtCMain.Text = _coffeeScript.message;
+		}
+
+		private void btnCWatch_Click(object sender, RoutedEventArgs e)
+		{
+
+		}
+
+		private void btnCStop_Click(object sender, RoutedEventArgs e)
+		{
+
+		}
+
+		private void coffeeStartedWatch()
+		{
+			divCAddOptions.IsEnabled = false;
+			divCPaths.IsEnabled = false;
+			btnCStart.IsEnabled = false;
+			btnCWatch.IsEnabled = false;
+			btnCStop.IsEnabled = true;
+		}
+
+		private void coffeeStopedWatch()
+		{
+			divCAddOptions.IsEnabled = true;
+			divCPaths.IsEnabled = true;
+			btnCStart.IsEnabled = true;
+			btnCWatch.IsEnabled = true;
+			btnCStop.IsEnabled = false;
 		}
 	}
 }

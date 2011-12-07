@@ -11,65 +11,65 @@ namespace NginxStarterGUI.Settings
 	[Serializable]
 	public class Settings
 	{
-        public Nginx nginx;
-        public Php php;
-        public Coffee coffee;
+		public Nginx nginx;
+		public Php php;
+		public Coffee coffee;
 
 		public Settings()
 		{
-            nginx = new Nginx();
-            php = new Php();
-            coffee = new Coffee();
+			nginx = new Nginx();
+			php = new Php();
+			coffee = new Coffee();
 		}
 	}
 
-    public class Nginx
-    {
-        public string path;
-        public string configPath;
+	public class Nginx
+	{
+		public string path;
+		public string configPath;
 
-        public Nginx()
-        {
-            path = string.Empty;
-            configPath = string.Empty;
-        }
-    }
+		public Nginx()
+		{
+			path = string.Empty;
+			configPath = string.Empty;
+		}
+	}
 
-    public class Php
-    {
-        public string path;
-        public string configPath;
-        public bool? useIniFile;
-        public int? port;
-        public string host;
+	public class Php
+	{
+		public string path;
+		public string configPath;
+		public bool? useIniFile;
+		public int? port;
+		public string host;
 
-        public Php()
-        {
-            path = string.Empty;
-            configPath = string.Empty;
-            useIniFile = false;
-            port = null;
-            host = string.Empty;
-        }
-    }
+		public Php()
+		{
+			path = string.Empty;
+			configPath = string.Empty;
+			useIniFile = false;
+			port = null;
+			host = string.Empty;
+		}
+	}
 
-    public class Coffee
-    {
-        public string nodePath;
-        public string coffeePath;
-        public string inputPath;
-        public string outputPath;
-        public bool isNodeInPath;
-        public bool isCoffeeGlobal;
+	public class Coffee
+	{
+		public string nodePath;
+		public string coffeePath;
+		public string inputPath;
+		public string outputPath;
+		public bool isNodeInPath;
+		public bool isCoffeeGlobal;
 
-        public Coffee()
-        {
-            nodePath = string.Empty;
-            coffeePath = string.Empty;
-            inputPath = string.Empty;
-            outputPath = string.Empty;
-            isNodeInPath = false;
-            isCoffeeGlobal = false;
-        }
-    }
+		public Coffee()
+		{
+			nodePath = string.Empty;
+			coffeePath = string.Empty;
+			inputPath = string.Empty;
+			outputPath = string.Empty;
+			isNodeInPath = false;
+			isCoffeeGlobal = false;
+		}
+	}
 }
