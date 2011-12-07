@@ -13,11 +13,13 @@ namespace NginxStarterGUI.Settings
 	{
         public Nginx nginx;
         public Php php;
+        public Coffee coffee;
 
 		public Settings()
 		{
             nginx = new Nginx();
             php = new Php();
+            coffee = new Coffee();
 		}
 	}
 
