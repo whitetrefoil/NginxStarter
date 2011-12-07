@@ -13,7 +13,7 @@ namespace NginxStarterGUI.Classes
 			new List<string>(System.Environment.GetEnvironmentVariable("Pathext").Split(Path.PathSeparator)) :
 			new List<string> {".exe", ".cmd", ".bat"};
 
-		public static string Find(string targetName, bool isIncludeNoExt)
+		public static string Find(string targetName, bool isIncludeNoExt = false)
 		{
 			string targetPath = string.Empty;
 
@@ -33,11 +33,6 @@ namespace NginxStarterGUI.Classes
 			}
 
 			return targetPath;
-		}
-
-		public static string Find(string targetName)
-		{
-			return Find(targetName, false);
 		}
 
 		private static string find(string targetName)
