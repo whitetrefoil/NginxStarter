@@ -27,6 +27,7 @@ namespace NginxStarterGUI
 		{
 			_configFilePath = AppDomain.CurrentDomain.BaseDirectory + "Nginx Starter GUI.config.xml";
 			_settings = readConfigFile();
+			_coffeeScript = new CoffeeScript();
 			InitializeComponent();
 			this.txtNPath.Text = _settings.nginx.path;
 			this.txtNConfigPath.Text = _settings.nginx.configPath;
@@ -42,7 +43,7 @@ namespace NginxStarterGUI
 			this.saveConfigFile();
 			if (_nginx != null)
 			{
-
+				
 			}
 		}
 
@@ -548,12 +549,14 @@ namespace NginxStarterGUI
 
 		private void btnCWatch_Click(object sender, RoutedEventArgs e)
 		{
-
+			if (_coffeeScript.watch())
+				this.coffeeStartedWatch();
 		}
 
 		private void btnCStop_Click(object sender, RoutedEventArgs e)
 		{
-
+			if (_coffeeScript.stop())
+				this.coffeeStopedWatch();
 		}
 
 		private void coffeeStartedWatch()
