@@ -176,7 +176,7 @@
 						</Grid>
 					</Border>
 					<Grid>
-						<TextBox x:Name="txtCMain" Margin="0"></TextBox>
+						<TextBlock x:Name="txtCMain" Margin="0"></TextBlock>
 					</Grid>
     			</DockPanel>
     		</TabItem>
