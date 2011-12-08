@@ -11,18 +11,24 @@ namespace NginxStarterGUI.Classes
 		public static string SystemPathExt = System.Environment.GetEnvironmentVariable("Pathext");
 		public static List<string> SystemPathExts = SystemPathExt != string.Empty ?
 			new List<string>(System.Environment.GetEnvironmentVariable("Pathext").Split(Path.PathSeparator)) :
-			new List<string> {".exe", ".cmd", ".bat"};
+			new List<string> { ".exe", ".cmd", ".bat" };
 
-		public static string Find(string targetName, bool isIncludeNoExt = false)
+		public static string Find(string targetName, bool isNeedToTestExt = true, bool isIncludeNoExt = false)
 		{
 			string targetPath = string.Empty;
+			List<string> systemPathExts = SystemPathExts;
 
-			if (isIncludeNoExt)
+			if (!isNeedToTestExt)
 			{
-				SystemPathExts.Insert(0, string.Empty);
+				systemPathExts.Clear();
+				systemPathExts.Add(string.Empty);
+			}
+			else if (isIncludeNoExt)
+			{
+				systemPathExts.Insert(0, string.Empty);
 			}
 
-			foreach (string pathExt in SystemPathExts)
+			foreach (string pathExt in systemPathExts)
 			{
 				string result = find(targetName + pathExt);
 				if (result != string.Empty)
