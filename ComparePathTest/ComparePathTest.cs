@@ -16,6 +16,9 @@ namespace ComparePathTest
 
 
 		private TestContext testContextInstance;
+		private string pathA;
+		private string pathB;
+		private char separator;
 
 		/// <summary>
 		///获取或设置测试上下文，上下文提供
@@ -63,6 +66,13 @@ namespace ComparePathTest
 		//
 		#endregion
 
+		[TestInitialize()]
+		public void MyTestInitialize()
+		{
+			pathA = "C:/temp1/temp2/temp3/temp4.exe"; // TODO: 初始化为适当的值
+			pathB = "C:\\temp1\\temp2\\temz\\"; // TODO: 初始化为适当的值
+			separator = '/'; // TODO: 初始化为适当的值
+		}
 
 		/// <summary>
 		///Compare 的测试
@@ -71,16 +81,35 @@ namespace ComparePathTest
 		[DeploymentItem("Nginx Starter GUI.exe")]
 		public void CompareTest()
 		{
-			string pathA = "C:/temp1/temp2/temp3/temp4.exe"; // TODO: 初始化为适当的值
-			string pathB = "C:\\temp1\\temp2\\temz\\"; // TODO: 初始化为适当的值
-			char separator = '/'; // TODO: 初始化为适当的值
 			string expected = "C:/temp1/temp2"; // TODO: 初始化为适当的值
 			string actual;
 			actual = ComparePath_Accessor.Compare(pathA, pathB, separator);
-			Assert.AreEqual(expected, actual);
+			Assert.AreEqual<string>(expected, actual);
 			expected = "C:\\temp1\\temp2";
 			actual = ComparePath_Accessor.Compare(pathA, pathB);
-			Assert.AreEqual(expected, actual);
+			Assert.AreEqual<string>(expected, actual);
+		}
+
+		[TestMethod()]
+		public void CompareTest2()
+		{
+			string expectedA = "temp3/temp4.exe";
+			string expectedB = "temz/";
+			string header = ComparePath_Accessor.Compare(pathA, pathB, separator);
+			int headerLength = header.Length + 1;
+			pathA = pathA.Substring(headerLength);
+			pathB = pathB.Substring(headerLength);
+			Assert.AreEqual<string>(expectedA, pathA);
+			Assert.AreEqual<string>(expectedB, pathB);
+		}
+
+		[TestMethod()]
+		public void CompareTest3()
+		{
+			pathB = string.Empty;
+			string expected = string.Empty;
+			string header = ComparePath_Accessor.Compare(pathA, pathB, separator);
+			Assert.AreEqual<string>(expected, header);
 		}
 	}
 }

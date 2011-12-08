@@ -83,8 +83,11 @@ namespace NginxStarterGUI.TargetProgramsInfo
             }
 
 			// Merge paths
-			this.inputPath.CompareTo(this.outputPath);
-
+			info.WorkingDirectory = ComparePath.Compare(inputPath, outputPath, '/');
+			int headerIndex = info.WorkingDirectory.Length + 1;
+			inputPath = inputPath.Substring(headerIndex);
+			outputPath = outputPath.Substring(headerIndex);
+			//inputPath.
             // Set arguments
             if (this.isBare)
                 info.Arguments += " --bare";
@@ -138,8 +141,7 @@ namespace NginxStarterGUI.TargetProgramsInfo
 
         public bool stop()
         {
-			process.StandardInput.WriteLine("^CY");
-            return true;
+			return true;
         }
 
         private void OnPropertyChanged(string info)

@@ -15,7 +15,7 @@ namespace NginxStarterGUI.Classes
 			int minLength = Math.Min(pathA.Length, pathB.Length);
 
 			string output = string.Empty;
-			
+
 			for (int i = 0; i < minLength; i++)
 			{
 				if (pathA.ToLower()[i] == pathB.ToLower()[i])
@@ -25,7 +25,10 @@ namespace NginxStarterGUI.Classes
 			}
 
 			int lastSeparatorIndex = output.LastIndexOf(separator);
-			output = output.Remove(lastSeparatorIndex);
+			if (lastSeparatorIndex > 0)
+				output = output.Remove(lastSeparatorIndex);
+			else
+				output = string.Empty;
 
 			return output;
 		}
