@@ -558,7 +558,6 @@ namespace NginxStarterGUI
 			if (coffeeScript == null)
 				coffeeScript = new CoffeeScript();
 			setCoffee();
-			txtCMain.Text += "Started!\n";
 			Binding coffeeMainBinding = new Binding("Message");
 			coffeeMainBinding.Source = coffeeScript;
 			txtCMain.SetBinding(TextBlock.TextProperty, coffeeMainBinding);
@@ -570,7 +569,10 @@ namespace NginxStarterGUI
 			if (coffeeScript == null)
 				coffeeScript = new CoffeeScript();
 			setCoffee(true);
-			coffeeScript.isWatch = true;
+			Binding coffeeMainBinding = new Binding("Message");
+			coffeeMainBinding.Source = coffeeScript;
+			txtCMain.SetBinding(TextBlock.TextProperty, coffeeMainBinding);
+			coffeeScript.start();
 		}
 
 		private void btnCStop_Click(object sender, RoutedEventArgs e)

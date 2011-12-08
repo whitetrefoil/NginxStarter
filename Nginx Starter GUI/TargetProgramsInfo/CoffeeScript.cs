@@ -82,12 +82,14 @@ namespace NginxStarterGUI.TargetProgramsInfo
                 info.Arguments += this.coffeePath;
             }
             // Set arguments
-            info.Arguments += " --output " + this.outputPath;
             if (this.isBare)
                 info.Arguments += " --bare";
             if (this.isWatch)
                 info.Arguments += " --watch";
-            info.Arguments += " --compile " + this.inputPath;
+			info.Arguments += " --compile ";
+			if(this.outputPath != string.Empty)
+				info.Arguments += " --output " + this.outputPath;
+			info.Arguments += this.inputPath;
 
             // Set process properties
             info.UseShellExecute = false;
@@ -99,6 +101,10 @@ namespace NginxStarterGUI.TargetProgramsInfo
             {
                 Message += e.Data + "\n";
             };
+			process.ErrorDataReceived += (sender, e) =>
+			{
+				Message += e.Data + "\n";
+			};
 
             processWorker = new BackgroundWorker();
             processWorker.WorkerSupportsCancellation = true;
@@ -109,6 +115,7 @@ namespace NginxStarterGUI.TargetProgramsInfo
                     BackgroundWorker bw = sender as BackgroundWorker;
                     process.Start();
                     process.BeginOutputReadLine();
+					process.BeginErrorReadLine();
                     process.WaitForExit();
                 };
             processWorker.RunWorkerCompleted += (sender, e) =>
