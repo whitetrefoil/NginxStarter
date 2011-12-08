@@ -22,6 +22,7 @@ namespace NginxStarterGUI
 		private static NotifyIcon _notifyIcon;
 		private static Nginx _nginx;
 		private static CoffeeScript _coffeeScript;
+		private Sass sass;
 
 		public MainWindow()
 		{
@@ -36,6 +37,12 @@ namespace NginxStarterGUI
 			this.txtPHost.Text = _settings.php.host;
 			this.txtPPort.Text = _settings.php.port.ToString();
 			this.chkPUseIniFile.IsChecked = _settings.php.useIniFile;
+
+			sass = new Sass();
+
+			Binding test = new Binding("Message");
+			test.Source = sass;
+			txtSMain.SetBinding(TextBlock.TextProperty, test);
 		}
 
 		private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
@@ -43,7 +50,7 @@ namespace NginxStarterGUI
 			this.saveConfigFile();
 			if (_nginx != null)
 			{
-				
+				_nginx.quit();
 			}
 		}
 
