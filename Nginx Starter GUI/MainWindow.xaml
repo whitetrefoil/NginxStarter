@@ -36,10 +36,10 @@
 									<ColumnDefinition Width="Auto"/>
 								</Grid.ColumnDefinitions>
 								<Label Content="nginx.conf 位置："/>
-								<TextBox x:Name="txtNConfigPath" Grid.Column="1" Margin="2,4"/>
+								<TextBox x:Name="txtNConfigPath" Grid.Column="1" Margin="2,4" Text="{Binding nginx.configPath}"/>
 								<Button x:Name="btnNConfigBrowse" Grid.Column="2" Margin="4" Click="btnNConfigBrowse_Click" Content="浏览...(_C)"/>
 								<Label Grid.Row="1" Content="nginx.exe 位置："/>
-								<TextBox x:Name="txtNPath" Grid.Row="1" Grid.Column="1" Margin="2,4" />
+								<TextBox x:Name="txtNPath" Grid.Row="1" Grid.Column="1" Margin="2,4" Text="{Binding nginx.path}"/>
 								<Button x:Name="btnNBrowse" Grid.Row="1" Grid.Column="2" Content="浏览...(_B)" Width="70" Margin="4" Click="btnNBrowse_Click" />
 							</Grid>
 							<Grid Margin="0,2">
@@ -78,10 +78,10 @@
 									<ColumnDefinition Width="Auto"/>
 								</Grid.ColumnDefinitions>
 								<Label Content="PHP.ini 位置："/>
-								<TextBox x:Name="txtPConfigPath" Grid.Column="1" Margin="2,4"/>
+								<TextBox x:Name="txtPConfigPath" Grid.Column="1" Margin="2,4" Text="{Binding nginx.configPath}"/>
 								<Button x:Name="btnPConfigBrowse" Grid.Column="2" Width="70" Margin="4" Click="btnPConfigBrowse_Click" Content="浏览...(_C)"/>
 								<Label Grid.Row="1" Content="PHP-CGI.exe 位置："/>
-								<TextBox x:Name="txtPPath" Grid.Row="1" Grid.Column="1" Margin="2,4"/>
+								<TextBox x:Name="txtPPath" Grid.Row="1" Grid.Column="1" Margin="2,4" Text="{Binding nginx.path}"/>
 								<Button x:Name="btnPBrowse" Grid.Row="1" Grid.Column="2" Width="70" Margin="4" Click="btnPBrowse_Click" Content="浏览...(_B)"/>
 							</Grid>
 						</Border>
@@ -144,16 +144,16 @@
 									<ColumnDefinition Width="Auto"/>
 								</Grid.ColumnDefinitions>
 								<Label Content="node.exe 位置："/>
-								<TextBox x:Name="txtCNodePath" Grid.Column="1" Margin="2,4" IsEnabled="{Binding ElementName=chkCNodeInPath, Path=IsChecked, Converter={StaticResource ResourceKey=notConverter}}"/>
+								<TextBox x:Name="txtCNodePath" Grid.Column="1" Margin="2,4" IsEnabled="{Binding ElementName=chkCNodeInPath, Path=IsChecked, Converter={StaticResource ResourceKey=notConverter}}" Text="{Binding coffee.nodePath}"/>
 								<Button x:Name="btnCNodePathBrowse" Content="浏览..." Grid.Column="2" Width="70" Margin="4" Click="btnCNodePathBrowse_Click" IsEnabled="{Binding ElementName=chkCNodeInPath, Path=IsChecked, Converter={StaticResource ResourceKey=notConverter}}"/>
 								<Label Content="coffee 位置：" Grid.Row="1"/>
-								<TextBox x:Name="txtCCoffeePath" Grid.Column="1" Grid.Row="1" Margin="2,4" IsEnabled="{Binding ElementName=chkCCoffeeInGlobal, Path=IsChecked, Converter={StaticResource ResourceKey=notConverter}}"/>
+								<TextBox x:Name="txtCCoffeePath" Grid.Column="1" Grid.Row="1" Margin="2,4" IsEnabled="{Binding ElementName=chkCCoffeeInGlobal, Path=IsChecked, Converter={StaticResource ResourceKey=notConverter}}" Text="{Binding coffee.coffeePath}"/>
 								<Button x:Name="btnCCoffeePathBrowse" Content="浏览..." Grid.Column="2" Grid.Row="1" Width="70" Margin="4" Click="btnCCoffeePathBrowse_Click" IsEnabled="{Binding ElementName=chkCCoffeeInGlobal, Path=IsChecked, Converter={StaticResource ResourceKey=notConverter}}"/>
 								<Label Content="输入位置/文件：" Grid.Row="2"/>
-								<TextBox x:Name="txtCInputPath" Grid.Column="1" Margin="2,4" Grid.Row="2"/>
+								<TextBox x:Name="txtCInputPath" Grid.Column="1" Margin="2,4" Grid.Row="2" Text="{Binding coffee.inputPath}"/>
 								<Button x:Name="btnCInputPathBrowse" Content="浏览..." Grid.Column="2" Width="70" Margin="4" Grid.Row="2" Click="btnCInputPathBrowse_Click" />
 								<Label Content="输出位置/文件：" Grid.Row="3"/>
-								<TextBox x:Name="txtCOutputPath" Grid.Column="1" Grid.Row="3" Margin="2,4"/>
+								<TextBox x:Name="txtCOutputPath" Grid.Column="1" Grid.Row="3" Margin="2,4" Text="{Binding coffee.outputPath, BindsDirectlyToSource=True, IsAsync=True, Mode=TwoWay}"/>
 								<Button x:Name="txtCOutputPathBrowse" Content="浏览..." Grid.Column="2" Grid.Row="3" Width="70" Margin="4" Click="txtCOutputPathBrowse_Click" />
 							</Grid>
 							<Grid x:Name="divCButtons" Margin="0,2">
@@ -175,9 +175,9 @@
 								<RowDefinition/>
 								<RowDefinition/>
 							</Grid.RowDefinitions>
-							<CheckBox x:Name="chkCNodeInPath" Content="node.exe已加入PATH" Margin="4" Unchecked="chkCNodeInPath_Unchecked" />
-							<CheckBox x:Name="chkCCoffeeInGlobal" Content="coffee全局安装" Margin="4" Grid.Row="1" IsEnabled="{Binding ElementName=chkCNodeInPath, Path=IsChecked}"/>
-							<CheckBox x:Name="chkCBare" Content="将代码包含在顶级函数中" Margin="4" Grid.Row="2"/>
+							<CheckBox x:Name="chkCNodeInPath" Content="node.exe已加入PATH" Margin="4" Unchecked="chkCNodeInPath_Unchecked" IsChecked="{Binding coffee.isNodeInPath}"/>
+							<CheckBox x:Name="chkCCoffeeInGlobal" Content="coffee全局安装" Margin="4" Grid.Row="1" IsEnabled="{Binding ElementName=chkCNodeInPath, Path=IsChecked}" IsChecked="{Binding coffee.isCoffeeGlobal}"/>
+							<CheckBox x:Name="chkCBare" Content="将代码包含在顶级函数中" Margin="4" Grid.Row="2" IsChecked="{Binding coffee.isBare}"/>
 						</Grid>
 					</Border>
 					<Grid>

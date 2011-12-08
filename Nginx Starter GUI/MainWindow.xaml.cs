@@ -21,31 +21,24 @@ namespace NginxStarterGUI
 		private static System.Diagnostics.ProcessStartInfo _phpInfo;
 		private static System.Diagnostics.Process _php;
 		private static NotifyIcon _notifyIcon;
-		private static Nginx _nginx;
+		private Nginx nginx;
 		private CoffeeScript coffeeScript;
 		private Sass sass;
 
 		public MainWindow()
 		{
+			InitializeComponent();
 			_configFilePath = AppDomain.CurrentDomain.BaseDirectory + "Nginx Starter GUI.config.xml";
 			_settings = readConfigFile();
-			coffeeScript = new CoffeeScript();
-			InitializeComponent();
-			this.txtNPath.Text = _settings.nginx.path;
-			this.txtNConfigPath.Text = _settings.nginx.configPath;
-			this.txtPPath.Text = _settings.php.path;
-			this.txtPConfigPath.Text = _settings.php.configPath;
-			this.txtPHost.Text = _settings.php.host;
-			this.txtPPort.Text = _settings.php.port.ToString();
-			this.chkPUseIniFile.IsChecked = _settings.php.useIniFile;
+			this.DataContext = _settings;
 		}
 
 		private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
 		{
 			this.saveConfigFile();
-			if (_nginx != null)
+			if (nginx != null)
 			{
-				_nginx.quit();
+				nginx.quit();
 			}
 		}
 
@@ -184,7 +177,7 @@ namespace NginxStarterGUI
 		/// <param name="e"></param>
 		public void btnNStart_Click(object sender, RoutedEventArgs e)
 		{
-			_nginx = new Nginx(txtNPath.Text, txtNConfigPath.Text);
+			nginx = new Nginx(txtNPath.Text, txtNConfigPath.Text);
 
 			if (txtNPath.Text == String.Empty)
 			{
@@ -193,7 +186,7 @@ namespace NginxStarterGUI
 			}
 			else
 			{
-				if (_nginx.start())
+				if (nginx.start())
 				{
 					_settings.nginx.path = txtNPath.Text;
 					_settings.nginx.configPath = txtNConfigPath.Text;
@@ -259,9 +252,12 @@ namespace NginxStarterGUI
 			}
 			ofd.Filter = Nginx._ofdExeFilter;
 			ofd.Title = Nginx._ofdExeTitle;
+			ofd.FileName = Nginx._ofdExeFileName;
 			if (ofd.ShowDialog() == true)
 			{
+				txtNPath.Focus();
 				txtNPath.Text = ofd.FileName;
+				btnNBrowse.Focus();
 				return true;
 			}
 			else
@@ -311,26 +307,26 @@ namespace NginxStarterGUI
 
 		public void btnNReload_Click(object sender, RoutedEventArgs e)
 		{
-			_nginx.reload();
+			nginx.reload();
 		}
 
 		public void btnNRestart_Click(object sender, RoutedEventArgs e)
 		{
-			_nginx.restart();
+			nginx.restart();
 		}
 
 		public void btnNQuit_Click(object sender, RoutedEventArgs e)
 		{
-			_nginx.quit();
+			nginx.quit();
 			changeButtonsStatusAfterNginxStoped();
 		}
 
 		public void btnNStop_Click(object sender, RoutedEventArgs e)
 		{
-			if (_nginx == null)
+			if (nginx == null)
 				Nginx._stop();
 			else
-				_nginx.stop();
+				nginx.stop();
 			changeButtonsStatusAfterNginxStoped();
 		}
 

@@ -131,6 +131,7 @@
     </ApplicationDefinition>
     <Compile Include="Classes\FindInPath.cs" />
     <Compile Include="Converters\NotConverter.cs" />
+    <Compile Include="Converters\CheckboxConverter.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="TargetProgramsInfo\CoffeeScript.cs" />
     <Compile Include="TargetProgramsInfo\Less.cs" />

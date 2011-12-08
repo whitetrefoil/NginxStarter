@@ -12,6 +12,7 @@ namespace NginxStarterGUI.TargetProgramsInfo
 		public string configPath { private get; set; }
 		public const string _ofdExeFilter = "Nginx默认执行文件|nginx.exe|所有执行文件|*.exe|所有文件|*.*";
 		public const string _ofdExeTitle = "选择Nginx执行文件";
+		public const string _ofdExeFileName = "nginx.exe";
 		public const string _ofdConfigFileFilter = "Nginx默认设置文件|nginx.conf|所有设置文件|*.conf|所有文件|*.*";
 		public const string _ofdConfigFileTitle = "选择Nginx主配置文件";
 
