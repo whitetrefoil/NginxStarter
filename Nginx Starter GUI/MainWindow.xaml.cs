@@ -532,14 +532,79 @@ namespace NginxStarterGUI
 
 		}
 
+		private bool btnCCoffeePathBrowse_Fxxk()
+		{
+			OpenFileDialog ofd = new OpenFileDialog();
+			if (_settings.coffee.nodePath != null && _settings.coffee.nodePath != string.Empty)
+			{
+				ofd.InitialDirectory = _settings.coffee.nodePath;
+			}
+			else
+			{
+				ofd.InitialDirectory = System.IO.Directory.GetCurrentDirectory();
+			}
+			ofd.Filter = CoffeeScript._ofdCoffeeFilter;
+			ofd.Title = CoffeeScript._ofdCoffeeTitle;
+			if (ofd.ShowDialog() == true)
+			{
+				txtCCoffeePath.Text = ofd.FileName;
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+
 		private void btnCInputPathBrowse_Click(object sender, RoutedEventArgs e)
 		{
+			btnCInputPathBrowse_Fxxk();
+		}
 
+		private bool btnCInputPathBrowse_Fxxk()
+		{
+			OpenFileDialog ofd = new OpenFileDialog();
+			ofd.Filter = CoffeeScript._ofdInputFilter;
+			ofd.FileName = "\r";
+			ofd.CheckFileExists = false;
+			ofd.CheckPathExists = true;
+			ofd.ValidateNames = false;
+			if (ofd.ShowDialog() == true)
+			{
+				if (!ofd.FileName.EndsWith(".coffee", true, null))
+				{
+					ofd.FileName = ofd.FileName.TrimEnd('\r');
+					int lastSeparatorIndex = ofd.FileName.LastIndexOf('\\');
+					ofd.FileName = ofd.FileName.Remove(lastSeparatorIndex);
+				}
+				txtCInputPath.Text = ofd.FileName;
+				return true;
+			}
+			return false;
 		}
 
 		private void txtCOutputPathBrowse_Click(object sender, RoutedEventArgs e)
 		{
+			txtCOutputPathBrowse_Fxxk();
+		}
 
+		private bool txtCOutputPathBrowse_Fxxk()
+		{
+			OpenFileDialog ofd = new OpenFileDialog();
+			ofd.Filter = CoffeeScript._ofdOutputFilter;
+			ofd.FileName = "\r";
+			ofd.CheckFileExists = false;
+			ofd.CheckPathExists = true;
+			ofd.ValidateNames = false;
+			if (ofd.ShowDialog() == true)
+			{
+				ofd.FileName = ofd.FileName.TrimEnd('\r');
+				int lastSeparatorIndex = ofd.FileName.LastIndexOf('\\');
+				ofd.FileName = ofd.FileName.Remove(lastSeparatorIndex);
+				txtCOutputPath.Text = ofd.FileName;
+				return true;
+			}
+			return false;
 		}
 
 		private void setCoffee(bool isWatch = false)
@@ -553,6 +618,7 @@ namespace NginxStarterGUI
 			coffeeScript.isBare = chkCBare.IsChecked == true;
 			coffeeScript.isWatch = isWatch;
 		}
+		
 		private void btnCStart_Click(object sender, RoutedEventArgs e)
 		{
 			if (coffeeScript == null)

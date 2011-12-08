@@ -41,9 +41,9 @@ namespace NginxStarterGUI.TargetProgramsInfo
         public const string _ofdNodeJsTitle = "选择Nodejs执行文件";
         public const string _ofdCoffeeFilter = "Coffee默认二进制文件|coffee|所有文件|*.*";
         public const string _ofdCoffeeTitle = "选择Coffee二进制文件";
-        public const string _ofdInputFilter = "";
+        public const string _ofdInputFilter = "coffee-script 或 目录|*.coffee";
         public const string _ofdInputTitle = "选择输入文件/目录";
-        public const string _ofdOutputFilter = "";
+		public const string _ofdOutputFilter = "目录|*.sado;fjsdal;fj";
         public const string _ofdOutputTitle = "选择输出文件/目录";
 
         public void setTestData()
@@ -81,21 +81,26 @@ namespace NginxStarterGUI.TargetProgramsInfo
                 info.FileName = this.nodeJsPath;
                 info.Arguments += this.coffeePath;
             }
+
+			// Merge paths
+			this.inputPath.CompareTo(this.outputPath);
+
             // Set arguments
             if (this.isBare)
                 info.Arguments += " --bare";
             if (this.isWatch)
                 info.Arguments += " --watch";
-			info.Arguments += " --compile ";
+			info.Arguments += " --compile";
 			if(this.outputPath != string.Empty)
 				info.Arguments += " --output " + this.outputPath;
-			info.Arguments += this.inputPath;
+			info.Arguments += " " + this.inputPath;
 
             // Set process properties
             info.UseShellExecute = false;
             info.CreateNoWindow = true;
             info.RedirectStandardOutput = true;
             info.RedirectStandardError = true;
+			info.RedirectStandardInput = true;
 
             process.OutputDataReceived += (sender, e) =>
             {
@@ -120,10 +125,11 @@ namespace NginxStarterGUI.TargetProgramsInfo
                 };
             processWorker.RunWorkerCompleted += (sender, e) =>
                 {
-                    if (!process.HasExited)
-                    {
-                        process.Kill();
-                    }
+					BackgroundWorker bw = sender as BackgroundWorker;
+					if (!process.HasExited)
+					{
+						process.Kill();
+					}
                 };
 
             processWorker.RunWorkerAsync();
@@ -132,7 +138,7 @@ namespace NginxStarterGUI.TargetProgramsInfo
 
         public bool stop()
         {
-            processWorker.CancelAsync();
+			process.StandardInput.WriteLine("^CY");
             return true;
         }
 
