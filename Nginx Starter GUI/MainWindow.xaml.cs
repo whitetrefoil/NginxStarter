@@ -565,7 +565,7 @@ namespace NginxStarterGUI
 		{
 			OpenFileDialog ofd = new OpenFileDialog();
 			ofd.Filter = CoffeeScript._ofdInputFilter;
-			ofd.FileName = "\r";
+			ofd.FileName = "文件名会被忽略";
 			ofd.CheckFileExists = false;
 			ofd.CheckPathExists = true;
 			ofd.ValidateNames = false;
@@ -573,7 +573,6 @@ namespace NginxStarterGUI
 			{
 				if (!ofd.FileName.EndsWith(".coffee", true, null))
 				{
-					ofd.FileName = ofd.FileName.TrimEnd('\r');
 					int lastSeparatorIndex = ofd.FileName.LastIndexOf('\\');
 					ofd.FileName = ofd.FileName.Remove(lastSeparatorIndex);
 				}
@@ -592,13 +591,12 @@ namespace NginxStarterGUI
 		{
 			OpenFileDialog ofd = new OpenFileDialog();
 			ofd.Filter = CoffeeScript._ofdOutputFilter;
-			ofd.FileName = "\r";
+			ofd.FileName = "文件名会被忽略";
 			ofd.CheckFileExists = false;
 			ofd.CheckPathExists = true;
 			ofd.ValidateNames = false;
 			if (ofd.ShowDialog() == true)
 			{
-				ofd.FileName = ofd.FileName.TrimEnd('\r');
 				int lastSeparatorIndex = ofd.FileName.LastIndexOf('\\');
 				ofd.FileName = ofd.FileName.Remove(lastSeparatorIndex);
 				txtCOutputPath.Text = ofd.FileName;

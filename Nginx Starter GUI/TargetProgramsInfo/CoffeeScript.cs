@@ -43,7 +43,7 @@ namespace NginxStarterGUI.TargetProgramsInfo
         public const string _ofdCoffeeTitle = "选择Coffee二进制文件";
         public const string _ofdInputFilter = "coffee-script 或 目录|*.coffee";
         public const string _ofdInputTitle = "选择输入文件/目录";
-		public const string _ofdOutputFilter = "目录|*.sado;fjsdal;fj";
+		public const string _ofdOutputFilter = "目录|*.folder";
         public const string _ofdOutputTitle = "选择输出文件/目录";
 
         public void setTestData()
