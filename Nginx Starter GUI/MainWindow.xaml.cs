@@ -578,12 +578,12 @@ namespace NginxStarterGUI
 			return false;
 		}
 
-		private void txtCOutputPathBrowse_Click(object sender, RoutedEventArgs e)
+		private void btnCOutputPathBrowse_Click(object sender, RoutedEventArgs e)
 		{
-			txtCOutputPathBrowse_Fxxk();
+			btnCOutputPathBrowse_Fxxk();
 		}
 
-		private bool txtCOutputPathBrowse_Fxxk()
+		private bool btnCOutputPathBrowse_Fxxk()
 		{
 			OpenFileDialog ofd = new OpenFileDialog();
 			ofd.Filter = CoffeeScript._ofdOutputFilter;
