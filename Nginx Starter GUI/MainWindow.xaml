@@ -144,11 +144,11 @@
 									<ColumnDefinition Width="Auto"/>
 								</Grid.ColumnDefinitions>
 								<Label Content="node.exe 位置："/>
-								<TextBox x:Name="txtCNodePath" Grid.Column="1" Margin="2,4"/>
-								<Button x:Name="btnCNodePathBrowse" Content="浏览..." Grid.Column="2" Width="70" Margin="4" Click="btnCNodePathBrowse_Click" />
+								<TextBox x:Name="txtCNodePath" Grid.Column="1" Margin="2,4" IsEnabled="{Binding ElementName=chkCNodeInPath, Path=IsChecked, Converter={StaticResource ResourceKey=notConverter}}"/>
+								<Button x:Name="btnCNodePathBrowse" Content="浏览..." Grid.Column="2" Width="70" Margin="4" Click="btnCNodePathBrowse_Click" IsEnabled="{Binding ElementName=chkCNodeInPath, Path=IsChecked, Converter={StaticResource ResourceKey=notConverter}}"/>
 								<Label Content="coffee 位置：" Grid.Row="1"/>
-								<TextBox x:Name="txtCCoffeePath" Grid.Column="1" Grid.Row="1" Margin="2,4"/>
-								<Button x:Name="btnCCoffeePathBrowse" Content="浏览..." Grid.Column="2" Grid.Row="1" Width="70" Margin="4" Click="btnCCoffeePathBrowse_Click" />
+								<TextBox x:Name="txtCCoffeePath" Grid.Column="1" Grid.Row="1" Margin="2,4" IsEnabled="{Binding ElementName=chkCCoffeeInGlobal, Path=IsChecked, Converter={StaticResource ResourceKey=notConverter}}"/>
+								<Button x:Name="btnCCoffeePathBrowse" Content="浏览..." Grid.Column="2" Grid.Row="1" Width="70" Margin="4" Click="btnCCoffeePathBrowse_Click" IsEnabled="{Binding ElementName=chkCCoffeeInGlobal, Path=IsChecked, Converter={StaticResource ResourceKey=notConverter}}"/>
 								<Label Content="输入位置/文件：" Grid.Row="2"/>
 								<TextBox x:Name="txtCInputPath" Grid.Column="1" Margin="2,4" Grid.Row="2"/>
 								<Button x:Name="btnCInputPathBrowse" Content="浏览..." Grid.Column="2" Width="70" Margin="4" Grid.Row="2" Click="btnCInputPathBrowse_Click" />
@@ -175,20 +175,20 @@
 								<RowDefinition/>
 								<RowDefinition/>
 							</Grid.RowDefinitions>
-							<CheckBox x:Name="chkCNodeIsInPath" Content="node.exe已加入PATH" Margin="4" VerticalAlignment="Top"/>
-							<CheckBox x:Name="chkCCoffeeIsInGlobal" Content="coffee全局安装" IsEnabled="{Binding ElementName=chkCNodeIsInPath, Path=IsChecked}" Margin="4" VerticalAlignment="Top" Grid.Row="1"/>
+							<CheckBox x:Name="chkCNodeInPath" Content="node.exe已加入PATH" Margin="4" Unchecked="chkCNodeInPath_Unchecked" />
+							<CheckBox x:Name="chkCCoffeeInGlobal" Content="coffee全局安装" Margin="4" Grid.Row="1" IsEnabled="{Binding ElementName=chkCNodeInPath, Path=IsChecked}"/>
 							<CheckBox x:Name="chkCBare" Content="将代码包含在顶级函数中" Margin="4" Grid.Row="2"/>
 						</Grid>
 					</Border>
 					<Grid>
 						<TextBlock x:Name="txtCMain" Margin="0"></TextBlock>
 					</Grid>
-			</DockPanel>
-		</TabItem>
-		<TabItem Header="LESS">
-			<DockPanel/>
-		</TabItem>
-		<TabItem Header="SASS">
+				</DockPanel>
+			</TabItem>
+			<TabItem Header="LESS">
+				<DockPanel/>
+			</TabItem>
+			<TabItem Header="SASS">
 				<DockPanel>
 					<Border DockPanel.Dock="Bottom" BorderThickness="0,1,0,0" BorderBrush="{StaticResource brushSplitLineH}">
 						<StackPanel VerticalAlignment="Bottom">
@@ -225,7 +225,7 @@
 									<ColumnDefinition/>
 									<ColumnDefinition/>
 								</Grid.ColumnDefinitions>
-								<Button x:Name="btnSStart" Content="运行(_R)" Grid.Column="0" Width="80" Click="btnCStart_Click" />
+								<Button x:Name="btnSStart" Content="运行(_R)" Grid.Column="0" Width="80" Click="btnSStart_Click" />
 								<Button x:Name="btnSWatch" Content="监听(_W)" Grid.Column="1" Width="80"/>
 								<Button x:Name="btnSStop" Content="停止监听(_S)" Grid.Column="2" Width="80" IsEnabled="False"/>
 							</Grid>

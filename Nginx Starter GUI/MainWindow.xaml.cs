@@ -1,10 +1,11 @@
 ﻿using System;
 using System.IO;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
 using System.Xml.Serialization;
 using Microsoft.Win32;
 using NginxStarterGUI.TargetProgramsInfo;
-using System.Windows.Data;
 
 namespace NginxStarterGUI
 {
@@ -21,14 +22,14 @@ namespace NginxStarterGUI
 		private static System.Diagnostics.Process _php;
 		private static NotifyIcon _notifyIcon;
 		private static Nginx _nginx;
-		private static CoffeeScript _coffeeScript;
+		private CoffeeScript coffeeScript;
 		private Sass sass;
 
 		public MainWindow()
 		{
 			_configFilePath = AppDomain.CurrentDomain.BaseDirectory + "Nginx Starter GUI.config.xml";
 			_settings = readConfigFile();
-			_coffeeScript = new CoffeeScript();
+			coffeeScript = new CoffeeScript();
 			InitializeComponent();
 			this.txtNPath.Text = _settings.nginx.path;
 			this.txtNConfigPath.Text = _settings.nginx.configPath;
@@ -37,12 +38,6 @@ namespace NginxStarterGUI
 			this.txtPHost.Text = _settings.php.host;
 			this.txtPPort.Text = _settings.php.port.ToString();
 			this.chkPUseIniFile.IsChecked = _settings.php.useIniFile;
-
-			sass = new Sass();
-
-			Binding test = new Binding("Message");
-			test.Source = sass;
-			txtSMain.SetBinding(TextBlock.TextProperty, test);
 		}
 
 		private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
@@ -547,22 +542,40 @@ namespace NginxStarterGUI
 
 		}
 
+		private void setCoffee(bool isWatch = false)
+		{
+			coffeeScript.nodeJsPath = txtCNodePath.Text;
+			coffeeScript.coffeePath = txtCCoffeePath.Text;
+			coffeeScript.inputPath = txtCInputPath.Text;
+			coffeeScript.outputPath = txtCOutputPath.Text;
+			coffeeScript.isNodeInPath = chkCNodeInPath.IsChecked == true;
+			coffeeScript.isCoffeeGlobal = chkCCoffeeInGlobal.IsChecked == true;
+			coffeeScript.isBare = chkCBare.IsChecked == true;
+			coffeeScript.isWatch = isWatch;
+		}
 		private void btnCStart_Click(object sender, RoutedEventArgs e)
 		{
-			_coffeeScript = new CoffeeScript();
-			_coffeeScript.testStart();
-			txtCMain.Text = _coffeeScript.message;
+			if (coffeeScript == null)
+				coffeeScript = new CoffeeScript();
+			setCoffee();
+			txtCMain.Text += "Started!\n";
+			Binding coffeeMainBinding = new Binding("Message");
+			coffeeMainBinding.Source = coffeeScript;
+			txtCMain.SetBinding(TextBlock.TextProperty, coffeeMainBinding);
+			coffeeScript.start();
 		}
 
 		private void btnCWatch_Click(object sender, RoutedEventArgs e)
 		{
-			if (_coffeeScript.watch())
-				this.coffeeStartedWatch();
+			if (coffeeScript == null)
+				coffeeScript = new CoffeeScript();
+			setCoffee(true);
+			coffeeScript.isWatch = true;
 		}
 
 		private void btnCStop_Click(object sender, RoutedEventArgs e)
 		{
-			if (_coffeeScript.stop())
+			if (coffeeScript.stop())
 				this.coffeeStopedWatch();
 		}
 
@@ -582,6 +595,22 @@ namespace NginxStarterGUI
 			btnCStart.IsEnabled = true;
 			btnCWatch.IsEnabled = true;
 			btnCStop.IsEnabled = false;
+		}
+
+		private void chkCNodeInPath_Unchecked(object sender, RoutedEventArgs e)
+		{
+			chkCCoffeeInGlobal.IsChecked = false;
+		}
+
+		private void btnSStart_Click(object sender, RoutedEventArgs e)
+		{
+			if (sass == null)
+				sass = new Sass();
+
+			Binding test = new Binding("Message");
+			test.Source = sass;
+			txtSMain.SetBinding(TextBlock.TextProperty, test);
+
 		}
 	}
 }
