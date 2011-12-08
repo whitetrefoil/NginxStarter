@@ -175,8 +175,8 @@
 								<RowDefinition/>
 								<RowDefinition/>
 							</Grid.RowDefinitions>
-							<CheckBox x:Name="chkCNodeIsInPath" Content="node.exe已加入PATH" Margin="4" VerticalAlignment="Top"/>
-							<CheckBox x:Name="chkCCoffeeIsInGlobal" Content="coffee全局安装" IsEnabled="{Binding ElementName=chkCNodeIsInPath, Path=IsChecked}" Margin="4" VerticalAlignment="Top" Grid.Row="1"/>
+							<CheckBox x:Name="chkCNodeIsInPath" Content="node.exe已加入PATH" Margin="4"/>
+							<CheckBox x:Name="chkCCoffeeIsInGlobal" Content="coffee全局安装" IsEnabled="{Binding ElementName=chkCNodeIsInPath, Path=IsChecked}" Margin="4" Grid.Row="1"/>
 							<CheckBox x:Name="chkCBare" Content="将代码包含在顶级函数中" Margin="4" Grid.Row="2"/>
 						</Grid>
 					</Border>

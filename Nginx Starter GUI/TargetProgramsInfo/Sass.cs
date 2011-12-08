@@ -9,6 +9,7 @@ namespace NginxStarterGUI.TargetProgramsInfo
 {
 	public class Sass : INotifyPropertyChanged
 	{
+		public event PropertyChangedEventHandler PropertyChanged;
 		private Process process;
 		public string rubyPath { private get; set; }
 		public string sassPath { private get; set; }
@@ -85,8 +86,6 @@ namespace NginxStarterGUI.TargetProgramsInfo
 
 
 		}
-
-		public event PropertyChangedEventHandler PropertyChanged;
 
 		private void OnPropertyChanged(string info)
 		{
