@@ -129,6 +129,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Classes\ComparePath.cs" />
     <Compile Include="Classes\FindInPath.cs" />
     <Compile Include="Converters\NotConverter.cs" />
     <Compile Include="Converters\CheckboxConverter.cs" />

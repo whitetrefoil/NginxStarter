@@ -7,7 +7,19 @@ Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "NginxEmulator", "NginxEmula
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NginxEmulatorCS", "NginxEmulatorCS\NginxEmulatorCS.csproj", "{B3EC6C06-F155-4E5C-A481-C702F12CAFBD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ComparePathTest", "ComparePathTest\ComparePathTest.csproj", "{10B0624B-6233-4264-83D6-1704EC7DEBA1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{49B296DE-6383-4B01-BD04-F6C67AADD7A1}"
+	ProjectSection(SolutionItems) = preProject
+		Local.testsettings = Local.testsettings
+		NginxStarter.vsmdi = NginxStarter.vsmdi
+		TraceAndTestImpact.testsettings = TraceAndTestImpact.testsettings
+	EndProjectSection
+EndProject
 Global
+	GlobalSection(TestCaseManagementSettings) = postSolution
+		CategoryFile = NginxStarter.vsmdi
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
 		Debug|x86 = Debug|x86
@@ -24,19 +36,23 @@ Global
 		{3985D179-8AB1-47E8-BFFF-5A6FCD2E1ECA}.Release|x86.ActiveCfg = Release|x86
 		{3985D179-8AB1-47E8-BFFF-5A6FCD2E1ECA}.Release|x86.Build.0 = Release|x86
 		{D9D7A5C2-5803-45CC-9754-7C56531F5B66}.Debug|x64.ActiveCfg = Debug|x64
-		{D9D7A5C2-5803-45CC-9754-7C56531F5B66}.Debug|x64.Build.0 = Debug|x64
 		{D9D7A5C2-5803-45CC-9754-7C56531F5B66}.Debug|x86.ActiveCfg = Debug|x86
 		{D9D7A5C2-5803-45CC-9754-7C56531F5B66}.Release|x64.ActiveCfg = Release|x64
 		{D9D7A5C2-5803-45CC-9754-7C56531F5B66}.Release|x64.Build.0 = Release|x64
 		{D9D7A5C2-5803-45CC-9754-7C56531F5B66}.Release|x86.ActiveCfg = Release|x86
 		{D9D7A5C2-5803-45CC-9754-7C56531F5B66}.Release|x86.Build.0 = Release|x86
 		{B3EC6C06-F155-4E5C-A481-C702F12CAFBD}.Debug|x64.ActiveCfg = Debug|x64
-		{B3EC6C06-F155-4E5C-A481-C702F12CAFBD}.Debug|x64.Build.0 = Debug|x64
 		{B3EC6C06-F155-4E5C-A481-C702F12CAFBD}.Debug|x86.ActiveCfg = Debug|x86
 		{B3EC6C06-F155-4E5C-A481-C702F12CAFBD}.Release|x64.ActiveCfg = Release|x64
 		{B3EC6C06-F155-4E5C-A481-C702F12CAFBD}.Release|x64.Build.0 = Release|x64
 		{B3EC6C06-F155-4E5C-A481-C702F12CAFBD}.Release|x86.ActiveCfg = Release|x86
 		{B3EC6C06-F155-4E5C-A481-C702F12CAFBD}.Release|x86.Build.0 = Release|x86
+		{10B0624B-6233-4264-83D6-1704EC7DEBA1}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{10B0624B-6233-4264-83D6-1704EC7DEBA1}.Debug|x64.Build.0 = Debug|Any CPU
+		{10B0624B-6233-4264-83D6-1704EC7DEBA1}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{10B0624B-6233-4264-83D6-1704EC7DEBA1}.Debug|x86.Build.0 = Debug|Any CPU
+		{10B0624B-6233-4264-83D6-1704EC7DEBA1}.Release|x64.ActiveCfg = Release|Any CPU
+		{10B0624B-6233-4264-83D6-1704EC7DEBA1}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

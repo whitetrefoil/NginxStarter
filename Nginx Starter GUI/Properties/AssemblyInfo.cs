@@ -54,3 +54,5 @@ using System.Windows;
 [assembly: AssemblyVersion("0.0.*")]
 [assembly: AssemblyFileVersion("0.0.2.2")]
 [assembly: NeutralResourcesLanguageAttribute("zh-Hans")]
+
+[assembly: System.Runtime.CompilerServices.InternalsVisibleTo("ComparePathTest")]
