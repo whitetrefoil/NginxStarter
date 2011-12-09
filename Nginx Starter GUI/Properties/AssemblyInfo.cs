@@ -52,7 +52,7 @@ using System.Windows;
 // 方法是按如下所示使用“*”:
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("0.0.*")]
-[assembly: AssemblyFileVersion("0.0.2.2")]
+[assembly: AssemblyFileVersion("0.0.3.0")]
 [assembly: NeutralResourcesLanguageAttribute("zh-Hans")]
 
 [assembly: System.Runtime.CompilerServices.InternalsVisibleTo("ComparePathTest")]
