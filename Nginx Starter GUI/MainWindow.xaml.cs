@@ -38,9 +38,9 @@ namespace NginxStarterGUI
 		{
 			this.saveConfigFile();
 			if (nginx != null)
-			{
 				nginx.quit();
-			}
+			if (coffeeScript != null)
+				coffeeScript.stop();
 		}
 
 		/// <summary>
