@@ -2,6 +2,13 @@
 
 Changelog:
 
+0.0.3.0
+
+Added: 添加了CoffeeScript相关功能
+Added: 现在起master分支版本将会隐藏未完成开发、完全不可用的标签页
+
+----------
+
 0.0.2.2
 
 Fixed: 解决了在启动Nginx之前点“强制退出”按钮导致崩溃的问题。
