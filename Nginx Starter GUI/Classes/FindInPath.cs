@@ -9,6 +9,14 @@ namespace NginxStarterGUI.Classes
 		public static string SystemPath = System.Environment.GetEnvironmentVariable("Path");
 		public static string SystemPathExt = System.Environment.GetEnvironmentVariable("Pathext");
 
+		/// <summary>
+		/// 在系统Path中寻找程序
+		/// </summary>
+		/// <param name="targetName">目标程序文件名</param>
+		/// <param name="workingDirectory">程序工作目录（将优先在工作目录下寻找）</param>
+		/// <param name="isNeedToTestExt">是否添加Pathext中的扩展名再逐一寻找</param>
+		/// <param name="isIncludeNoExt">是否包括无扩展名的文件</param>
+		/// <returns>返回第一个找到的文件路径</returns>
 		public static string Find(string targetName, string workingDirectory = null, bool isNeedToTestExt = true, bool isIncludeNoExt = false)
 		{
 			if (workingDirectory != null)

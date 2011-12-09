@@ -5,6 +5,13 @@ namespace NginxStarterGUI.Classes
 {
 	static class ComparePath
 	{
+		/// <summary>
+		/// 比较两个路径寻找相同部分
+		/// </summary>
+		/// <param name="pathA"></param>
+		/// <param name="pathB"></param>
+		/// <param name="separator">输出路径的分隔符，默认为当前系统值</param>
+		/// <returns>返回两者的共同上级路径，包括末尾的分隔符</returns>
 		public static string Compare(string pathA, string pathB, char separator)
 		{
 			pathA = pathA.Replace('/', separator);
