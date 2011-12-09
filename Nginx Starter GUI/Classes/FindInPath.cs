@@ -7,16 +7,18 @@ namespace NginxStarterGUI.Classes
 	static class FindInPath
 	{
 		public static string SystemPath = System.Environment.GetEnvironmentVariable("Path");
-		public static List<string> SystemPaths = new List<string>(("." + Path.PathSeparator + SystemPath).Split(Path.PathSeparator));
 		public static string SystemPathExt = System.Environment.GetEnvironmentVariable("Pathext");
-		public static List<string> SystemPathExts = SystemPathExt != string.Empty ?
-			new List<string>(System.Environment.GetEnvironmentVariable("Pathext").Split(Path.PathSeparator)) :
-			new List<string> { ".exe", ".cmd", ".bat" };
 
-		public static string Find(string targetName, bool isNeedToTestExt = true, bool isIncludeNoExt = false)
+		public static string Find(string targetName, string workingDirectory = null, bool isNeedToTestExt = true, bool isIncludeNoExt = false)
 		{
-			string targetPath = string.Empty;
-			List<string> systemPathExts = SystemPathExts;
+			if (workingDirectory != null)
+				Directory.SetCurrentDirectory(workingDirectory);
+			else
+				Directory.SetCurrentDirectory(AppDomain.CurrentDomain.BaseDirectory.ToString());
+			List<string> systemPaths = new List<string>(("." + Path.PathSeparator + SystemPath).Split(Path.PathSeparator));
+			List<string> systemPathExts = SystemPathExt != string.Empty ?
+				new List<string>(System.Environment.GetEnvironmentVariable("Pathext").Split(Path.PathSeparator)) :
+				new List<string> { ".exe", ".cmd", ".bat" }; string targetPath = string.Empty;
 
 			if (!isNeedToTestExt)
 			{
@@ -30,7 +32,7 @@ namespace NginxStarterGUI.Classes
 
 			foreach (string pathExt in systemPathExts)
 			{
-				string result = find(targetName + pathExt);
+				string result = find(targetName + pathExt, systemPaths);
 				if (result != string.Empty)
 				{
 					targetPath = result;
@@ -41,11 +43,11 @@ namespace NginxStarterGUI.Classes
 			return targetPath;
 		}
 
-		private static string find(string targetName)
+		private static string find(string targetName, List<string> systemPaths)
 		{
 			string targetPath = string.Empty;
 
-			foreach (string path in SystemPaths)
+			foreach (string path in systemPaths)
 			{
 				string tryThisPath = path + Path.DirectorySeparatorChar + targetName;
 				if (File.Exists(tryThisPath))

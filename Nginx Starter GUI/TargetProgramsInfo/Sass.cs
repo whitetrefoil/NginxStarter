@@ -66,8 +66,8 @@ namespace NginxStarterGUI.TargetProgramsInfo
 			this.process = new Process();
 			if (this.isInPath)
 			{
-				this.rubyPath = FindInPath.Find("ruby.exe", false);
-				this.sassPath = FindInPath.Find("sass", true, true);
+				this.rubyPath = FindInPath.Find("ruby.exe", MainWindow.WorkingDirectory, false);
+				this.sassPath = FindInPath.Find("sass", MainWindow.WorkingDirectory, true, true);
 			}
 			this.inputPath = this.inputPath.Replace(Path.DirectorySeparatorChar, '/');
 			this.outputPath = this.outputPath.Replace(Path.DirectorySeparatorChar, '/');

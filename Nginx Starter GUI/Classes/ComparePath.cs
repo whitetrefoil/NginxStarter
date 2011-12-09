@@ -26,7 +26,7 @@ namespace NginxStarterGUI.Classes
 
 			int lastSeparatorIndex = output.LastIndexOf(separator);
 			if (lastSeparatorIndex > 0)
-				output = output.Remove(lastSeparatorIndex);
+				output = output.Remove(lastSeparatorIndex + 1);
 			else
 				output = string.Empty;
 

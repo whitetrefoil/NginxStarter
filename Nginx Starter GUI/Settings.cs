@@ -16,6 +16,13 @@ namespace NginxStarterGUI.Settings
 		public Nginx nginx { get; set; }
 		public Php php { get; set; }
 		public Coffee coffee { get; set; }
+
+		public Settings()
+		{
+			nginx = new Nginx();
+			php = new Php();
+			coffee = new Coffee();
+		}
 	}
 
 	public class Nginx : INotifyPropertyChanged
@@ -33,15 +40,6 @@ namespace NginxStarterGUI.Settings
 		public bool? useIniFile { get; set; }
 		public int? port { get; set; }
 		public string host { get; set; }
-
-		public Php()
-		{
-			path = string.Empty;
-			configPath = string.Empty;
-			useIniFile = false;
-			port = null;
-			host = string.Empty;
-		}
 	}
 
 	public class Coffee : INotifyPropertyChanged

@@ -61,18 +61,19 @@ namespace NginxStarterGUI.TargetProgramsInfo
         public bool start()
         {
             this.process = new Process();
-            ProcessStartInfo info = process.StartInfo;
+			ProcessStartInfo info = new ProcessStartInfo(); ;
             info.Arguments = string.Empty;
+			info.WorkingDirectory = null;
 
             // Set exe files path
             if (this.isCoffeeGlobal)
             {
-                this.coffeePath = FindInPath.Find("coffee", true, true);
+				this.coffeePath = FindInPath.Find("coffee", MainWindow.WorkingDirectory, true, true);
                 info.FileName = this.coffeePath;
             }
             else if (this.isNodeInPath)
             {
-                this.nodeJsPath = FindInPath.Find("node.exe", false);
+				this.nodeJsPath = FindInPath.Find("node.exe", MainWindow.WorkingDirectory, false);
                 info.FileName = this.nodeJsPath;
                 info.Arguments += this.coffeePath;
             }
@@ -84,7 +85,7 @@ namespace NginxStarterGUI.TargetProgramsInfo
 
 			// Merge paths
 			info.WorkingDirectory = ComparePath.Compare(inputPath, outputPath, '/');
-			int headerIndex = info.WorkingDirectory.Length + 1;
+			int headerIndex = info.WorkingDirectory.Length;
 			inputPath = inputPath.Substring(headerIndex);
 			outputPath = outputPath.Substring(headerIndex);
 			//inputPath.
@@ -121,6 +122,7 @@ namespace NginxStarterGUI.TargetProgramsInfo
             processWorker.DoWork += (sender, e) =>
                 {
                     BackgroundWorker bw = sender as BackgroundWorker;
+					process.StartInfo = info;
                     process.Start();
                     process.BeginOutputReadLine();
 					process.BeginErrorReadLine();
@@ -135,7 +137,7 @@ namespace NginxStarterGUI.TargetProgramsInfo
 					}
                 };
 
-            processWorker.RunWorkerAsync();
+            processWorker.RunWorkerAsync(info);
             return true;
         }
 

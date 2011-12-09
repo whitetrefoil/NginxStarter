@@ -20,6 +20,7 @@ namespace NginxStarterGUI
 		private static string _configFilePath;
 		private static System.Diagnostics.ProcessStartInfo _phpInfo;
 		private static System.Diagnostics.Process _php;
+		public static readonly string WorkingDirectory = Directory.GetCurrentDirectory();
 		private static NotifyIcon _notifyIcon;
 		private Nginx nginx;
 		private CoffeeScript coffeeScript;
@@ -502,19 +503,15 @@ namespace NginxStarterGUI
 		private bool btnCNodePathBrowse_Fxxk()
 		{
 			OpenFileDialog ofd = new OpenFileDialog();
-			if (_settings.coffee.nodePath != null && _settings.coffee.nodePath != string.Empty)
-			{
-				ofd.InitialDirectory = _settings.coffee.nodePath;
-			}
-			else
-			{
-				ofd.InitialDirectory = System.IO.Directory.GetCurrentDirectory();
-			}
+			if (_settings.coffee.nodePath != null)
+					ofd.InitialDirectory = _settings.coffee.nodePath;
 			ofd.Filter = CoffeeScript._ofdNodeJsFilter;
 			ofd.Title = CoffeeScript._ofdNodeJsTitle;
 			if (ofd.ShowDialog() == true)
 			{
+				txtCNodePath.Focus();
 				txtCNodePath.Text = ofd.FileName;
+				btnCNodePathBrowse.Focus();
 				return true;
 			}
 			else
@@ -525,25 +522,21 @@ namespace NginxStarterGUI
 
 		private void btnCCoffeePathBrowse_Click(object sender, RoutedEventArgs e)
 		{
-
+			btnCCoffeePathBrowse_Fxxk();
 		}
 
 		private bool btnCCoffeePathBrowse_Fxxk()
 		{
 			OpenFileDialog ofd = new OpenFileDialog();
-			if (_settings.coffee.nodePath != null && _settings.coffee.nodePath != string.Empty)
-			{
+			if (_settings.coffee.nodePath != null)
 				ofd.InitialDirectory = _settings.coffee.nodePath;
-			}
-			else
-			{
-				ofd.InitialDirectory = System.IO.Directory.GetCurrentDirectory();
-			}
 			ofd.Filter = CoffeeScript._ofdCoffeeFilter;
 			ofd.Title = CoffeeScript._ofdCoffeeTitle;
 			if (ofd.ShowDialog() == true)
 			{
+				txtCCoffeePath.Focus();
 				txtCCoffeePath.Text = ofd.FileName;
+				btnCCoffeePathBrowse.Focus();
 				return true;
 			}
 			else
@@ -560,11 +553,14 @@ namespace NginxStarterGUI
 		private bool btnCInputPathBrowse_Fxxk()
 		{
 			OpenFileDialog ofd = new OpenFileDialog();
+			if (_settings.coffee.inputPath != null)
+				ofd.InitialDirectory = _settings.coffee.inputPath;
 			ofd.Filter = CoffeeScript._ofdInputFilter;
 			ofd.FileName = "文件名会被忽略";
 			ofd.CheckFileExists = false;
 			ofd.CheckPathExists = true;
 			ofd.ValidateNames = false;
+			ofd.AddExtension = false;
 			if (ofd.ShowDialog() == true)
 			{
 				if (!ofd.FileName.EndsWith(".coffee", true, null))
@@ -572,7 +568,9 @@ namespace NginxStarterGUI
 					int lastSeparatorIndex = ofd.FileName.LastIndexOf('\\');
 					ofd.FileName = ofd.FileName.Remove(lastSeparatorIndex);
 				}
+				txtCInputPath.Focus();
 				txtCInputPath.Text = ofd.FileName;
+				btnCInputPathBrowse.Focus();
 				return true;
 			}
 			return false;
@@ -586,16 +584,21 @@ namespace NginxStarterGUI
 		private bool btnCOutputPathBrowse_Fxxk()
 		{
 			OpenFileDialog ofd = new OpenFileDialog();
+			if (_settings.coffee.outputPath != null)
+				ofd.InitialDirectory = _settings.coffee.outputPath;
 			ofd.Filter = CoffeeScript._ofdOutputFilter;
 			ofd.FileName = "文件名会被忽略";
 			ofd.CheckFileExists = false;
 			ofd.CheckPathExists = true;
 			ofd.ValidateNames = false;
+			ofd.AddExtension = false;
 			if (ofd.ShowDialog() == true)
 			{
 				int lastSeparatorIndex = ofd.FileName.LastIndexOf('\\');
 				ofd.FileName = ofd.FileName.Remove(lastSeparatorIndex);
+				txtCOutputPath.Focus();
 				txtCOutputPath.Text = ofd.FileName;
+				btnCOutputPathBrowse.Focus();
 				return true;
 			}
 			return false;
