@@ -3,6 +3,7 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:sass="clr-namespace:NginxStarterGUI.TargetProgramsInfo"
 	mc:Ignorable="d"
 	x:Class="NginxStarterGUI.MainWindow"
 	Title="Nginx Starter GUI" Height="480" Width="640"
@@ -18,6 +19,7 @@
 			<GradientStop Color="#FFBBBBBB" Offset="0.5"/>
 			<GradientStop Color="White" Offset="1"/>
 		</LinearGradientBrush>
+		<sass:SassCodeStyle x:Key="sassCodeStyle"/>
 	</Window.Resources>
 	<Grid>
 		<TabControl>
@@ -207,16 +209,16 @@
 									<ColumnDefinition Width="Auto"/>
 								</Grid.ColumnDefinitions>
 								<Label Content="ruby 位置："/>
-								<TextBox x:Name="txtSRubyPath" Grid.Column="1" Margin="2,4"/>
+								<TextBox x:Name="txtSRubyPath" Grid.Column="1" Margin="2,4" Text="{Binding sass.rubyPath}"/>
 								<Button x:Name="btnSNodePathBrowse" Content="浏览..." Grid.Column="2" Width="70" Margin="4"/>
 								<Label Content="sass 位置：" Grid.Row="1"/>
-								<TextBox x:Name="txtSSassPath" Grid.Column="1" Grid.Row="1" Margin="2,4"/>
+								<TextBox x:Name="txtSSassPath" Grid.Column="1" Grid.Row="1" Margin="2,4" Text="{Binding sass.sassPath}"/>
 								<Button x:Name="btnSCoffeePathBrowse" Content="浏览..." Grid.Column="2" Grid.Row="1" Width="70" Margin="4"/>
 								<Label Content="输入位置/文件：" Grid.Row="2"/>
-								<TextBox x:Name="txtSInputPath" Grid.Column="1" Margin="2,4" Grid.Row="2"/>
+								<TextBox x:Name="txtSInputPath" Grid.Column="1" Margin="2,4" Grid.Row="2" Text="{Binding sass.inputPath}"/>
 								<Button x:Name="btnSInputPathBrowse" Content="浏览..." Grid.Column="2" Width="70" Margin="4" Grid.Row="2"/>
 								<Label Content="输出位置/文件：" Grid.Row="3"/>
-								<TextBox x:Name="txtSOutputPath" Grid.Column="1" Grid.Row="3" Margin="2,4"/>
+								<TextBox x:Name="txtSOutputPath" Grid.Column="1" Grid.Row="3" Margin="2,4" Text="{Binding sass.outputPath}"/>
 								<Button x:Name="txtSOutputPathBrowse" Content="浏览..." Grid.Column="2" Grid.Row="3" Width="70" Margin="4"/>
 							</Grid>
 							<Grid Margin="0,2">
@@ -240,22 +242,17 @@
 								<RowDefinition/>
 								<RowDefinition/>
 							</Grid.RowDefinitions>
-							<CheckBox x:Name="chkSRubyIsInPath" Content="Ruby 已加入PATH" Margin="4" VerticalAlignment="Top"/>
-							<CheckBox x:Name="chkSUseLF" Content="使用Unix换行符LF" Margin="4" Grid.Row="1"/>
-							<CheckBox x:Name="chkSForce" Content="覆盖目标文件中的更改" Margin="4" Grid.Row="2"/>
-							<CheckBox x:Name="chkSNoCache" Content="不生成缓存" Margin="4" Grid.Row="3"/>
+							<CheckBox x:Name="chkSRubyIsInPath" Content="Ruby 已加入PATH" Margin="4" VerticalAlignment="Top" IsChecked="{Binding sass.isRubyInPath}"/>
+							<CheckBox x:Name="chkSUseLF" Content="使用Unix换行符LF" Margin="4" Grid.Row="1" IsChecked="{Binding sass.isUseLF}"/>
+							<CheckBox x:Name="chkSForce" Content="覆盖目标文件中的更改" Margin="4" Grid.Row="2" IsChecked="{Binding sass.isForce}"/>
+							<CheckBox x:Name="chkSNoCache" Content="不生成缓存" Margin="4" Grid.Row="3" IsChecked="{Binding sass.isNoCache}"/>
 							<Grid Grid.Row="4">
 								<Grid.ColumnDefinitions>
 									<ColumnDefinition Width="Auto"/>
 									<ColumnDefinition Width="1*"/>
 								</Grid.ColumnDefinitions>
 								<Label Content="风格："/>
-								<ComboBox x:Name="cbxSStyle" Grid.Column="1" SelectedIndex="0" Margin="4">
-									<ComboBoxItem Content="nested"/>
-									<ComboBoxItem Content="compact"/>
-									<ComboBoxItem Content="compressed"/>
-									<ComboBoxItem Content="expanded"/>
-								</ComboBox>
+								<ComboBox x:Name="cbxSStyle" Grid.Column="1" Margin="4" ItemsSource="{StaticResource sassCodeStyle}" SelectedItem="{Binding sass.codeStyle}"/>
 							</Grid>
 						</Grid>
 					</Border>

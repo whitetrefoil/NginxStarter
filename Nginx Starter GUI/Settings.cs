@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.ComponentModel;
 
 namespace NginxStarterGUI.Settings
@@ -16,12 +13,14 @@ namespace NginxStarterGUI.Settings
 		public Nginx nginx { get; set; }
 		public Php php { get; set; }
 		public Coffee coffee { get; set; }
+		public Sass sass { get; set; }
 
 		public Settings()
 		{
 			nginx = new Nginx();
 			php = new Php();
 			coffee = new Coffee();
+			sass = new Sass();
 		}
 	}
 
@@ -52,5 +51,19 @@ namespace NginxStarterGUI.Settings
 		public bool isNodeInPath { get; set; }
 		public bool isCoffeeGlobal { get; set; }
 		public bool isBare { get; set; }
+	}
+
+	public class Sass : INotifyPropertyChanged
+	{
+		public event PropertyChangedEventHandler PropertyChanged;
+		public string rubyPath { get; set; }
+		public string sassPath { get; set; }
+		public string inputPath { get; set; }
+		public string outputPath { get; set; }
+		public bool isRubyInPath { get; set; }
+		public bool isUseLF { get; set; }
+		public bool isForce { get; set; }
+		public bool isNoCache { get; set; }
+		public string codeStyle { get; set; }
 	}
 }

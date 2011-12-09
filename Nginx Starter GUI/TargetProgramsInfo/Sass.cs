@@ -1,9 +1,8 @@
-﻿using System;
-using System.Diagnostics;
-using System.Windows;
-using NginxStarterGUI.Classes;
-using System.IO;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
+using System.IO;
+using NginxStarterGUI.Classes;
 
 namespace NginxStarterGUI.TargetProgramsInfo
 {
@@ -94,6 +93,18 @@ namespace NginxStarterGUI.TargetProgramsInfo
 			{
 				handler(this, new PropertyChangedEventArgs(info));
 			}
+		}
+	}
+
+	public class SassCodeStyle : List<string>
+	{
+		public SassCodeStyle()
+			: base()
+		{
+			Add("nested");
+			Add("compact");
+			Add("compressed");
+			Add("expanded");
 		}
 	}
 }
