@@ -209,17 +209,17 @@
 									<ColumnDefinition Width="Auto"/>
 								</Grid.ColumnDefinitions>
 								<Label Content="ruby 位置："/>
-								<TextBox x:Name="txtSRubyPath" Grid.Column="1" Margin="2,4" Text="{Binding sass.rubyPath}"/>
-								<Button x:Name="btnSNodePathBrowse" Content="浏览..." Grid.Column="2" Width="70" Margin="4"/>
+								<TextBox x:Name="txtSRubyPath" Grid.Column="1" Margin="2,4" Text="{Binding sass.rubyPath}" IsEnabled="{Binding ElementName=chkSRubyIsInPath, Path=IsChecked, Converter={StaticResource notConverter}}"/>
+								<Button x:Name="btnSRubyPathBrowse" Content="浏览..." Grid.Column="2" Width="70" Margin="4" Click="btnSRubyPathBrowse_Click" IsEnabled="{Binding ElementName=chkSRubyIsInPath, Path=IsChecked, Converter={StaticResource notConverter}}"/>
 								<Label Content="sass 位置：" Grid.Row="1"/>
-								<TextBox x:Name="txtSSassPath" Grid.Column="1" Grid.Row="1" Margin="2,4" Text="{Binding sass.sassPath}"/>
-								<Button x:Name="btnSCoffeePathBrowse" Content="浏览..." Grid.Column="2" Grid.Row="1" Width="70" Margin="4"/>
+								<TextBox x:Name="txtSSassPath" Grid.Column="1" Grid.Row="1" Margin="2,4" Text="{Binding sass.sassPath}" IsEnabled="{Binding ElementName=chkSRubyIsInPath, Path=IsChecked, Converter={StaticResource notConverter}}"/>
+								<Button x:Name="btnSSassPathBrowse" Content="浏览..." Grid.Column="2" Grid.Row="1" Width="70" Margin="4" Click="btnSSassPathBrowse_Click" IsEnabled="{Binding ElementName=chkSRubyIsInPath, Path=IsChecked, Converter={StaticResource notConverter}}"/>
 								<Label Content="输入位置/文件：" Grid.Row="2"/>
 								<TextBox x:Name="txtSInputPath" Grid.Column="1" Margin="2,4" Grid.Row="2" Text="{Binding sass.inputPath}"/>
-								<Button x:Name="btnSInputPathBrowse" Content="浏览..." Grid.Column="2" Width="70" Margin="4" Grid.Row="2"/>
+								<Button x:Name="btnSInputPathBrowse" Content="浏览..." Grid.Column="2" Width="70" Margin="4" Grid.Row="2" Click="btnSInputPathBrowse_Click" />
 								<Label Content="输出位置/文件：" Grid.Row="3"/>
 								<TextBox x:Name="txtSOutputPath" Grid.Column="1" Grid.Row="3" Margin="2,4" Text="{Binding sass.outputPath}"/>
-								<Button x:Name="txtSOutputPathBrowse" Content="浏览..." Grid.Column="2" Grid.Row="3" Width="70" Margin="4"/>
+								<Button x:Name="txtSOutputPathBrowse" Content="浏览..." Grid.Column="2" Grid.Row="3" Width="70" Margin="4" Click="txtSOutputPathBrowse_Click" />
 							</Grid>
 							<Grid Margin="0,2">
 								<Grid.ColumnDefinitions>

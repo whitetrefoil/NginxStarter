@@ -32,10 +32,10 @@ namespace NginxStarterGUI.TargetProgramsInfo
 		}
 
 		public const string _ofdRubyFilter = "Ruby默认执行文件|ruby.exe|所有执行文件|*.exe|所有文件|*.*";
-		public const string _ofdNodeJsTitle = "选择Ruby执行文件";
+		public const string _ofdRubyTitle = "选择Ruby执行文件";
 		public const string _ofdCoffeeFilter = "SASS二进制文件|sass|所有文件|*.*";
 		public const string _ofdCoffeeTitle = "选择SASS二进制文件";
-		public const string _ofdInputFilter = "";
+		public const string _ofdInputFilter = "SASS 文件 或 目录|*.sass *.scss";
 		public const string _ofdInputTitle = "选择输入文件/目录";
 		public const string _ofdOutputFilter = "";
 		public const string _ofdOutputTitle = "选择输出文件/目录";

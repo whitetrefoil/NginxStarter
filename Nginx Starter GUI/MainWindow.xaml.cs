@@ -42,6 +42,7 @@ namespace NginxStarterGUI
 			if (coffeeScript != null)
 				coffeeScript.stop();
 		}
+		#region Config File Region
 
 		/// <summary>
 		/// 从指定文件路径读取程序设置
@@ -170,6 +171,10 @@ namespace NginxStarterGUI
 		{
 			backupConfigFile(_configFilePath);
 		}
+		
+		#endregion
+
+		#region Nginx Region
 
 		/// <summary>
 		/// 点击Nginx启动按钮
@@ -330,6 +335,10 @@ namespace NginxStarterGUI
 				nginx.stop();
 			changeButtonsStatusAfterNginxStoped();
 		}
+
+		#endregion
+
+		#region PHP Region
 
 		private void Window_StateChanged(object sender, EventArgs e)
 		{
@@ -495,6 +504,10 @@ namespace NginxStarterGUI
 			this.phpBrowse();
 		}
 
+		#endregion
+
+		#region Coffee-Script Region
+
 		private void btnCNodePathBrowse_Click(object sender, RoutedEventArgs e)
 		{
 			this.btnCNodePathBrowse_Fxxk();
@@ -504,7 +517,7 @@ namespace NginxStarterGUI
 		{
 			OpenFileDialog ofd = new OpenFileDialog();
 			if (_settings.coffee.nodePath != null)
-					ofd.InitialDirectory = _settings.coffee.nodePath;
+				ofd.InitialDirectory = _settings.coffee.nodePath;
 			ofd.Filter = CoffeeScript._ofdNodeJsFilter;
 			ofd.Title = CoffeeScript._ofdNodeJsTitle;
 			if (ofd.ShowDialog() == true)
@@ -615,7 +628,7 @@ namespace NginxStarterGUI
 			coffeeScript.isBare = chkCBare.IsChecked == true;
 			coffeeScript.isWatch = isWatch;
 		}
-		
+
 		private void btnCStart_Click(object sender, RoutedEventArgs e)
 		{
 			if (coffeeScript == null)
@@ -668,6 +681,10 @@ namespace NginxStarterGUI
 			chkCCoffeeInGlobal.IsChecked = false;
 		}
 
+		#endregion
+
+		#region SASS Region
+
 		private void btnSStart_Click(object sender, RoutedEventArgs e)
 		{
 			if (sass == null)
@@ -678,5 +695,62 @@ namespace NginxStarterGUI
 			txtSMain.SetBinding(TextBlock.TextProperty, test);
 
 		}
+
+		private void btnSRubyPathBrowse_Click(object sender, RoutedEventArgs e)
+		{
+			btnSRubyPathBrowse_Fxxk();
+		}
+
+		private bool btnSRubyPathBrowse_Fxxk()
+		{
+			OpenFileDialog ofd = new OpenFileDialog();
+			if (_settings.sass.rubyPath != null)
+				ofd.InitialDirectory = _settings.sass.rubyPath;
+			ofd.Filter = Sass._ofdRubyFilter;
+			ofd.Title = Sass._ofdRubyTitle;
+			if (ofd.ShowDialog() == true)
+			{
+				txtSRubyPath.Focus();
+				txtSRubyPath.Text = ofd.FileName;
+				btnSRubyPathBrowse.Focus();
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+
+		private void btnSSassPathBrowse_Click(object sender, RoutedEventArgs e)
+		{
+			btnSSassPathBrowse_Fxxk();
+		}
+
+		private bool btnSSassPathBrowse_Fxxk()
+		{
+			return true;
+		}
+
+		private void btnSInputPathBrowse_Click(object sender, RoutedEventArgs e)
+		{
+			btnSInputPathBrowse_Fxxk();
+		}
+
+		private bool btnSInputPathBrowse_Fxxk()
+		{
+			return true;
+		}
+
+		private void txtSOutputPathBrowse_Click(object sender, RoutedEventArgs e)
+		{
+			txtSOutputPathBrowse_Fxxk();
+		}
+
+		private bool txtSOutputPathBrowse_Fxxk()
+		{
+			return true;
+		}
+
+		#endregion
 	}
 }
