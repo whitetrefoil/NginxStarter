@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Text;
-using System.Windows;
 using System.IO;
-using Microsoft.Win32;
 using NginxStarterGUI.Classes;
 
 namespace NginxStarterGUI.TargetProgramsInfo
@@ -66,22 +62,28 @@ namespace NginxStarterGUI.TargetProgramsInfo
 			info.WorkingDirectory = null;
 
 			// Set exe files path
+			if (this.isNodeInPath)
+				this.nodeJsPath = FindInPath.Find("node.exe", MainWindow.WorkingDirectory, false);
 			if (this.isCoffeeGlobal)
 			{
-				this.coffeePath = FindInPath.Find("coffee", MainWindow.WorkingDirectory, true, true);
-				info.FileName = this.coffeePath;
+				coffeePath = FindInPath.Find("coffee", MainWindow.WorkingDirectory, true, true);
+				if(coffeePath.ToLower().EndsWith(".bat") || coffeePath.ToLower().EndsWith(".cmd"))
+				{
+					HashSet<string> possibleCoffeeLocations = FindPathInfo.InBat("%~dp0\\.\\", "coffee", coffeePath);
+					foreach (string possibleCoffeeLocation in possibleCoffeeLocations)
+					{
+						string temp = possibleCoffeeLocation.Replace("%~dp0\\.\\", string.Empty);
+						string tempFullPath = Path.GetDirectoryName(nodeJsPath) + Path.DirectorySeparatorChar + temp;
+						if (File.Exists(tempFullPath))
+						{
+							coffeePath = tempFullPath;
+							break;
+						}
+					}
+				};
 			}
-			else if (this.isNodeInPath)
-			{
-				this.nodeJsPath = FindInPath.Find("node.exe", MainWindow.WorkingDirectory, false);
-				info.FileName = this.nodeJsPath;
-				info.Arguments += PathConverter.ConvertWinToUnix(this.coffeePath);
-			}
-			else
-			{
-				info.FileName = this.nodeJsPath;
-				info.Arguments += PathConverter.ConvertWinToUnix(this.coffeePath);
-			}
+			info.FileName = this.nodeJsPath;
+			info.Arguments += PathConverter.ConvertWinToUnix(this.coffeePath);
 
 			// Merge paths
 			inputPath = PathConverter.ConvertUnixToWin(inputPath);
@@ -161,7 +163,7 @@ namespace NginxStarterGUI.TargetProgramsInfo
 		public bool stop()
 		{
 			// Temp codes
-			if (!isCoffeeGlobal)
+			if (process != null)
 			{
 				process.Kill();
 			}
