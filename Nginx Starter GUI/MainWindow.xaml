@@ -65,7 +65,7 @@
 					</TextBlock>
 				</DockPanel>
 			</TabItem>
-			<TabItem Header="PHP-CGI">
+			<TabItem Header="PHP-CGI" IsEnabled="False" Visibility="Collapsed">
 				<DockPanel IsEnabled="False">
 					<StackPanel DockPanel.Dock="Bottom">
 						<Border BorderThickness="0,1,0,0" BorderBrush="{StaticResource brushSplitLineH}">
@@ -316,7 +316,7 @@
 					</Grid>
 				</DockPanel>
 			</TabItem>
-			<TabItem Header="关于">
+			<TabItem Header="关于" IsEnabled="False" Visibility="Collapsed">
 				<Grid/>
 			</TabItem>
 		</TabControl>
