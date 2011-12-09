@@ -177,7 +177,7 @@
 							</Grid.RowDefinitions>
 							<CheckBox x:Name="chkCNodeInPath" Content="node.exe已加入PATH" Margin="4" Unchecked="chkCNodeInPath_Unchecked" IsChecked="{Binding coffee.isNodeInPath}"/>
 							<CheckBox x:Name="chkCCoffeeInGlobal" Content="coffee全局安装" Margin="4" Grid.Row="1" IsEnabled="{Binding ElementName=chkCNodeInPath, Path=IsChecked}" IsChecked="{Binding coffee.isCoffeeGlobal}"/>
-							<CheckBox x:Name="chkCBare" Content="将代码包含在顶级函数中" Margin="4" Grid.Row="2" IsChecked="{Binding coffee.isBare}"/>
+							<CheckBox x:Name="chkCBare" Content="不将代码嵌在顶级函数中" Margin="4" Grid.Row="2" IsChecked="{Binding coffee.isBare}"/>
 						</Grid>
 					</Border>
 					<Grid>
