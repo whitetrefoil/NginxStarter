@@ -44,6 +44,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>test.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -134,7 +135,8 @@
     <Compile Include="Classes\FindPathInfo.cs" />
     <Compile Include="Classes\PathConverter.cs" />
     <Compile Include="Converters\NotConverter.cs" />
-    <Compile Include="Converters\CheckboxConverter.cs" />
+    <Compile Include="Converters\CheckBoxConverter.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="TargetProgramsInfo\CoffeeScript.cs" />
     <Compile Include="TargetProgramsInfo\Less.cs" />

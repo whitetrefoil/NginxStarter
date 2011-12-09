@@ -21,6 +21,8 @@ namespace NginxStarterGUI.Classes
 			StreamReader sr = null;
 			try
 			{
+				if (String.IsNullOrEmpty(startWith) || String.IsNullOrEmpty(endWith) || String.IsNullOrEmpty(path))
+					throw new ArgumentException("Null或空字符串被传入");
 				using (fs = File.Open(path, FileMode.Open, FileAccess.Read, FileShare.Read))
 				{
 					sr = new StreamReader(fs, true);
@@ -31,20 +33,16 @@ namespace NginxStarterGUI.Classes
 					HashSet<string> newLines = new HashSet<string>();
 					foreach (string line in lines)
 					{
-						if (line.IndexOf(endWith) >= 0)
+						if (line.IndexOf(endWith, StringComparison.OrdinalIgnoreCase) >= 0)
 						{
-							string temp = line.Remove(line.LastIndexOf(endWith) + endWith.Length);
-							if (line.IndexOf(startWith) >= 0)
+							string temp = line.Remove(line.LastIndexOf(endWith, StringComparison.OrdinalIgnoreCase) + endWith.Length);
+							if (line.IndexOf(startWith, StringComparison.OrdinalIgnoreCase) >= 0)
 							{
-								temp = temp.Substring(temp.IndexOf(startWith));
+								temp = temp.Substring(temp.IndexOf(startWith, StringComparison.OrdinalIgnoreCase));
 								newLines.Add(temp);
 							}
 						}
 					}
-					sr.Close();
-					fs.Close();
-
-					//temp
 					return newLines;
 				}
 			}
