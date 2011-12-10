@@ -7,7 +7,6 @@ using System.Xml.Serialization;
 using Microsoft.Win32;
 using NginxStarterGUI.TargetProgramsInfo;
 
-[assembly: CLSCompliant(true)]
 namespace NginxStarterGUI
 {
 
@@ -195,8 +194,8 @@ namespace NginxStarterGUI
 			{
 				if (nginx.start())
 				{
-					_settings.Nginx.Path = txtNPath.Text;
-					_settings.Nginx.ConfigPath = txtNConfigPath.Text;
+					_settings.nginx.path = txtNPath.Text;
+					_settings.nginx.configPath = txtNConfigPath.Text;
 					this.changeButtonsStatusAfterNginxStarted();
 				}
 			}
@@ -249,17 +248,17 @@ namespace NginxStarterGUI
 		private bool btnNBrowse_Fxxk()
 		{
 			OpenFileDialog ofd = new OpenFileDialog();
-			if (_settings.Nginx.Path != null && _settings.Nginx.Path != string.Empty)
+			if (_settings.nginx.path != null && _settings.nginx.path != string.Empty)
 			{
-				ofd.InitialDirectory = _settings.Nginx.Path;
+				ofd.InitialDirectory = _settings.nginx.path;
 			}
 			else
 			{
 				ofd.InitialDirectory = AppDomain.CurrentDomain.BaseDirectory;
 			}
-			ofd.Filter = Nginx.OfdExeFilter;
-			ofd.Title = Nginx.OfdExeTitle;
-			ofd.FileName = Nginx.OfdExeFileName;
+			ofd.Filter = Nginx._ofdExeFilter;
+			ofd.Title = Nginx._ofdExeTitle;
+			ofd.FileName = Nginx._ofdExeFileName;
 			if (ofd.ShowDialog() == true)
 			{
 				txtNPath.Focus();
@@ -291,16 +290,16 @@ namespace NginxStarterGUI
 		private bool btnNConfigBrowse_Fxxk()
 		{
 			OpenFileDialog ofd = new OpenFileDialog();
-			if (_settings.Nginx.ConfigPath != null || _settings.Nginx.ConfigPath != string.Empty)
+			if (_settings.nginx.configPath != null || _settings.nginx.configPath != string.Empty)
 			{
-				ofd.InitialDirectory = _settings.Nginx.ConfigPath;
+				ofd.InitialDirectory = _settings.nginx.configPath;
 			}
 			else
 			{
 				ofd.InitialDirectory = AppDomain.CurrentDomain.BaseDirectory + "\\conf";
 			}
-			ofd.Filter = Nginx.OfdConfigFileFilter;
-			ofd.Title = Nginx.OfdConfigFileTitle;
+			ofd.Filter = Nginx._ofdConfigFileFilter;
+			ofd.Title = Nginx._ofdConfigFileTitle;
 			if (ofd.ShowDialog() == true)
 			{
 				txtNConfigPath.Text = ofd.FileName;
@@ -382,17 +381,17 @@ namespace NginxStarterGUI
 			if (this.chkPUseIniFile.IsChecked != null && this.chkPUseIniFile.IsChecked == true)
 				_phpInfo.Arguments += " -n";
 			_phpInfo.FileName = this.txtPPath.Text;
-			_phpInfo.WorkingDirectory = this.txtPPath.Text.Substring(0, _settings.Php.Path.LastIndexOf('\\'));
+			_phpInfo.WorkingDirectory = this.txtPPath.Text.Substring(0, _settings.php.path.LastIndexOf('\\'));
 			_phpInfo.CreateNoWindow = true;
 			_phpInfo.UseShellExecute = false;
 			try
 			{
 				_php = System.Diagnostics.Process.Start(_phpInfo);
-				_settings.Php.Path = this.txtPPath.Text;
-				_settings.Php.ConfigPath = this.txtPConfigPath.Text;
-				_settings.Php.Host = this.txtPHost.Text;
-				_settings.Php.Port = port;
-				_settings.Php.UseIniFile = this.chkPUseIniFile.IsChecked;
+				_settings.php.path = this.txtPPath.Text;
+				_settings.php.configPath = this.txtPConfigPath.Text;
+				_settings.php.host = this.txtPHost.Text;
+				_settings.php.port = port;
+				_settings.php.useIniFile = this.chkPUseIniFile.IsChecked;
 				return true;
 			}
 			catch
@@ -426,9 +425,9 @@ namespace NginxStarterGUI
 		public string phpBrowse()
 		{
 			OpenFileDialog ofd = new OpenFileDialog();
-			if (_settings.Php.Path != null || _settings.Php.Path != string.Empty)
+			if (_settings.php.path != null || _settings.php.path != string.Empty)
 			{
-				ofd.InitialDirectory = _settings.Php.Path;
+				ofd.InitialDirectory = _settings.php.path;
 			}
 			else
 			{
@@ -450,9 +449,9 @@ namespace NginxStarterGUI
 		public string phpConfigBrowse()
 		{
 			OpenFileDialog ofd = new OpenFileDialog();
-			if (_settings.Php.ConfigPath != null || _settings.Php.ConfigPath != string.Empty)
+			if (_settings.php.configPath != null || _settings.php.configPath != string.Empty)
 			{
-				ofd.InitialDirectory = _settings.Php.ConfigPath;
+				ofd.InitialDirectory = _settings.php.configPath;
 			}
 			else
 			{
@@ -480,7 +479,7 @@ namespace NginxStarterGUI
 			}
 			else
 			{
-				_settings.Php.Path = txtPPath.Text;
+				_settings.php.path = txtPPath.Text;
 				this.phpStart();
 			}
 		}
@@ -517,10 +516,10 @@ namespace NginxStarterGUI
 		private bool btnCNodePathBrowse_Fxxk()
 		{
 			OpenFileDialog ofd = new OpenFileDialog();
-			if (_settings.Coffee.NodePath != null)
-				ofd.InitialDirectory = _settings.Coffee.NodePath;
-			ofd.Filter = CoffeeScript.OfdNodeJsFilter;
-			ofd.Title = CoffeeScript.OfdNodeJsTitle;
+			if (_settings.coffee.nodePath != null)
+				ofd.InitialDirectory = _settings.coffee.nodePath;
+			ofd.Filter = CoffeeScript._ofdNodeJsFilter;
+			ofd.Title = CoffeeScript._ofdNodeJsTitle;
 			if (ofd.ShowDialog() == true)
 			{
 				txtCNodePath.Focus();
@@ -542,10 +541,10 @@ namespace NginxStarterGUI
 		private bool btnCCoffeePathBrowse_Fxxk()
 		{
 			OpenFileDialog ofd = new OpenFileDialog();
-			if (_settings.Coffee.NodePath != null)
-				ofd.InitialDirectory = _settings.Coffee.NodePath;
-			ofd.Filter = CoffeeScript.OfdCoffeeFilter;
-			ofd.Title = CoffeeScript.OfdCoffeeTitle;
+			if (_settings.coffee.nodePath != null)
+				ofd.InitialDirectory = _settings.coffee.nodePath;
+			ofd.Filter = CoffeeScript._ofdCoffeeFilter;
+			ofd.Title = CoffeeScript._ofdCoffeeTitle;
 			if (ofd.ShowDialog() == true)
 			{
 				txtCCoffeePath.Focus();
@@ -567,9 +566,9 @@ namespace NginxStarterGUI
 		private bool btnCInputPathBrowse_Fxxk()
 		{
 			OpenFileDialog ofd = new OpenFileDialog();
-			if (_settings.Coffee.InputPath != null)
-				ofd.InitialDirectory = _settings.Coffee.InputPath;
-			ofd.Filter = CoffeeScript.OfdInputFilter;
+			if (_settings.coffee.inputPath != null)
+				ofd.InitialDirectory = _settings.coffee.inputPath;
+			ofd.Filter = CoffeeScript._ofdInputFilter;
 			ofd.FileName = "文件名会被忽略";
 			ofd.CheckFileExists = false;
 			ofd.CheckPathExists = true;
@@ -598,9 +597,9 @@ namespace NginxStarterGUI
 		private bool btnCOutputPathBrowse_Fxxk()
 		{
 			OpenFileDialog ofd = new OpenFileDialog();
-			if (_settings.Coffee.OutputPath != null)
-				ofd.InitialDirectory = _settings.Coffee.OutputPath;
-			ofd.Filter = CoffeeScript.OfdOutputFilter;
+			if (_settings.coffee.outputPath != null)
+				ofd.InitialDirectory = _settings.coffee.outputPath;
+			ofd.Filter = CoffeeScript._ofdOutputFilter;
 			ofd.FileName = "文件名会被忽略";
 			ofd.CheckFileExists = false;
 			ofd.CheckPathExists = true;
@@ -705,10 +704,10 @@ namespace NginxStarterGUI
 		private bool btnSRubyPathBrowse_Fxxk()
 		{
 			OpenFileDialog ofd = new OpenFileDialog();
-			if (_settings.Sass.RubyPath != null)
-				ofd.InitialDirectory = _settings.Sass.RubyPath;
-			ofd.Filter = Sass.OfdRubyFilter;
-			ofd.Title = Sass.OfdRubyTitle;
+			if (_settings.sass.rubyPath != null)
+				ofd.InitialDirectory = _settings.sass.rubyPath;
+			ofd.Filter = Sass._ofdRubyFilter;
+			ofd.Title = Sass._ofdRubyTitle;
 			if (ofd.ShowDialog() == true)
 			{
 				txtSRubyPath.Focus();

@@ -11,7 +11,7 @@ namespace NginxStarterGUI.Classes
 		/// <returns>返回Unix格式路径</returns>
 		public static string ConvertWinToUnix(string input)
 		{
-			if (String.IsNullOrEmpty(input))
+			if (!String.IsNullOrEmpty(input))
 				return input.Replace('\\', '/');
 			else
 				return null;
@@ -24,7 +24,7 @@ namespace NginxStarterGUI.Classes
 		/// <returns>返回Windows格式路径</returns>
 		public static string ConvertUnixToWin(string input)
 		{
-			if (String.IsNullOrEmpty(input))
+			if (!String.IsNullOrEmpty(input))
 				return input.Replace('/', '\\');
 			else
 				return null;
