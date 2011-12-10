@@ -3,22 +3,27 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using NginxStarterGUI.Classes;
+using System.Security;
+using System.Security.Permissions;
+using System;
 
 namespace NginxStarterGUI.TargetProgramsInfo
 {
-	public class Sass : INotifyPropertyChanged
+	public class Sass : INotifyPropertyChanged, IDisposable
 	{
 		public event PropertyChangedEventHandler PropertyChanged;
 		private Process process;
-		public string rubyPath { private get; set; }
-		public string sassPath { private get; set; }
-		public string inputPath { private get; set; }
-		public string outputPath { private get; set; }
-		private bool isWatch;
-		public bool isInPath { private get; set; }
-		public bool isUseLF { private get; set; }
-		public bool isForce { private get; set; }
-		public bool isNoCache { private get; set; }
+		private BackgroundWorker processWorker;
+		public string RubyPath { get; set; }
+		public string SassPath { get; set; }
+		public string InputPath { get; set; }
+		public string OutputPath { get; set; }
+		public bool IsWatch { get; set; }
+		public bool IsRubyInPath { get; set; }
+		public bool IsUseLF { get; set; }
+		public bool IsForce { get; set; }
+		public bool IsNoCache { get; set; }
+		public string CodeStyle { get; set; }
 
 		private string message;
 		public string Message
@@ -31,59 +36,44 @@ namespace NginxStarterGUI.TargetProgramsInfo
 			}
 		}
 
-		public const string _ofdRubyFilter = "Ruby默认执行文件|ruby.exe|所有执行文件|*.exe|所有文件|*.*";
-		public const string _ofdRubyTitle = "选择Ruby执行文件";
-		public const string _ofdCoffeeFilter = "SASS二进制文件|sass|所有文件|*.*";
-		public const string _ofdCoffeeTitle = "选择SASS二进制文件";
-		public const string _ofdInputFilter = "SASS 文件 或 目录|*.sass *.scss";
-		public const string _ofdInputTitle = "选择输入文件/目录";
-		public const string _ofdOutputFilter = "";
-		public const string _ofdOutputTitle = "选择输出文件/目录";
+		public const string OfdRubyFilter = "Ruby默认执行文件|ruby.exe|所有执行文件|*.exe|所有文件|*.*";
+		public const string OfdRubyTitle = "选择Ruby执行文件";
+		public const string OfdSassFilter = "SASS二进制文件|sass|所有文件|*.*";
+		public const string OfdSassTitle = "选择SASS二进制文件";
+		public const string OfdInputFilter = "SASS 文件 或 目录|*.sass;*.scss";
+		public const string OfdInputTitle = "选择输入文件/目录";
+		public const string OfdOutputFilter = "目录|*.folder";
+		public const string OfdOutputTitle = "选择输出文件/目录";
 
-		public Sass()
-		{
-			message = "asdf";
-		}
-
-		public void setTestData()
-		{
-			this.rubyPath = "ruby.exe";
-			this.sassPath = "sass";
-			this.inputPath = "C:\\temp";
-			this.outputPath = "C:\\temp";
-			this.isWatch = false;
-			this.isInPath = false;
-			this.isUseLF = false;
-			this.isForce = true;
-			this.isNoCache = true;
-
-			this.start();
-		}
-
-		public void start()
+		[EnvironmentPermissionAttribute(SecurityAction.LinkDemand, Unrestricted=false)]
+		public bool Start()
 		{
 			this.process = new Process();
-			if (this.isInPath)
+			ProcessStartInfo info = new ProcessStartInfo();
+			if (this.IsRubyInPath)
 			{
-				this.rubyPath = FindInPath.Find("ruby.exe", MainWindow.WorkingDirectory, false);
-				this.sassPath = FindInPath.Find("sass", MainWindow.WorkingDirectory, true, true);
+				this.RubyPath = FindInPath.Find("ruby.exe", MainWindow.WorkingDirectory, false);
+				this.SassPath = FindInPath.Find("sass", MainWindow.WorkingDirectory, true, true);
 			}
-			this.inputPath = this.inputPath.Replace(Path.DirectorySeparatorChar, '/');
-			this.outputPath = this.outputPath.Replace(Path.DirectorySeparatorChar, '/');
-			this.process.StartInfo.FileName = this.rubyPath;
-			this.process.StartInfo.Arguments = string.Empty;
-			if (this.isUseLF)
-				this.process.StartInfo.Arguments += " --unix-newlines";
-			if (this.isForce)
-				this.process.StartInfo.Arguments += " --force";
-			if (this.isNoCache)
-				this.process.StartInfo.Arguments += " --no-cache";
+			this.InputPath = this.InputPath.Replace(Path.DirectorySeparatorChar, '/');
+			this.OutputPath = this.OutputPath.Replace(Path.DirectorySeparatorChar, '/');
+			info.FileName = this.RubyPath;
+			info.Arguments = string.Empty;
+			if (this.IsUseLF)
+				info.Arguments += " --unix-newlines";
+			if (this.IsForce)
+				info.Arguments += " --force";
+			if (this.IsNoCache)
+				info.Arguments += " --no-cache";
 			if (this.isWatch)
-				this.process.StartInfo.Arguments += " --watch " + this.inputPath + ":" + this.outputPath;
+				info.Arguments += " --watch " + this.InputPath + ":" + this.OutputPath;
 			else
-				this.process.StartInfo.Arguments += " --update " + this.inputPath + ":" + this.outputPath;
+				info.Arguments += " --update " + this.InputPath + ":" + this.OutputPath;
+		}
 
-
+		public bool Stop()
+		{
+			return true;
 		}
 
 		private void OnPropertyChanged(string info)
@@ -94,6 +84,33 @@ namespace NginxStarterGUI.TargetProgramsInfo
 				handler(this, new PropertyChangedEventArgs(info));
 			}
 		}
+
+		#region Dispose Region
+
+		public void Dispose()
+		{
+			this.Dispose(true);
+			GC.SuppressFinalize(this);
+		}
+
+		~Sass()
+		{
+			Dispose(false);
+		}
+
+		protected virtual void Dispose(bool isDisposing)
+		{
+			if (isDisposing)
+			{
+				if (process != null)
+				{
+					process.Dispose();
+					process = null;
+				}
+			}
+		}
+
+		#endregion
 	}
 
 	public class SassCodeStyle : List<string>
