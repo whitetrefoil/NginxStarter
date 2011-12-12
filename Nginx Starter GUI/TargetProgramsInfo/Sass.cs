@@ -176,7 +176,6 @@ namespace NginxStarterGUI.TargetProgramsInfo
 				};
 			processWorker.ProgressChanged += (sender, e) =>
 				{
-					System.Windows.MessageBox.Show("asdf");
 					Message += e.UserState + "\n";
 					MessageUpdated(this, null);
 				};
