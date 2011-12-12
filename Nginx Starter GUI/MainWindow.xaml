@@ -192,7 +192,7 @@
 			<TabItem Header="LESS" IsEnabled="False" Visibility="Collapsed">
 				<DockPanel/>
 			</TabItem>
-			<TabItem Header="SASS" IsEnabled="False" Visibility="Collapsed">
+			<TabItem Header="SASS">
 				<DockPanel>
 					<Border DockPanel.Dock="Bottom" BorderThickness="0,1,0,0" BorderBrush="{StaticResource brushSplitLineH}">
 						<StackPanel VerticalAlignment="Bottom">
