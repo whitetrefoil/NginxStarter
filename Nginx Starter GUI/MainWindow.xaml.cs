@@ -734,7 +734,8 @@ namespace NginxStarterGUI
 			sassMainBinding.Source = sass;
 			txtSMain.SetBinding(TextBlock.TextProperty, sassMainBinding);
 			setSassEvents();
-			sass.Start();
+			if (sass.Start())
+				sassWatchStarted();
 		}
 
 		private void btnSWatch_Click(object sender, RoutedEventArgs e)
