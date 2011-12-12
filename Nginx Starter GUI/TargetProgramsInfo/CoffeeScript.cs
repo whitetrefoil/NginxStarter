@@ -5,6 +5,8 @@ using System.Diagnostics;
 using System.IO;
 using NginxStarterGUI.Classes;
 using System.Globalization;
+using System.Security;
+using System.Security.Permissions;
 
 namespace NginxStarterGUI.TargetProgramsInfo
 {
@@ -13,6 +15,9 @@ namespace NginxStarterGUI.TargetProgramsInfo
 		public event PropertyChangedEventHandler PropertyChanged;
 		private Process process;
 		private BackgroundWorker processWorker;
+		public event EventHandler MessageUpdated;
+		public event EventHandler ProcessExited;
+
 		public string nodeJsPath { get; set; }
 		public string coffeePath { get; set; }
 		public string inputPath { get; set; }
@@ -21,6 +26,7 @@ namespace NginxStarterGUI.TargetProgramsInfo
 		public bool isCoffeeGlobal { get; set; }
 		public bool isNodeInPath { get; set; }
 		public bool isBare { get; set; }
+
 		private string message;
 		public string Message
 		{
@@ -56,12 +62,18 @@ namespace NginxStarterGUI.TargetProgramsInfo
 			this.isBare = true;
 		}
 
+		[EnvironmentPermissionAttribute(SecurityAction.LinkDemand, Unrestricted = false)]
 		public bool start()
 		{
 			this.process = new Process();
 			ProcessStartInfo info = new ProcessStartInfo(); ;
 			info.Arguments = string.Empty;
 			info.WorkingDirectory = null;
+			process.Exited += (sender, e) =>
+			{
+				if (ProcessExited != null)
+					ProcessExited(null, e);
+			};
 
 			#region Set exe files path
 
@@ -117,12 +129,12 @@ namespace NginxStarterGUI.TargetProgramsInfo
 				info.WorkingDirectory = ComparePath.Compare(inputPath, outputPath, '\\');
 				int headerIndex = info.WorkingDirectory.Length;
 				inputPath = PathConverter.ConvertWinToUnix(inputPath.Substring(headerIndex));
-				if (String.IsNullOrEmpty(inputPath))
-					inputPath = ".";
 				outputPath = PathConverter.ConvertWinToUnix(outputPath.Substring(headerIndex));
-				if (String.IsNullOrEmpty(outputPath))
-					outputPath = ".";
 			}
+			if (String.IsNullOrEmpty(inputPath))
+				inputPath = ".";
+			if (String.IsNullOrEmpty(outputPath))
+				outputPath = ".";
 
 			#endregion
 
@@ -147,15 +159,6 @@ namespace NginxStarterGUI.TargetProgramsInfo
 			info.RedirectStandardError = true;
 			info.RedirectStandardInput = true;
 
-			process.OutputDataReceived += (sender, e) =>
-			{
-				Message += e.Data + "\n";
-			};
-			process.ErrorDataReceived += (sender, e) =>
-			{
-				Message += e.Data + "\n";
-			};
-
 			processWorker = new BackgroundWorker();
 			processWorker.WorkerSupportsCancellation = true;
 			processWorker.WorkerReportsProgress = true;
@@ -163,11 +166,20 @@ namespace NginxStarterGUI.TargetProgramsInfo
 			processWorker.DoWork += (sender, e) =>
 				{
 					process.StartInfo = info;
+					process.ErrorDataReceived += (_sender, _e) =>
+						processWorker.ReportProgress(0, _e.Data);
+					process.OutputDataReceived += (_sender, _e) =>
+						processWorker.ReportProgress(0, _e.Data);
 					process.Start();
 					process.BeginOutputReadLine();
 					process.BeginErrorReadLine();
 					process.WaitForExit();
 				};
+			processWorker.ProgressChanged += (sender, e) =>
+			{
+				Message += e.UserState + "\n";
+				MessageUpdated(this, null);
+			};
 			processWorker.RunWorkerCompleted += (sender, e) =>
 				{
 					if (!process.HasExited)
@@ -177,9 +189,10 @@ namespace NginxStarterGUI.TargetProgramsInfo
 				};
 
 			processWorker.RunWorkerAsync(info);
-			return true;
 
 			#endregion
+
+			return true;
 		}
 
 		public bool stop()

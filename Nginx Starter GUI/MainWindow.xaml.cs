@@ -631,6 +631,14 @@ namespace NginxStarterGUI
 			coffeeScript.isWatch = isWatch;
 		}
 
+		private void setCoffeeEvents()
+		{
+			coffeeScript.MessageUpdated += (sender, e) =>
+				slvCMain.ScrollToBottom();
+			coffeeScript.ProcessExited += (sender, e) =>
+				coffeeWatchStoped();
+		}
+
 		private void btnCStart_Click(object sender, RoutedEventArgs e)
 		{
 			if (coffeeScript == null)
@@ -639,6 +647,7 @@ namespace NginxStarterGUI
 			Binding coffeeMainBinding = new Binding("Message");
 			coffeeMainBinding.Source = coffeeScript;
 			txtCMain.SetBinding(TextBlock.TextProperty, coffeeMainBinding);
+			setCoffeeEvents();
 			coffeeScript.start();
 		}
 
@@ -650,6 +659,7 @@ namespace NginxStarterGUI
 			Binding coffeeMainBinding = new Binding("Message");
 			coffeeMainBinding.Source = coffeeScript;
 			txtCMain.SetBinding(TextBlock.TextProperty, coffeeMainBinding);
+			setCoffeeEvents();
 			if (coffeeScript.start())
 				coffeeWatchStarted();
 		}
