@@ -648,7 +648,8 @@ namespace NginxStarterGUI
 			coffeeMainBinding.Source = coffeeScript;
 			txtCMain.SetBinding(TextBlock.TextProperty, coffeeMainBinding);
 			setCoffeeEvents();
-			coffeeScript.start();
+			if (coffeeScript.start())
+				coffeeWatchStarted();
 		}
 
 		private void btnCWatch_Click(object sender, RoutedEventArgs e)
