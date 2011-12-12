@@ -110,13 +110,18 @@ namespace NginxStarterGUI.TargetProgramsInfo
 			{
 				info.WorkingDirectory = Path.GetDirectoryName(inputPath);
 				inputPath = PathConverter.ConvertWinToUnix(Path.GetFileName(inputPath));
+				outputPath = PathConverter.ConvertWinToUnix(Path.GetFileName(outputPath));
 			}
 			else
 			{
 				info.WorkingDirectory = ComparePath.Compare(inputPath, outputPath, '\\');
 				int headerIndex = info.WorkingDirectory.Length;
 				inputPath = PathConverter.ConvertWinToUnix(inputPath.Substring(headerIndex));
+				if (String.IsNullOrEmpty(inputPath))
+					inputPath = ".";
 				outputPath = PathConverter.ConvertWinToUnix(outputPath.Substring(headerIndex));
+				if (String.IsNullOrEmpty(outputPath))
+					outputPath = ".";
 			}
 
 			#endregion
@@ -179,12 +184,14 @@ namespace NginxStarterGUI.TargetProgramsInfo
 
 		public bool stop()
 		{
-			// Temp codes
-			if (process != null)
+			if (process != null && !process.HasExited)
 			{
 				process.Kill();
 			}
-			return true;
+			if (process.HasExited)
+				return true;
+			else
+				return false;
 		}
 
 		private void OnPropertyChanged(string info)

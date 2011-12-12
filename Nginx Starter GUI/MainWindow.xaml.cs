@@ -706,6 +706,12 @@ namespace NginxStarterGUI
 			sass.IsWatch = isWatch;
 		}
 
+		private void setSassScrolling()
+		{
+			sass.MessageUpdated += (sender, e) =>
+				slvSMain.ScrollToBottom();
+		}
+
 		private void btnSStart_Click(object sender, RoutedEventArgs e)
 		{
 			if (sass == null)
@@ -714,8 +720,8 @@ namespace NginxStarterGUI
 			Binding sassMainBinding = new Binding("Message");
 			sassMainBinding.Source = sass;
 			txtSMain.SetBinding(TextBlock.TextProperty, sassMainBinding);
-			if (sass.Start())
-				sassWatchStarted();
+			setSassScrolling();
+			sass.Start();
 		}
 
 		private void btnSWatch_Click(object sender, RoutedEventArgs e)
@@ -726,6 +732,7 @@ namespace NginxStarterGUI
 			Binding sassMainBinding = new Binding("Message");
 			sassMainBinding.Source = sass;
 			txtSMain.SetBinding(TextBlock.TextProperty, sassMainBinding);
+			setSassScrolling();
 			if (sass.Start())
 				sassWatchStarted();
 		}

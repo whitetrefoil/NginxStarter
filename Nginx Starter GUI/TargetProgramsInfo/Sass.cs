@@ -14,6 +14,9 @@ namespace NginxStarterGUI.TargetProgramsInfo
 		public event PropertyChangedEventHandler PropertyChanged;
 		private Process process;
 		private BackgroundWorker processWorker;
+		public event EventHandler MessageUpdated;
+		public event EventHandler ProcessExited;
+
 		public string RubyPath { get; set; }
 		public string SassPath { get; set; }
 		public string InputPath { get; set; }
@@ -45,35 +48,160 @@ namespace NginxStarterGUI.TargetProgramsInfo
 		public const string OfdOutputFilter = "目录|*.folder";
 		public const string OfdOutputTitle = "选择输出文件/目录";
 
-		[EnvironmentPermissionAttribute(SecurityAction.LinkDemand, Unrestricted=false)]
+		[EnvironmentPermissionAttribute(SecurityAction.LinkDemand, Unrestricted = false)]
 		public bool Start()
 		{
-			this.process = new Process();
+			process = new Process();
 			ProcessStartInfo info = new ProcessStartInfo();
+			info.Arguments = string.Empty;
+			info.WorkingDirectory = null;
+			EventHandler MessageUpdatedHandle = MessageUpdated;
+			EventHandler ProcessExitedHandle = ProcessExited;
+			process.Exited += (sender, e) =>
+				ProcessExitedHandle(null, e);
+
+			#region Set EXE file path
+
 			if (this.IsRubyInPath)
 			{
 				this.RubyPath = FindInPath.Find("ruby.exe", MainWindow.WorkingDirectory, false);
 				this.SassPath = FindInPath.Find("sass", MainWindow.WorkingDirectory, true, true);
+				if (SassPath.EndsWith(".bat", StringComparison.OrdinalIgnoreCase) || SassPath.EndsWith(".cmd", StringComparison.OrdinalIgnoreCase) || SassPath.EndsWith(".cmd", StringComparison.OrdinalIgnoreCase))
+				{
+					HashSet<string> possibleSassLocations = FindPathInfo.InBat("\"ruby.exe\"", "sass\"", SassPath);
+					if (possibleSassLocations != null)
+					{
+						foreach (string possibleSassLocation in possibleSassLocations)
+						{
+							string temp = possibleSassLocation.Replace("\"", "").Replace("ruby.exe ", "");
+							if (File.Exists(temp))
+							{
+								SassPath = temp;
+								break;
+							}
+						}
+					}
+				}
 			}
-			this.InputPath = this.InputPath.Replace(Path.DirectorySeparatorChar, '/');
-			this.OutputPath = this.OutputPath.Replace(Path.DirectorySeparatorChar, '/');
+			info.FileName = RubyPath;
+			info.Arguments = "\"" + PathConverter.ConvertWinToUnix(SassPath) + "\"";
+
+			#endregion
+
+			#region Merge paths
+
+			InputPath = !String.IsNullOrEmpty(InputPath) ? PathConverter.ConvertUnixToWin(InputPath) : ".";
+			if (Directory.Exists(InputPath))
+			{
+				if (InputPath[InputPath.Length - 1] != '\\')
+					InputPath += '\\';
+			}
+			if (Directory.Exists(OutputPath))
+			{
+				if (OutputPath[OutputPath.Length - 1] != '\\')
+					OutputPath += '\\';
+			}
+			if (!String.IsNullOrEmpty(OutputPath))
+			{
+				info.WorkingDirectory = Path.GetDirectoryName(InputPath);
+				InputPath = PathConverter.ConvertWinToUnix(Path.GetFileName(InputPath));
+				OutputPath = PathConverter.ConvertWinToUnix(Path.GetFileName(OutputPath));
+			}
+			else
+			{
+				info.WorkingDirectory = ComparePath.Compare(InputPath, OutputPath, '\\');
+				int headerIndex = info.WorkingDirectory.Length;
+				InputPath = PathConverter.ConvertWinToUnix(InputPath.Substring(headerIndex));
+				OutputPath = PathConverter.ConvertWinToUnix(OutputPath.Substring(headerIndex));
+			}
+			if (String.IsNullOrEmpty(InputPath))
+				InputPath = ".";
+			if (String.IsNullOrEmpty(OutputPath))
+				OutputPath = ".";
+
+			#endregion
+
+			#region Set arguments
+
 			info.FileName = this.RubyPath;
-			info.Arguments = string.Empty;
 			if (this.IsUseLF)
 				info.Arguments += " --unix-newlines";
-			if (this.IsForce)
+			if (!this.IsWatch && this.IsForce)
 				info.Arguments += " --force";
 			if (this.IsNoCache)
 				info.Arguments += " --no-cache";
-			if (this.isWatch)
+			if (this.IsWatch)
 				info.Arguments += " --watch " + this.InputPath + ":" + this.OutputPath;
 			else
 				info.Arguments += " --update " + this.InputPath + ":" + this.OutputPath;
+
+			#endregion
+
+			#region Set process properties
+
+			info.UseShellExecute = false;
+			info.CreateNoWindow = true;
+			info.RedirectStandardOutput = true;
+			info.RedirectStandardError = true;
+			info.RedirectStandardInput = true;
+
+			//process.OutputDataReceived += (sender, e) =>
+			//{
+			//    Message += e.Data + "\n";
+			//    handle(this, null);
+			//};
+			//process.ErrorDataReceived += (sender, e) =>
+			//{
+			//    Message += e.Data + "\n";
+			//    handle(this, null);
+			//};
+
+			processWorker = new BackgroundWorker();
+			processWorker.WorkerSupportsCancellation = true;
+			processWorker.WorkerReportsProgress = true;
+
+			processWorker.DoWork += (sender, e) =>
+				{
+					process.StartInfo = info;
+					process.OutputDataReceived += (_sender, _e) =>
+						processWorker.ReportProgress(0, _e.Data);
+					process.ErrorDataReceived += (_sender, _e) =>
+						processWorker.ReportProgress(0, _e.Data);
+					process.Start();
+					process.BeginOutputReadLine();
+					process.BeginErrorReadLine();
+					process.WaitForExit();
+				};
+			processWorker.ProgressChanged += (sender, e) =>
+				{
+					Message += e.UserState + "\n";
+					MessageUpdatedHandle(this, null);
+				};
+			processWorker.RunWorkerCompleted += (sender, e) =>
+				{
+					if (!process.HasExited)
+					{
+						process.Kill();
+					}
+				};
+
+			processWorker.RunWorkerAsync(info);
+
+			#endregion
+
+			return true;
 		}
 
 		public bool Stop()
 		{
-			return true;
+			if (process != null && !process.HasExited)
+			{
+				process.Kill();
+			}
+			if (process.HasExited)
+				return true;
+			else
+				return false;
 		}
 
 		private void OnPropertyChanged(string info)
