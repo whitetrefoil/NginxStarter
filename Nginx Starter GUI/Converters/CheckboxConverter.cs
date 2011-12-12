@@ -3,7 +3,7 @@ using System.Windows.Data;
 
 namespace NginxStarterGUI.Converters
 {
-	public class CheckboxConverter : IValueConverter
+	public class CheckBoxConverter : IValueConverter
 	{
 		#region IValueConverter Members
 

@@ -24,9 +24,11 @@ namespace NginxStarterGUI.Classes
 			else
 				Directory.SetCurrentDirectory(AppDomain.CurrentDomain.BaseDirectory.ToString());
 			List<string> systemPaths = new List<string>(("." + Path.PathSeparator + SystemPath).Split(Path.PathSeparator));
-			List<string> systemPathExts = SystemPathExt != string.Empty ?
+			List<string> systemPathExts = !String.IsNullOrEmpty(SystemPathExt) ?
 				new List<string>(System.Environment.GetEnvironmentVariable("Pathext").Split(Path.PathSeparator)) :
-				new List<string> { ".exe", ".cmd", ".bat" }; string targetPath = string.Empty;
+				new List<string> { ".exe", ".cmd",".com", ".bat" };
+			
+			string targetPath = string.Empty;
 
 			if (!isNeedToTestExt)
 			{
@@ -41,7 +43,7 @@ namespace NginxStarterGUI.Classes
 			foreach (string pathExt in systemPathExts)
 			{
 				string result = find(targetName + pathExt, systemPaths);
-				if (result != string.Empty)
+				if (!String.IsNullOrEmpty(result))
 				{
 					targetPath = result;
 					break;

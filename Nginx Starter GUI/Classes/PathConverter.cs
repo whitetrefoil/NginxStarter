@@ -1,4 +1,6 @@
-﻿namespace NginxStarterGUI.Classes
+﻿using System;
+
+namespace NginxStarterGUI.Classes
 {
 	public static class PathConverter
 	{
@@ -9,7 +11,10 @@
 		/// <returns>返回Unix格式路径</returns>
 		public static string ConvertWinToUnix(string input)
 		{
-			return input.Replace('\\', '/');
+			if (!String.IsNullOrEmpty(input))
+				return input.Replace('\\', '/');
+			else
+				return null;
 		}
 
 		/// <summary>
@@ -19,7 +24,10 @@
 		/// <returns>返回Windows格式路径</returns>
 		public static string ConvertUnixToWin(string input)
 		{
-			return input.Replace('/', '\\');
+			if (!String.IsNullOrEmpty(input))
+				return input.Replace('/', '\\');
+			else
+				return null;
 		}
 	}
 }
