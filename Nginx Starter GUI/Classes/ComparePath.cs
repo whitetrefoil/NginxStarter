@@ -31,13 +31,14 @@ namespace NginxStarterGUI.Classes
 				else
 					break;
 			}
-
-			int lastSeparatorIndex = output.LastIndexOf(separator);
-			if (lastSeparatorIndex > 0)
-				output = output.Remove(lastSeparatorIndex + 1);
-			else
-				output = string.Empty;
-
+			if (!output.EndsWith(separator.ToString(), StringComparison.OrdinalIgnoreCase))
+			{
+				int lastSeparatorIndex = output.LastIndexOf(separator);
+				if (lastSeparatorIndex > 0)
+					output = output.Remove(lastSeparatorIndex + 1);
+				else
+					output = string.Empty;
+			}
 			return output;
 		}
 
