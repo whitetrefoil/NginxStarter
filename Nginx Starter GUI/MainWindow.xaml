@@ -183,8 +183,8 @@
 						</Grid>
 					</Border>
 					<Grid>
-						<ScrollViewer x:Name="slvCMain" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" CanContentScroll="True">
-							<TextBlock x:Name="txtCMain" Margin="0" TextInput="txtCMain_TextInput"/>
+						<ScrollViewer x:Name="slvCMain" VerticalScrollBarVisibility="Auto" CanContentScroll="True">
+							<TextBlock x:Name="txtCMain" Margin="0" TextWrapping="Wrap" TextInput="txtCMain_TextInput"/>
 						</ScrollViewer>
 					</Grid>
 				</DockPanel>
@@ -231,7 +231,7 @@
 								</Grid.ColumnDefinitions>
 								<Button x:Name="btnSStart" Content="运行(_R)" Grid.Column="0" Width="80" Click="btnSStart_Click" />
 								<Button x:Name="btnSWatch" Content="监听(_W)" Grid.Column="1" Width="80" Click="btnSWatch_Click" />
-								<Button x:Name="btnSStop" Content="停止监听(_S)" Grid.Column="2" Width="80" IsEnabled="False" Click="btnSStop_Click" />
+								<Button x:Name="btnSStop" Content="停止(_S)" Grid.Column="2" Width="80" IsEnabled="False" Click="btnSStop_Click" />
 							</Grid>
 						</StackPanel>
 					</Border>
@@ -259,7 +259,9 @@
 						</Grid>
 					</Border>
 					<Grid>
-						<TextBlock x:Name="txtSMain" Margin="0"></TextBlock>
+						<ScrollViewer x:Name="slvSMain" VerticalScrollBarVisibility="Auto" CanContentScroll="True">
+							<TextBlock x:Name="txtSMain" Margin="0" TextWrapping="Wrap"></TextBlock>
+						</ScrollViewer>
 					</Grid>
 				</DockPanel>
 			</TabItem>
