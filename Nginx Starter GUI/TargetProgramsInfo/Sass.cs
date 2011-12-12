@@ -126,6 +126,8 @@ namespace NginxStarterGUI.TargetProgramsInfo
 			#region Set arguments
 
 			info.FileName = this.RubyPath;
+			if (!String.IsNullOrEmpty(CodeStyle))
+				info.Arguments += " --style " + CodeStyle;
 			if (this.IsUseLF)
 				info.Arguments += " --unix-newlines";
 			if (!this.IsWatch && this.IsForce)
