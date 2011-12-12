@@ -164,9 +164,9 @@ namespace NginxStarterGUI.TargetProgramsInfo
 			processWorker.DoWork += (sender, e) =>
 				{
 					process.StartInfo = info;
-					process.OutputDataReceived += (_sender, _e) =>
-						processWorker.ReportProgress(0, _e.Data);
 					process.ErrorDataReceived += (_sender, _e) =>
+						processWorker.ReportProgress(0, _e.Data);
+					process.OutputDataReceived += (_sender, _e) =>
 						processWorker.ReportProgress(0, _e.Data);
 					process.Start();
 					process.BeginOutputReadLine();
