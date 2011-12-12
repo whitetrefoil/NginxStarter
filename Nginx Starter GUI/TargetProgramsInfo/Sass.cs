@@ -185,6 +185,7 @@ namespace NginxStarterGUI.TargetProgramsInfo
 			return true;
 		}
 
+		[EnvironmentPermissionAttribute(SecurityAction.LinkDemand, Unrestricted = false)]
 		public bool Stop()
 		{
 			if (process != null && !process.HasExited)
@@ -227,6 +228,11 @@ namespace NginxStarterGUI.TargetProgramsInfo
 				{
 					process.Dispose();
 					process = null;
+				}
+				if (processWorker != null)
+				{
+					processWorker.Dispose();
+					processWorker = null;
 				}
 			}
 		}
