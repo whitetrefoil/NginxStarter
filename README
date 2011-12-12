@@ -2,6 +2,12 @@
 
 Changelog:
 
+0.0.3.2
+
+Fixed: 一个关于比较CoffeeScript输入输出路径的逻辑错误
+
+----------
+
 0.0.3.1
 
 Optimized: 性能优化
