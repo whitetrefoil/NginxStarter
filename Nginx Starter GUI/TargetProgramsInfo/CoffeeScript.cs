@@ -129,7 +129,11 @@ namespace NginxStarterGUI.TargetProgramsInfo
 				info.WorkingDirectory = ComparePath.Compare(inputPath, outputPath, '\\');
 				int headerIndex = info.WorkingDirectory.Length;
 				inputPath = PathConverter.ConvertWinToUnix(inputPath.Substring(headerIndex));
+				if (String.IsNullOrEmpty(inputPath))
+					inputPath = ".";
 				outputPath = PathConverter.ConvertWinToUnix(outputPath.Substring(headerIndex));
+				if (String.IsNullOrEmpty(outputPath))
+					outputPath = ".";
 			}
 			if (String.IsNullOrEmpty(inputPath))
 				inputPath = ".";
