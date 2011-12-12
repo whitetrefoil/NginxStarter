@@ -70,7 +70,7 @@ namespace NginxStarterGUI.TargetProgramsInfo
 			if (this.isCoffeeGlobal)
 			{
 				coffeePath = FindInPath.Find("coffee", MainWindow.WorkingDirectory, true, true);
-				if(coffeePath.EndsWith(".bat", StringComparison.OrdinalIgnoreCase) || coffeePath.EndsWith(".cmd", StringComparison.OrdinalIgnoreCase))
+				if (coffeePath.EndsWith(".bat", StringComparison.OrdinalIgnoreCase) || coffeePath.EndsWith(".cmd", StringComparison.OrdinalIgnoreCase) || coffeePath.EndsWith(".com", StringComparison.OrdinalIgnoreCase))
 				{
 					HashSet<string> possibleCoffeeLocations = FindPathInfo.InBat("%~dp0\\.\\", "coffee", coffeePath);
 					if (possibleCoffeeLocations != null)
@@ -96,13 +96,18 @@ namespace NginxStarterGUI.TargetProgramsInfo
 			#region Merge paths
 
 			inputPath = !String.IsNullOrEmpty(inputPath) ? PathConverter.ConvertUnixToWin(inputPath) : ".";
-			if (!String.IsNullOrEmpty(outputPath))
+			if (Directory.Exists(inputPath))
 			{
-				if (Directory.Exists(inputPath))
-				{
-					if (inputPath[inputPath.Length - 1] != '\\')
-						inputPath += '\\';
-				}
+				if (inputPath[inputPath.Length - 1] != '\\')
+					inputPath += '\\';
+			}
+			if (Directory.Exists(outputPath))
+			{
+				if (outputPath[outputPath.Length - 1] != '\\')
+					outputPath += '\\';
+			}
+			if (String.IsNullOrEmpty(outputPath))
+			{
 				info.WorkingDirectory = Path.GetDirectoryName(inputPath);
 				inputPath = PathConverter.ConvertWinToUnix(Path.GetFileName(inputPath));
 			}
