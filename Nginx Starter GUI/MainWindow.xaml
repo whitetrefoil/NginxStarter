@@ -183,8 +183,8 @@
 						</Grid>
 					</Border>
 					<Grid>
-						<ScrollViewer x:Name="slvCMain" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" CanContentScroll="True">
-							<TextBlock x:Name="txtCMain" Margin="0" TextInput="txtCMain_TextInput"/>
+						<ScrollViewer x:Name="slvCMain" VerticalScrollBarVisibility="Auto" CanContentScroll="True">
+							<TextBlock x:Name="txtCMain" Margin="0" TextWrapping="Wrap" TextInput="txtCMain_TextInput"/>
 						</ScrollViewer>
 					</Grid>
 				</DockPanel>
@@ -259,7 +259,9 @@
 						</Grid>
 					</Border>
 					<Grid>
-						<TextBlock x:Name="txtSMain" Margin="0"></TextBlock>
+						<ScrollViewer x:Name="slvSMain" VerticalScrollBarVisibility="Auto" CanContentScroll="True">
+							<TextBlock x:Name="txtSMain" Margin="0" TextWrapping="Wrap"></TextBlock>
+						</ScrollViewer>
 					</Grid>
 				</DockPanel>
 			</TabItem>
