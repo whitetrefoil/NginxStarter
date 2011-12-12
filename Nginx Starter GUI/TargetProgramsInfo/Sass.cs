@@ -26,6 +26,7 @@ namespace NginxStarterGUI.TargetProgramsInfo
 		public bool IsUseLF { get; set; }
 		public bool IsForce { get; set; }
 		public bool IsNoCache { get; set; }
+		private bool IsScss { get; set; }
 		public string CodeStyle { get; set; }
 
 		private string message;
