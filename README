@@ -2,6 +2,14 @@
 
 Changelog:
 
+0.0.3.3
+
+Added: Coffee的信息框会自动向下滚动了，相应地添加了自动换行
+Added: 现在Coffee会在进程结束时自动解锁界面
+Added: 现在Coffee界面的Start按钮也会锁定界面直到进程结束，避免连续点击Start按钮造成崩溃
+
+----------
+
 0.0.3.2
 
 Fixed: 一个关于比较CoffeeScript输入输出路径的逻辑错误
