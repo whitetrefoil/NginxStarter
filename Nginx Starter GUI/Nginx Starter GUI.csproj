@@ -143,6 +143,7 @@
     <Compile Include="TargetProgramsInfo\Nginx.cs" />
     <Compile Include="TargetProgramsInfo\PhpCgi.cs" />
     <Compile Include="TargetProgramsInfo\Sass.cs" />
+    <Compile Include="TargetProgramsInfo\TargetProgram.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
