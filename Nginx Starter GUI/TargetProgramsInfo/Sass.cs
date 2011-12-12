@@ -149,17 +149,6 @@ namespace NginxStarterGUI.TargetProgramsInfo
 			info.RedirectStandardError = true;
 			info.RedirectStandardInput = true;
 
-			//process.OutputDataReceived += (sender, e) =>
-			//{
-			//    Message += e.Data + "\n";
-			//    handle(this, null);
-			//};
-			//process.ErrorDataReceived += (sender, e) =>
-			//{
-			//    Message += e.Data + "\n";
-			//    handle(this, null);
-			//};
-
 			processWorker = new BackgroundWorker();
 			processWorker.WorkerSupportsCancellation = true;
 			processWorker.WorkerReportsProgress = true;
