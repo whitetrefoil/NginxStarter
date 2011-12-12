@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.IO;
-using System.Security;
-using System.Security.Permissions;
-using NginxStarterGUI.Classes;
 
 namespace NginxStarterGUI.TargetProgramsInfo
 {
