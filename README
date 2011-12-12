@@ -2,6 +2,13 @@
 
 Changelog:
 
+0.0.3.1
+
+Optimized: 性能优化
+Optimized: 线程安全优化
+
+----------
+
 0.0.3.0
 
 Added: 添加了CoffeeScript相关功能
