@@ -65,10 +65,11 @@ namespace NginxStarterGUI.TargetProgramsInfo
 				info.Arguments += " --force";
 			if (this.IsNoCache)
 				info.Arguments += " --no-cache";
-			if (this.isWatch)
+			if (this.IsWatch)
 				info.Arguments += " --watch " + this.InputPath + ":" + this.OutputPath;
 			else
 				info.Arguments += " --update " + this.InputPath + ":" + this.OutputPath;
+			return true;
 		}
 
 		public bool Stop()
