@@ -2,6 +2,10 @@
 
 Changelog:
 
+0.0.4.1
+
+Fixed: Nginx托盘图标菜单激活不正缺的问题
+
 0.0.4.0
 
 Added: SASS功能
