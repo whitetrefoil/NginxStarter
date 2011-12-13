@@ -9,14 +9,8 @@ using System;
 
 namespace NginxStarterGUI.TargetProgramsInfo
 {
-	public class Sass : INotifyPropertyChanged, IDisposable
+	class Sass : TargetProgram
 	{
-		public event PropertyChangedEventHandler PropertyChanged;
-		private Process process;
-		private BackgroundWorker processWorker;
-		public event EventHandler MessageUpdated;
-		public event EventHandler ProcessExited;
-
 		public string RubyPath { get; set; }
 		public string SassPath { get; set; }
 		public string InputPath { get; set; }
@@ -28,17 +22,6 @@ namespace NginxStarterGUI.TargetProgramsInfo
 		public bool IsNoCache { get; set; }
 		private bool IsScss { get; set; }
 		public string CodeStyle { get; set; }
-
-		private string message;
-		public string Message
-		{
-			get { return message; }
-			set
-			{
-				message = value;
-				OnPropertyChanged("Message");
-			}
-		}
 
 		public const string OfdRubyFilter = "Ruby默认执行文件|ruby.exe|所有执行文件|*.exe|所有文件|*.*";
 		public const string OfdRubyTitle = "选择Ruby执行文件";
@@ -52,16 +35,6 @@ namespace NginxStarterGUI.TargetProgramsInfo
 		[EnvironmentPermissionAttribute(SecurityAction.LinkDemand, Unrestricted = false)]
 		public bool Start()
 		{
-			process = new Process();
-			ProcessStartInfo info = new ProcessStartInfo();
-			info.Arguments = string.Empty;
-			info.WorkingDirectory = null;
-			process.Exited += (sender, e) =>
-				{
-					if (ProcessExited != null)
-						ProcessExited(null, e);
-				};
-
 			#region Set EXE file path
 
 			if (this.IsRubyInPath)
@@ -85,8 +58,8 @@ namespace NginxStarterGUI.TargetProgramsInfo
 					}
 				}
 			}
-			info.FileName = RubyPath;
-			info.Arguments = "\"" + PathConverter.ConvertWinToUnix(SassPath) + "\"";
+			fileName = RubyPath;
+			arguments = "\"" + PathConverter.ConvertWinToUnix(SassPath) + "\"";
 
 			#endregion
 
@@ -105,14 +78,14 @@ namespace NginxStarterGUI.TargetProgramsInfo
 			}
 			if (String.IsNullOrEmpty(OutputPath))
 			{
-				info.WorkingDirectory = Path.GetDirectoryName(InputPath);
+				workingDirectory = Path.GetDirectoryName(InputPath);
 				InputPath = PathConverter.ConvertWinToUnix(Path.GetFileName(InputPath));
 				OutputPath = PathConverter.ConvertWinToUnix(Path.GetFileName(OutputPath));
 			}
 			else
 			{
-				info.WorkingDirectory = ComparePath.Compare(InputPath, OutputPath, '\\');
-				int headerIndex = info.WorkingDirectory.Length;
+				workingDirectory = ComparePath.Compare(InputPath, OutputPath, '\\');
+				int headerIndex = workingDirectory.Length;
 				InputPath = PathConverter.ConvertWinToUnix(InputPath.Substring(headerIndex));
 				OutputPath = PathConverter.ConvertWinToUnix(OutputPath.Substring(headerIndex));
 			}
@@ -125,119 +98,37 @@ namespace NginxStarterGUI.TargetProgramsInfo
 
 			#region Set arguments
 
-			info.FileName = this.RubyPath;
+			fileName = this.RubyPath;
 			if (!String.IsNullOrEmpty(CodeStyle))
-				info.Arguments += " --style " + CodeStyle;
+				arguments += " --style " + CodeStyle;
 			if (this.IsUseLF)
-				info.Arguments += " --unix-newlines";
+				arguments += " --unix-newlines";
 			if (!this.IsWatch && this.IsForce)
-				info.Arguments += " --force";
+				arguments += " --force";
 			if (this.IsNoCache)
-				info.Arguments += " --no-cache";
+				arguments += " --no-cache";
 			if (this.IsWatch)
-				info.Arguments += " --watch " + this.InputPath + ":" + this.OutputPath;
+				arguments += " --watch " + this.InputPath + ":" + this.OutputPath;
 			else
-				info.Arguments += " --update " + this.InputPath + ":" + this.OutputPath;
+				arguments += " --update " + this.InputPath + ":" + this.OutputPath;
 
 			#endregion
 
 			#region Set process properties
 
-			info.UseShellExecute = false;
-			info.CreateNoWindow = true;
-			info.RedirectStandardOutput = true;
-			info.RedirectStandardError = true;
-			info.RedirectStandardInput = true;
+			setupInfo(fileName, arguments, workingDirectory);
 
-			processWorker = new BackgroundWorker();
-			processWorker.WorkerSupportsCancellation = true;
-			processWorker.WorkerReportsProgress = true;
-
-			processWorker.DoWork += (sender, e) =>
-				{
-					process.StartInfo = info;
-					process.ErrorDataReceived += (_sender, _e) =>
-						processWorker.ReportProgress(0, _e.Data);
-					process.OutputDataReceived += (_sender, _e) =>
-						processWorker.ReportProgress(0, _e.Data);
-					process.Start();
-					process.BeginOutputReadLine();
-					process.BeginErrorReadLine();
-					process.WaitForExit();
-				};
-			processWorker.ProgressChanged += (sender, e) =>
-				{
-					Message += e.UserState + "\n";
-					MessageUpdated(this, null);
-				};
-			processWorker.RunWorkerCompleted += (sender, e) =>
-				{
-					if (!process.HasExited)
-					{
-						process.Kill();
-					}
-				};
-
-			processWorker.RunWorkerAsync(info);
+			return run();
 
 			#endregion
-
-			return true;
 		}
 
 		[EnvironmentPermissionAttribute(SecurityAction.LinkDemand, Unrestricted = false)]
 		public bool Stop()
 		{
-			if (process != null && !process.HasExited)
-			{
-				process.Kill();
-			}
-			if (process.HasExited)
-				return true;
-			else
-				return false;
+			return stop();
 		}
 
-		private void OnPropertyChanged(string info)
-		{
-			PropertyChangedEventHandler handler = PropertyChanged;
-			if (handler != null)
-			{
-				handler(this, new PropertyChangedEventArgs(info));
-			}
-		}
-
-		#region Dispose Region
-
-		public void Dispose()
-		{
-			this.Dispose(true);
-			GC.SuppressFinalize(this);
-		}
-
-		~Sass()
-		{
-			Dispose(false);
-		}
-
-		protected virtual void Dispose(bool isDisposing)
-		{
-			if (isDisposing)
-			{
-				if (process != null)
-				{
-					process.Dispose();
-					process = null;
-				}
-				if (processWorker != null)
-				{
-					processWorker.Dispose();
-					processWorker = null;
-				}
-			}
-		}
-
-		#endregion
 	}
 
 	public class SassCodeStyle : List<string>
