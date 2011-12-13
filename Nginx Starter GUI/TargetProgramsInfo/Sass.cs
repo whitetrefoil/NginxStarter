@@ -103,7 +103,7 @@ namespace NginxStarterGUI.TargetProgramsInfo
 				if (OutputPath[OutputPath.Length - 1] != '\\')
 					OutputPath += '\\';
 			}
-			if (!String.IsNullOrEmpty(OutputPath))
+			if (String.IsNullOrEmpty(OutputPath))
 			{
 				info.WorkingDirectory = Path.GetDirectoryName(InputPath);
 				InputPath = PathConverter.ConvertWinToUnix(Path.GetFileName(InputPath));
