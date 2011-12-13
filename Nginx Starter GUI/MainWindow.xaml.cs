@@ -24,7 +24,7 @@ namespace NginxStarterGUI
 		private static System.Diagnostics.ProcessStartInfo _phpInfo;
 		private static System.Diagnostics.Process _php;
 		public static readonly string WorkingDirectory = Directory.GetCurrentDirectory();
-		private static NotifyIcon _notifyIcon;
+		private static NotifyIcon notifyIcon;
 		private Nginx nginx;
 		private CoffeeScript coffeeScript;
 		private Sass sass;
@@ -42,6 +42,24 @@ namespace NginxStarterGUI
 			this.saveConfigFile();
 			if (nginx != null)
 				nginx.quit();
+		}
+
+		private void Window_StateChanged(object sender, EventArgs e)
+		{
+			if (this.WindowState == WindowState.Minimized)
+			{
+				if (nginx != null)
+					notifyIcon = new NotifyIcon(this, nginx.IsRunning);
+				else
+					notifyIcon = new NotifyIcon(this, false);
+				this.ShowInTaskbar = false;
+			}
+			else
+			{
+				this.ShowInTaskbar = true;
+				if (notifyIcon != null)
+					notifyIcon.Dispose();
+			}
 		}
 
 		#region Config File Region
@@ -216,6 +234,8 @@ namespace NginxStarterGUI
 			btnNReload.IsEnabled = true;
 			btnNRestart.IsEnabled = true;
 			btnNQuit.IsEnabled = true;
+			if (notifyIcon != null)
+				notifyIcon.ChangeOptionsAfterNginxStarted();
 		}
 
 		/// <summary>
@@ -231,6 +251,8 @@ namespace NginxStarterGUI
 			btnNReload.IsEnabled = false;
 			btnNRestart.IsEnabled = false;
 			btnNQuit.IsEnabled = false;
+			if (notifyIcon != null)
+				notifyIcon.ChangeOptionsAfterNginxStoped();
 		}
 
 		/// <summary>
@@ -341,20 +363,6 @@ namespace NginxStarterGUI
 		#endregion
 
 		#region PHP Region
-
-		private void Window_StateChanged(object sender, EventArgs e)
-		{
-			if (this.WindowState == WindowState.Minimized)
-			{
-				_notifyIcon = new NotifyIcon(this);
-				this.ShowInTaskbar = false;
-			}
-			else
-			{
-				this.ShowInTaskbar = true;
-				if (_notifyIcon != null) _notifyIcon.Dispose();
-			}
-		}
 
 		public bool phpStart()
 		{

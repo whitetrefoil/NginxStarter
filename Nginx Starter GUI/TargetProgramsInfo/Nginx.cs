@@ -7,10 +7,13 @@ namespace NginxStarterGUI.TargetProgramsInfo
 {
 	class Nginx
 	{
-		private ProcessStartInfo processStartInfo;
+		private ProcessStartInfo info;
 		private Process process;
 		public string exePath { get; set; }
 		public string configPath { get; set; }
+		public bool IsRunning { get; set; }
+		public event EventHandler HasStarted;
+		public event EventHandler HasStoped;
 		public const string OfdExeFilter = "Nginx默认执行文件|nginx.exe|所有执行文件|*.exe|所有文件|*.*";
 		public const string OfdExeTitle = "选择Nginx执行文件";
 		public const string OfdExeFileName = "nginx.exe";
@@ -44,15 +47,25 @@ namespace NginxStarterGUI.TargetProgramsInfo
 		[EnvironmentPermissionAttribute(SecurityAction.LinkDemand, Unrestricted = false)]
 		public bool start()
 		{
-			this.processStartInfo = new ProcessStartInfo();
-			this.processStartInfo.Arguments = string.Empty;
+			this.info = new ProcessStartInfo();
+			this.info.Arguments = string.Empty;
 			if (!String.IsNullOrEmpty(this.configPath))
-				this.processStartInfo.Arguments += " -c " + this.configPath;
-			this.processStartInfo.FileName = this.exePath;
-			this.processStartInfo.WorkingDirectory = this.exePath.Substring(0, this.exePath.LastIndexOf('\\'));
-			this.processStartInfo.CreateNoWindow = true;
-			this.processStartInfo.UseShellExecute = false;
-			this.process = Process.Start(this.processStartInfo);
+				this.info.Arguments += " -c " + this.configPath;
+			this.info.FileName = this.exePath;
+			this.info.WorkingDirectory = this.exePath.Substring(0, this.exePath.LastIndexOf('\\'));
+			this.info.CreateNoWindow = true;
+			this.info.UseShellExecute = false;
+			this.process = Process.Start(this.info);
+			this.process.Exited += (sender, e) =>
+				{
+					this.IsRunning = false;
+					if(this.HasStoped != null)
+						this.HasStoped(sender, e);
+				};
+			if(this.HasStarted != null)
+				this.HasStarted(this, null);
+			this.IsRunning = true;
+
 			return true;
 		}
 
@@ -63,8 +76,9 @@ namespace NginxStarterGUI.TargetProgramsInfo
 		[EnvironmentPermissionAttribute(SecurityAction.LinkDemand, Unrestricted = false)]
 		public bool quit()
 		{
-			this.processStartInfo.Arguments = "-s stop";
-			Process.Start(this.processStartInfo);
+			this.info.Arguments = "-s stop";
+			Process.Start(this.info);
+			this.IsRunning = false;
 			return true;
 		}
 
@@ -85,11 +99,12 @@ namespace NginxStarterGUI.TargetProgramsInfo
 		[EnvironmentPermissionAttribute(SecurityAction.LinkDemand, Unrestricted = false)]
 		public bool stop()
 		{
-			this.processStartInfo.Arguments = "-s quit";
-			Process.Start(this.processStartInfo);
+			this.info.Arguments = "-s quit";
+			Process.Start(this.info);
 			if (!Nginx._stop())
 				return false;
 			else
+				this.IsRunning = false;
 				return true;
 		}
 
@@ -99,8 +114,8 @@ namespace NginxStarterGUI.TargetProgramsInfo
 		[EnvironmentPermissionAttribute(SecurityAction.LinkDemand, Unrestricted = false)]
 		public void reload()
 		{
-			this.processStartInfo.Arguments = "-s reload";
-			Process.Start(this.processStartInfo);
+			this.info.Arguments = "-s reload";
+			Process.Start(this.info);
 		}
 
 		/// <summary>
@@ -109,8 +124,8 @@ namespace NginxStarterGUI.TargetProgramsInfo
 		[EnvironmentPermissionAttribute(SecurityAction.LinkDemand, Unrestricted = false)]
 		public void restart()
 		{
-			this.processStartInfo.Arguments = "-s restart";
-			Process.Start(this.processStartInfo);
+			this.info.Arguments = "-s restart";
+			Process.Start(this.info);
 		}
 	}
 }

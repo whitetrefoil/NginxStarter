@@ -1,91 +1,70 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Drawing;
 using System.Windows;
 
 namespace NginxStarterGUI
 {
 	public partial class NotifyIcon : Component
 	{
-		private static MainWindow _mainWindow;
-		private static bool _isNginxStarted;
+		private MainWindow mainWindow;
+		internal bool IsNginxStarted;
 
 		public NotifyIcon(MainWindow window, bool isNginxStarted = false)
 		{
-			_mainWindow = window;
-			_isNginxStarted = isNginxStarted;
+			mainWindow = window;
+			IsNginxStarted = isNginxStarted;
 			InitializeComponent();
-			if (_isNginxStarted)
-				this.changeOptionsAfterNginxStarted();
+			if (isNginxStarted)
+				this.ChangeOptionsAfterNginxStarted();
 			else
-				this.changeOptionsAfterNginxStoped();
-		}
-
-		public NotifyIcon()
-		{
-			InitializeComponent();
-		}
-
-		public NotifyIcon(IContainer container)
-		{
-			if(container != null)
-				container.Add(this);
-
-			InitializeComponent();
+				this.ChangeOptionsAfterNginxStoped();
 		}
 
 		private void notifyIcon1_MouseDoubleClick(object sender, System.Windows.Forms.MouseEventArgs e)
 		{
-			_mainWindow.WindowState = WindowState.Normal;
+			mainWindow.WindowState = WindowState.Normal;
 		}
 		private void menuItemResume_Click(object sender, System.EventArgs e)
 		{
-			_mainWindow.WindowState = WindowState.Normal;
+			mainWindow.WindowState = WindowState.Normal;
 		}
 		private void menuItemExit_Click(object sender, System.EventArgs e)
 		{
-			_mainWindow.Close();
+			mainWindow.Close();
 			this.Dispose();
 		}
 
 		private void menuItemOStart_Click(object sender, EventArgs e)
 		{
-			_mainWindow.btnNStart_Click(null, null);
-			changeOptionsAfterNginxStarted();
+			mainWindow.btnNStart_Click(null, null);
 		}
 
 		private void menuItemOReload_Click(object sender, EventArgs e)
 		{
-			_mainWindow.btnNReload_Click(null, null);
+			mainWindow.btnNReload_Click(null, null);
 		}
 
 		private void menuItemORestart_Click(object sender, EventArgs e)
 		{
-			_mainWindow.btnNRestart_Click(null, null);
+			mainWindow.btnNRestart_Click(null, null);
 		}
 
 		private void menuItemOQuit_Click(object sender, EventArgs e)
 		{
-			_mainWindow.btnNQuit_Click(null, null);
-			changeOptionsAfterNginxStoped();
+			mainWindow.btnNQuit_Click(null, null);
 		}
 
 		private void menuItemOStop_Click(object sender, EventArgs e)
 		{
-			_mainWindow.btnNStop_Click(null, null);
-			changeOptionsAfterNginxStoped();
+			mainWindow.btnNStop_Click(null, null);
 		}
 
 		private void menuItemOBrowse_Click(object sender, EventArgs e)
 		{
-			_mainWindow.btnNBrowse_Click(null, null);
+			mainWindow.btnNBrowse_Click(null, null);
 		}
 
-		private void changeOptionsAfterNginxStarted()
+		internal void ChangeOptionsAfterNginxStarted()
 		{
 			menuItemOReload.Enabled = true;
 			menuItemORestart.Enabled = true;
@@ -94,7 +73,7 @@ namespace NginxStarterGUI
 			menuItemOBrowse.Enabled = false;
 		}
 
-		private void changeOptionsAfterNginxStoped()
+		internal void ChangeOptionsAfterNginxStoped()
 		{
 			menuItemOReload.Enabled = false;
 			menuItemORestart.Enabled = false;
