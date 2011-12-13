@@ -1,6 +1,9 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.IO;
+using NginxStarterGUI.Classes;
 
 namespace NginxStarterGUI.TargetProgramsInfo
 {
@@ -12,6 +15,10 @@ namespace NginxStarterGUI.TargetProgramsInfo
 		private BackgroundWorker bw;
 		public event EventHandler MessageUpdated;
 		public event EventHandler ProcessExited;
+		protected string fileName;
+		protected string arguments;
+		protected string workingDirectory;
+
 		private string message;
 		public string Message
 		{
@@ -28,7 +35,7 @@ namespace NginxStarterGUI.TargetProgramsInfo
 		/// </summary>
 		public TargetProgram()
 		{
-			setupProcess();
+			this.info = new ProcessStartInfo();
 			setupBw();
 		}
 
@@ -37,6 +44,8 @@ namespace NginxStarterGUI.TargetProgramsInfo
 		/// </summary>
 		private void setupProcess()
 		{
+			this.process = new Process();
+
 			process.Exited += (sender, e) =>
 			{
 				if (ProcessExited != null)
@@ -83,20 +92,21 @@ namespace NginxStarterGUI.TargetProgramsInfo
 				{
 					process.Kill();
 				}
+				process.Dispose();
 			};
 		}
 
 		/// <summary>
 		/// 设置进程文件名、参数等信息
 		/// </summary>
-		/// <param name="fileName">进程文件名</param>
+		/// <param name="fn">进程文件名</param>
 		/// <param name="args">完全格式化好的参数</param>
-		/// <param name="workingDirectory">工作目录</param>
-		protected void setupInfo(string fileName, string args, string workingDirectory)
+		/// <param name="wd">工作目录</param>
+		protected void setupInfo(string fn, string args, string wd)
 		{
-			info.FileName = fileName;
+			info.FileName = fn;
 			info.Arguments = args;
-			info.WorkingDirectory = workingDirectory;
+			info.WorkingDirectory = wd;
 		}
 
 		/// <summary>
@@ -105,6 +115,7 @@ namespace NginxStarterGUI.TargetProgramsInfo
 		/// <returns>返回一个布尔值表示是否启动成功，目前此判断还未完成，必定返回true</returns>
 		protected bool run()
 		{
+			setupProcess();
 			bw.RunWorkerAsync(info);
 			return true;
 		}
@@ -112,18 +123,18 @@ namespace NginxStarterGUI.TargetProgramsInfo
 		/// <summary>
 		/// 启动进程，如果传入参数，将调用setupInfo()设置参数
 		/// </summary>
-		/// <param name="fileName">进程文件名</param>
+		/// <param name="fn">进程文件名</param>
 		/// <param name="args">完全格式化好的参数</param>
-		/// <param name="workingDirectory">工作目录</param>
+		/// <param name="wd">工作目录</param>
 		/// <returns>返回一个布尔值表示是否启动成功，目前此判断还未完成，必定返回true</returns>
-		protected bool run(string fileName, string args, string workingDirectory)
+		protected bool run(string fn, string args, string wd)
 		{
-			setupInfo(fileName, args, workingDirectory);
+			setupInfo(fn, args, wd);
 			return run();
 		}
 
 		/// <summary>
-		/// 结束进程，!!!同时释放本实例
+		/// 结束进程
 		/// </summary>
 		/// <returns>返回一个布尔值表示是否结束进程成功</returns>
 		protected bool stop()
@@ -134,11 +145,41 @@ namespace NginxStarterGUI.TargetProgramsInfo
 			}
 			if (process.HasExited)
 			{
-				Dispose();
 				return true;
 			}
 			else
 				return false;
+		}
+
+		protected Dictionary<string, string> findJointRoot(string inputPath, string outputPath)
+		{
+			Dictionary<string, string> output = new Dictionary<string, string>();
+			output.Add("same", "");
+			output.Add("workingDirectory", "");
+			output.Add("inputPath", "");
+			output.Add("outputPath", "");
+
+			if (String.IsNullOrEmpty(inputPath))
+			{
+				inputPath = ".";
+			}
+			else if (Directory.Exists(inputPath))
+			{
+				if (inputPath[inputPath.Length - 1] != '\\')
+					inputPath += '\\';
+			}
+
+			if (String.IsNullOrEmpty(outputPath))
+			{
+				output["workingDirectory"] = inputPath;
+			}
+			else if (Directory.Exists(outputPath))
+			{
+				if (outputPath[outputPath.Length - 1] != '\\')
+					outputPath += '\\';
+			}
+
+			return output;
 		}
 
 		private void OnPropertyChanged(string data)
