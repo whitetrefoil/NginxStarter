@@ -1,11 +1,8 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
-using NginxStarterGUI.Classes;
-using System.Security;
 using System.Security.Permissions;
-using System;
+using NginxStarterGUI.Classes;
 
 namespace NginxStarterGUI.TargetProgramsInfo
 {
@@ -22,7 +19,7 @@ namespace NginxStarterGUI.TargetProgramsInfo
 		public bool IsUseLF { get; set; }
 		public bool IsForce { get; set; }
 		public bool IsNoCache { get; set; }
-		private bool IsScss { get; set; }
+		private bool isScss { get; set; }
 		public string CodeStyle { get; set; }
 
 		public const string OfdRubyFilter = "Ruby默认执行文件|ruby.exe|所有执行文件|*.exe|所有文件|*.*";

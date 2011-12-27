@@ -1,47 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.IO;
-using NginxStarterGUI.Classes;
-using System.Globalization;
-using System.Security;
 using System.Security.Permissions;
+using NginxStarterGUI.Classes;
 
 namespace NginxStarterGUI.TargetProgramsInfo
 {
-	class CoffeeScript : INotifyPropertyChanged, IDisposable
+	class CoffeeScript : TargetProgram
 	{
 		#region 设置字段和属性
 
-		public event PropertyChangedEventHandler PropertyChanged;
-		private Process process;
-		private BackgroundWorker processWorker;
-		public event EventHandler MessageUpdated;
-		public event EventHandler ProcessExited;
-
-		public string nodeJsPath { get; set; }
-		public string coffeePath { get; set; }
-		public string inputPath { get; set; }
-		public string outputPath { get; set; }
-		public bool isWatch { get; set; }
-		public bool isCoffeeGlobal { get; set; }
-		public bool isNodeInPath { get; set; }
-		public bool isBare { get; set; }
-
-		private string message;
-		public string Message
-		{
-			get
-			{
-				return message;
-			}
-			set
-			{
-				message = value;
-				OnPropertyChanged("Message");
-			}
-		}
+		public string NodeJsPath { get; set; }
+		public string CoffeePath { get; set; }
+		public string InputPath { get; set; }
+		public string OutputPath { get; set; }
+		public bool IsWatch { get; set; }
+		public bool IsCoffeeGlobal { get; set; }
+		public bool IsNodeInPath { get; set; }
+		public bool IsBare { get; set; }
 
 		public const string OfdNodeJsFilter = "Nodejs默认执行文件|node.exe|所有执行文件|*.exe|所有文件|*.*";
 		public const string OfdNodeJsTitle = "选择Nodejs执行文件";
@@ -55,189 +32,97 @@ namespace NginxStarterGUI.TargetProgramsInfo
 		#endregion
 
 		[EnvironmentPermissionAttribute(SecurityAction.LinkDemand, Unrestricted = false)]
-		public bool start()
+		public bool Start()
 		{
-			this.process = new Process();
-			ProcessStartInfo info = new ProcessStartInfo(); ;
-			info.Arguments = string.Empty;
-			info.WorkingDirectory = null;
-			process.Exited += (sender, e) =>
-			{
-				if (ProcessExited != null)
-					ProcessExited(null, e);
-			};
-
 			#region Set exe files path
 
-			if (this.isNodeInPath)
-				this.nodeJsPath = FindInPath.Find("node.exe", MainWindow.WorkingDirectory, false);
-			if (this.isCoffeeGlobal)
+			if (this.IsNodeInPath)
+				this.NodeJsPath = FindInPath.Find("node.exe", MainWindow.WorkingDirectory, false);
+			if (this.IsCoffeeGlobal)
 			{
-				coffeePath = FindInPath.Find("coffee", MainWindow.WorkingDirectory, true, true);
-				if (coffeePath.EndsWith(".bat", StringComparison.OrdinalIgnoreCase) || coffeePath.EndsWith(".cmd", StringComparison.OrdinalIgnoreCase) || coffeePath.EndsWith(".com", StringComparison.OrdinalIgnoreCase))
+				CoffeePath = FindInPath.Find("coffee", MainWindow.WorkingDirectory, true, true);
+				if (CoffeePath.EndsWith(".bat", StringComparison.OrdinalIgnoreCase) || CoffeePath.EndsWith(".cmd", StringComparison.OrdinalIgnoreCase) || CoffeePath.EndsWith(".com", StringComparison.OrdinalIgnoreCase))
 				{
-					HashSet<string> possibleCoffeeLocations = FindPathInfo.InBat("%~dp0\\.\\", "coffee", coffeePath);
+					HashSet<string> possibleCoffeeLocations = FindPathInfo.InBat("%~dp0\\.\\", "coffee", CoffeePath);
 					if (possibleCoffeeLocations != null)
 					{
 						foreach (string possibleCoffeeLocation in possibleCoffeeLocations)
 						{
 							string temp = possibleCoffeeLocation.Replace("%~dp0\\.\\", string.Empty);
-							string tempFullPath = Path.GetDirectoryName(nodeJsPath) + Path.DirectorySeparatorChar + temp;
+							string tempFullPath = Path.GetDirectoryName(NodeJsPath) + Path.DirectorySeparatorChar + temp;
 							if (File.Exists(tempFullPath))
 							{
-								coffeePath = tempFullPath;
+								CoffeePath = tempFullPath;
 								break;
 							}
 						}
 					}
 				};
 			}
-			info.FileName = this.nodeJsPath;
-			info.Arguments += "\"" + PathConverter.ConvertWinToUnix(this.coffeePath) + "\"";
+			fileName = this.NodeJsPath;
+			arguments = "\"" + PathConverter.ConvertWinToUnix(this.CoffeePath) + "\"";
 
 			#endregion
 
 			#region Merge paths
 
-			inputPath = !String.IsNullOrEmpty(inputPath) ? PathConverter.ConvertUnixToWin(inputPath) : ".";
-			if (Directory.Exists(inputPath))
+			InputPath = !String.IsNullOrEmpty(InputPath) ? PathConverter.ConvertUnixToWin(InputPath) : ".";
+			if (Directory.Exists(InputPath))
 			{
-				if (inputPath[inputPath.Length - 1] != '\\')
-					inputPath += '\\';
+				if (InputPath[InputPath.Length - 1] != '\\')
+					InputPath += '\\';
 			}
-			if (Directory.Exists(outputPath))
+			if (Directory.Exists(OutputPath))
 			{
-				if (outputPath[outputPath.Length - 1] != '\\')
-					outputPath += '\\';
+				if (OutputPath[OutputPath.Length - 1] != '\\')
+					OutputPath += '\\';
 			}
-			if (String.IsNullOrEmpty(outputPath))
+			if (String.IsNullOrEmpty(OutputPath))
 			{
-				info.WorkingDirectory = Path.GetDirectoryName(inputPath);
-				inputPath = PathConverter.ConvertWinToUnix(Path.GetFileName(inputPath));
-				outputPath = PathConverter.ConvertWinToUnix(Path.GetFileName(outputPath));
+				workingDirectory = Path.GetDirectoryName(InputPath);
+				InputPath = PathConverter.ConvertWinToUnix(Path.GetFileName(InputPath));
+				OutputPath = PathConverter.ConvertWinToUnix(Path.GetFileName(OutputPath));
 			}
 			else
 			{
-				info.WorkingDirectory = ComparePath.Compare(inputPath, outputPath, '\\');
-				int headerIndex = info.WorkingDirectory.Length;
-				inputPath = PathConverter.ConvertWinToUnix(inputPath.Substring(headerIndex));
-				outputPath = PathConverter.ConvertWinToUnix(outputPath.Substring(headerIndex));
+				workingDirectory = ComparePath.Compare(InputPath, OutputPath, '\\');
+				int headerIndex = workingDirectory.Length;
+				InputPath = PathConverter.ConvertWinToUnix(InputPath.Substring(headerIndex));
+				OutputPath = PathConverter.ConvertWinToUnix(OutputPath.Substring(headerIndex));
 			}
-			if (String.IsNullOrEmpty(inputPath))
-				inputPath = ".";
-			if (String.IsNullOrEmpty(outputPath))
-				outputPath = ".";
+			if (String.IsNullOrEmpty(InputPath))
+				InputPath = ".";
+			if (String.IsNullOrEmpty(OutputPath))
+				OutputPath = ".";
 
 			#endregion
 
 			#region Set arguments
 
-			if (this.isBare)
-				info.Arguments += " --bare";
-			if (this.isWatch)
-				info.Arguments += " --watch";
-			info.Arguments += " --compile";
-			if (!String.IsNullOrEmpty(outputPath))
-				info.Arguments += " --output " + this.outputPath;
-			info.Arguments += " " + this.inputPath;
+			if (this.IsBare)
+				arguments += " --bare";
+			if (this.IsWatch)
+				arguments += " --watch";
+			arguments += " --compile";
+			if (!String.IsNullOrEmpty(OutputPath))
+				arguments += " --output " + this.OutputPath;
+			arguments += " " + this.InputPath;
 
 			#endregion
 
 			#region Set process properties
 
-			info.UseShellExecute = false;
-			info.CreateNoWindow = true;
-			info.RedirectStandardOutput = true;
-			info.RedirectStandardError = true;
-			info.RedirectStandardInput = true;
+			setupInfo(fileName, arguments, workingDirectory);
 
-			processWorker = new BackgroundWorker();
-			processWorker.WorkerSupportsCancellation = true;
-			processWorker.WorkerReportsProgress = true;
-
-			processWorker.DoWork += (sender, e) =>
-				{
-					process.StartInfo = info;
-					process.ErrorDataReceived += (_sender, _e) =>
-						processWorker.ReportProgress(0, _e.Data);
-					process.OutputDataReceived += (_sender, _e) =>
-						processWorker.ReportProgress(0, _e.Data);
-					process.Start();
-					process.BeginOutputReadLine();
-					process.BeginErrorReadLine();
-					process.WaitForExit();
-				};
-			processWorker.ProgressChanged += (sender, e) =>
-			{
-				Message += e.UserState + "\n";
-				MessageUpdated(this, null);
-			};
-			processWorker.RunWorkerCompleted += (sender, e) =>
-				{
-					if (!process.HasExited)
-					{
-						process.Kill();
-					}
-				};
-
-			processWorker.RunWorkerAsync(info);
+			return run();
 
 			#endregion
-
-			return true;
 		}
 
-		public bool stop()
+		[EnvironmentPermissionAttribute(SecurityAction.LinkDemand, Unrestricted = false)]
+		public bool Stop()
 		{
-			if (process != null && !process.HasExited)
-			{
-				process.Kill();
-			}
-			if (process.HasExited)
-				return true;
-			else
-				return false;
+			return stop();
 		}
-
-		private void OnPropertyChanged(string info)
-		{
-			PropertyChangedEventHandler handler = PropertyChanged;
-			if (handler != null)
-			{
-				handler(this, new PropertyChangedEventArgs(info));
-			}
-		}
-
-		#region Dispose Region
-
-		public void Dispose()
-		{
-			this.Dispose(true);
-			GC.SuppressFinalize(this);
-		}
-
-		~CoffeeScript()
-		{
-			Dispose(false);
-		}
-
-		protected virtual void Dispose(bool isDisposing)
-		{
-			if (isDisposing)
-			{
-				if (process != null)
-				{
-					process.Dispose();
-					process = null;
-				}
-				if (processWorker != null)
-				{
-					processWorker.Dispose();
-					processWorker = null;
-				}
-			}
-		}
-
-		#endregion
 	}
 }

@@ -629,14 +629,14 @@ namespace NginxStarterGUI
 
 		private void setCoffee(bool isWatch = false)
 		{
-			coffeeScript.nodeJsPath = txtCNodePath.Text;
-			coffeeScript.coffeePath = txtCCoffeePath.Text;
-			coffeeScript.inputPath = txtCInputPath.Text;
-			coffeeScript.outputPath = txtCOutputPath.Text;
-			coffeeScript.isNodeInPath = chkCNodeInPath.IsChecked == true;
-			coffeeScript.isCoffeeGlobal = chkCCoffeeInGlobal.IsChecked == true;
-			coffeeScript.isBare = chkCBare.IsChecked == true;
-			coffeeScript.isWatch = isWatch;
+			coffeeScript.NodeJsPath = txtCNodePath.Text;
+			coffeeScript.CoffeePath = txtCCoffeePath.Text;
+			coffeeScript.InputPath = txtCInputPath.Text;
+			coffeeScript.OutputPath = txtCOutputPath.Text;
+			coffeeScript.IsNodeInPath = chkCNodeInPath.IsChecked == true;
+			coffeeScript.IsCoffeeGlobal = chkCCoffeeInGlobal.IsChecked == true;
+			coffeeScript.IsBare = chkCBare.IsChecked == true;
+			coffeeScript.IsWatch = isWatch;
 		}
 
 		private void setCoffeeEvents()
@@ -656,7 +656,7 @@ namespace NginxStarterGUI
 			coffeeMainBinding.Source = coffeeScript;
 			txtCMain.SetBinding(TextBlock.TextProperty, coffeeMainBinding);
 			setCoffeeEvents();
-			if (coffeeScript.start())
+			if (coffeeScript.Start())
 				coffeeWatchStarted();
 		}
 
@@ -669,13 +669,13 @@ namespace NginxStarterGUI
 			coffeeMainBinding.Source = coffeeScript;
 			txtCMain.SetBinding(TextBlock.TextProperty, coffeeMainBinding);
 			setCoffeeEvents();
-			if (coffeeScript.start())
+			if (coffeeScript.Start())
 				coffeeWatchStarted();
 		}
 
 		private void btnCStop_Click(object sender, RoutedEventArgs e)
 		{
-			if (coffeeScript.stop())
+			if (coffeeScript.Stop())
 				this.coffeeWatchStoped();
 		}
 
