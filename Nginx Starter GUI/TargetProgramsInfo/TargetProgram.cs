@@ -9,6 +9,8 @@ namespace NginxStarterGUI.TargetProgramsInfo
 {
 	class TargetProgram : INotifyPropertyChanged, IDisposable
 	{
+		#region 设置字段和属性
+
 		public event PropertyChangedEventHandler PropertyChanged;
 		private Process process;
 		private ProcessStartInfo info;
@@ -29,6 +31,8 @@ namespace NginxStarterGUI.TargetProgramsInfo
 				OnPropertyChanged("Message");
 			}
 		}
+
+		#endregion
 
 		/// <summary>
 		/// 本程序所支持的程序的抽象类
