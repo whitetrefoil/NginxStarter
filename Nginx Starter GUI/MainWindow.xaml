@@ -65,7 +65,7 @@
 					</TextBlock>
 				</DockPanel>
 			</TabItem>
-			<TabItem Header="PHP-CGI" IsEnabled="False" Visibility="Collapsed">
+			<TabItem Header="PHP-CGI">
 				<DockPanel IsEnabled="False">
 					<StackPanel DockPanel.Dock="Bottom">
 						<Border BorderThickness="0,1,0,0" BorderBrush="{StaticResource brushSplitLineH}">
@@ -189,7 +189,7 @@
 					</Grid>
 				</DockPanel>
 			</TabItem>
-			<TabItem Header="LESS" IsEnabled="False" Visibility="Collapsed">
+			<TabItem Header="LESS">
 				<DockPanel/>
 			</TabItem>
 			<TabItem Header="SASS">
@@ -265,7 +265,7 @@
 					</Grid>
 				</DockPanel>
 			</TabItem>
-			<TabItem Header="关于" IsEnabled="False" Visibility="Collapsed">
+			<TabItem Header="关于">
 				<Grid/>
 			</TabItem>
 		</TabControl>
