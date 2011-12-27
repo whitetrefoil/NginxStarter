@@ -184,7 +184,7 @@
 					</Border>
 					<Grid>
 						<ScrollViewer x:Name="slvCMain" VerticalScrollBarVisibility="Auto" CanContentScroll="True">
-							<TextBlock x:Name="txtCMain" Margin="0" TextWrapping="Wrap" TextInput="txtCMain_TextInput"/>
+							<TextBlock x:Name="txtCMain" Margin="0" TextWrapping="Wrap"/>
 						</ScrollViewer>
 					</Grid>
 				</DockPanel>
