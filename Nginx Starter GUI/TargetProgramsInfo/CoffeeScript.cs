@@ -54,18 +54,6 @@ namespace NginxStarterGUI.TargetProgramsInfo
 
 		#endregion
 
-		public void setTestData()
-		{
-			this.nodeJsPath = "C:\\Program Files (x86)\\nodejs\\node.exe";
-			this.coffeePath = "C:\\Program Files (x86)\\nodejs\\node_modules\\coffee-script\\bin\\coffee";
-			this.inputPath = "C:\\temp";
-			this.outputPath = "C:\\temp";
-			this.isCoffeeGlobal = false;
-			this.isNodeInPath = false;
-			this.isWatch = false;
-			this.isBare = true;
-		}
-
 		[EnvironmentPermissionAttribute(SecurityAction.LinkDemand, Unrestricted = false)]
 		public bool start()
 		{
