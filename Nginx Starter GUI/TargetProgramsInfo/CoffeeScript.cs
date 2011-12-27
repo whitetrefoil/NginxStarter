@@ -12,6 +12,8 @@ namespace NginxStarterGUI.TargetProgramsInfo
 {
 	class CoffeeScript : INotifyPropertyChanged, IDisposable
 	{
+		#region 设置字段和属性
+
 		public event PropertyChangedEventHandler PropertyChanged;
 		private Process process;
 		private BackgroundWorker processWorker;
@@ -49,6 +51,8 @@ namespace NginxStarterGUI.TargetProgramsInfo
 		public const string OfdInputTitle = "选择输入文件/目录";
 		public const string OfdOutputFilter = "目录|*.folder";
 		public const string OfdOutputTitle = "选择输出文件/目录";
+
+		#endregion
 
 		public void setTestData()
 		{
