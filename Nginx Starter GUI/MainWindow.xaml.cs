@@ -28,6 +28,7 @@ namespace NginxStarterGUI
 		private Nginx nginx;
 		private CoffeeScript coffeeScript;
 		private Sass sass;
+		private Less less;
 
 		public MainWindow()
 		{
@@ -899,8 +900,173 @@ namespace NginxStarterGUI
 
 		#endregion
 
-		#region LESS Region
-		
+		#region Less Region
+
+		private void btnLNodePathBrowse_Click(object sender, RoutedEventArgs e)
+		{
+			this.btnLNodePathBrowse_Fxxk();
+		}
+
+		private bool btnLNodePathBrowse_Fxxk()
+		{
+			OpenFileDialog ofd = new OpenFileDialog();
+			if (_settings.Less.NodePath != null)
+				ofd.InitialDirectory = _settings.Less.NodePath;
+			ofd.Filter = Less.OfdNodeJsFilter;
+			ofd.Title = Less.OfdNodeJsTitle;
+			if (ofd.ShowDialog() == true)
+			{
+				txtLNodePath.Focus();
+				txtLNodePath.Text = ofd.FileName;
+				btnLNodePathBrowse.Focus();
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+
+		private void btnLLesscPathBrowse_Click(object sender, RoutedEventArgs e)
+		{
+			btnLLesscPathBrowse_Fxxk();
+		}
+
+		private bool btnLLesscPathBrowse_Fxxk()
+		{
+			OpenFileDialog ofd = new OpenFileDialog();
+			if (_settings.Less.NodePath != null)
+				ofd.InitialDirectory = _settings.Less.NodePath;
+			ofd.Filter = Less.OfdLesscFilter;
+			ofd.Title = Less.OfdLesscTitle;
+			if (ofd.ShowDialog() == true)
+			{
+				txtLLesscPath.Focus();
+				txtLLesscPath.Text = ofd.FileName;
+				btnLLesscPathBrowse.Focus();
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+
+		private void btnLInputPathBrowse_Click(object sender, RoutedEventArgs e)
+		{
+			btnLInputPathBrowse_Fxxk();
+		}
+
+		private bool btnLInputPathBrowse_Fxxk()
+		{
+			OpenFileDialog ofd = new OpenFileDialog();
+			if (_settings.Less.InputPath != null)
+				ofd.InitialDirectory = _settings.Less.InputPath;
+			ofd.Filter = Less.OfdInputFilter;
+			ofd.FileName = "文件名会被忽略";
+			ofd.CheckFileExists = false;
+			ofd.CheckPathExists = true;
+			ofd.ValidateNames = false;
+			ofd.AddExtension = false;
+			if (ofd.ShowDialog() == true)
+			{
+				if (!ofd.FileName.EndsWith(".less", true, CultureInfo.CurrentCulture) || !File.Exists(ofd.FileName))
+				{
+					int lastSeparatorIndex = ofd.FileName.LastIndexOf('\\');
+					ofd.FileName = ofd.FileName.Remove(lastSeparatorIndex);
+				}
+				txtLInputPath.Focus();
+				txtLInputPath.Text = ofd.FileName;
+				btnLInputPathBrowse.Focus();
+				return true;
+			}
+			return false;
+		}
+
+		private void btnLOutputPathBrowse_Click(object sender, RoutedEventArgs e)
+		{
+			btnLOutputPathBrowse_Fxxk();
+		}
+
+		private bool btnLOutputPathBrowse_Fxxk()
+		{
+			OpenFileDialog ofd = new OpenFileDialog();
+			if (_settings.Less.OutputPath != null)
+				ofd.InitialDirectory = _settings.Less.OutputPath;
+			ofd.Filter = Less.OfdOutputFilter;
+			ofd.FileName = "文件名会被忽略";
+			ofd.CheckFileExists = false;
+			ofd.CheckPathExists = true;
+			ofd.ValidateNames = false;
+			ofd.AddExtension = false;
+			if (ofd.ShowDialog() == true)
+			{
+				int lastSeparatorIndex = ofd.FileName.LastIndexOf('\\');
+				ofd.FileName = ofd.FileName.Remove(lastSeparatorIndex);
+				txtLOutputPath.Focus();
+				txtLOutputPath.Text = ofd.FileName;
+				btnLOutputPathBrowse.Focus();
+				return true;
+			}
+			return false;
+		}
+
+		private void setLess()
+		{
+			less.NodeJsPath = txtLNodePath.Text;
+			less.LesscPath = txtLLesscPath.Text;
+			less.InputPath = txtLInputPath.Text;
+			less.OutputPath = txtLOutputPath.Text;
+			less.IsNodeInPath = chkLNodeInPath.IsChecked == true;
+			less.IsLesscGlobal = chkLLesscInGlobal.IsChecked == true;
+		}
+
+		private void setLessEvents()
+		{
+			less.MessageUpdated += (sender, e) =>
+				slvLMain.ScrollToBottom();
+			less.ProcessExited += (sender, e) =>
+				lessWatchStoped();
+		}
+
+		private void btnLStart_Click(object sender, RoutedEventArgs e)
+		{
+			if (less == null)
+				less = new Less();
+			setLess();
+			Binding lessMainBinding = new Binding("Message");
+			lessMainBinding.Source = less;
+			txtLMain.SetBinding(TextBlock.TextProperty, lessMainBinding);
+			setLessEvents();
+			if (less.Start())
+				lessWatchStarted();
+		}
+
+		private void btnLStop_Click(object sender, RoutedEventArgs e)
+		{
+			if (coffeeScript.Stop())
+				this.coffeeWatchStoped();
+		}
+
+		private void lessWatchStarted()
+		{
+			divLAddOptions.IsEnabled = false;
+			divLPaths.IsEnabled = false;
+			btnLStart.IsEnabled = false;
+		}
+
+		private void lessWatchStoped()
+		{
+			divLAddOptions.IsEnabled = true;
+			divLPaths.IsEnabled = true;
+			btnLStart.IsEnabled = true;
+		}
+
+		private void txtLMain_TextInput(object sender, TextCompositionEventArgs e)
+		{
+			slvLMain.ScrollToBottom();
+		}
+
 		#endregion
 	}
 }

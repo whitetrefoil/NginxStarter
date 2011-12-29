@@ -4,10 +4,11 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using NginxStarterGUI.Classes;
+using System.Security.Permissions;
 
 namespace NginxStarterGUI.TargetProgramsInfo
 {
-	class TargetProgram : INotifyPropertyChanged, IDisposable
+	abstract class TargetProgram : INotifyPropertyChanged, IDisposable
 	{
 		#region 设置字段和属性
 
@@ -113,6 +114,8 @@ namespace NginxStarterGUI.TargetProgramsInfo
 			info.WorkingDirectory = wd;
 		}
 
+		[EnvironmentPermissionAttribute(SecurityAction.LinkDemand, Unrestricted = false)]
+		abstract public bool Start();
 		/// <summary>
 		/// 启动进程
 		/// </summary>
@@ -141,6 +144,7 @@ namespace NginxStarterGUI.TargetProgramsInfo
 		/// 结束进程
 		/// </summary>
 		/// <returns>返回一个布尔值表示是否结束进程成功</returns>
+		[EnvironmentPermissionAttribute(SecurityAction.LinkDemand, Unrestricted = false)]
 		protected bool stop()
 		{
 			if (process != null && !process.HasExited)
@@ -154,6 +158,9 @@ namespace NginxStarterGUI.TargetProgramsInfo
 			else
 				return false;
 		}
+
+		[EnvironmentPermissionAttribute(SecurityAction.LinkDemand, Unrestricted = false)]
+		abstract public bool Stop();
 
 		protected Dictionary<string, string> findJointRoot(string inputPath, string outputPath)
 		{

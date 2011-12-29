@@ -7,7 +7,7 @@ using NginxStarterGUI.Classes;
 
 namespace NginxStarterGUI.TargetProgramsInfo
 {
-	class CoffeeScript : TargetProgram
+	sealed class CoffeeScript : TargetProgram
 	{
 		#region 设置字段和属性
 
@@ -32,7 +32,7 @@ namespace NginxStarterGUI.TargetProgramsInfo
 		#endregion
 
 		[EnvironmentPermissionAttribute(SecurityAction.LinkDemand, Unrestricted = false)]
-		public bool Start()
+		public override bool Start()
 		{
 			#region Set exe files path
 
@@ -120,7 +120,7 @@ namespace NginxStarterGUI.TargetProgramsInfo
 		}
 
 		[EnvironmentPermissionAttribute(SecurityAction.LinkDemand, Unrestricted = false)]
-		public bool Stop()
+		public override bool Stop()
 		{
 			return stop();
 		}

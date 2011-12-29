@@ -6,7 +6,7 @@ using NginxStarterGUI.Classes;
 
 namespace NginxStarterGUI.TargetProgramsInfo
 {
-	class Sass : TargetProgram
+	sealed class Sass : TargetProgram
 	{
 		#region 设置字段和属性
 
@@ -34,7 +34,7 @@ namespace NginxStarterGUI.TargetProgramsInfo
 		#endregion
 
 		[EnvironmentPermissionAttribute(SecurityAction.LinkDemand, Unrestricted = false)]
-		public bool Start()
+		public override bool Start()
 		{
 			#region Set EXE file path
 
@@ -125,7 +125,7 @@ namespace NginxStarterGUI.TargetProgramsInfo
 		}
 
 		[EnvironmentPermissionAttribute(SecurityAction.LinkDemand, Unrestricted = false)]
-		public bool Stop()
+		public override bool Stop()
 		{
 			return stop();
 		}

@@ -14,6 +14,7 @@ namespace NginxStarterGUI.Settings
 		public Php Php { get; set; }
 		public Coffee Coffee { get; set; }
 		public Sass Sass { get; set; }
+		public Less Less { get; set; }
 
 		public Settings()
 		{
@@ -21,6 +22,7 @@ namespace NginxStarterGUI.Settings
 			Php = new Php();
 			Coffee = new Coffee();
 			Sass = new Sass();
+			Less = new Less();
 		}
 	}
 
@@ -51,7 +53,17 @@ namespace NginxStarterGUI.Settings
 		public bool IsNodeInPath { get; set; }
 		public bool IsCoffeeGlobal { get; set; }
 		public bool IsBare { get; set; }
-		public bool IsRubyInPath { get; set; }
+	}
+
+	public class Less : INotifyPropertyChanged
+	{
+		public event PropertyChangedEventHandler PropertyChanged;
+		public string NodePath { get; set; }
+		public string LessPath { get; set; }
+		public string InputPath { get; set; }
+		public string OutputPath { get; set; }
+		public bool IsNodeInPath { get; set; }
+		public bool IsLesscGlobal { get; set; }
 	}
 
 	public class Sass : INotifyPropertyChanged

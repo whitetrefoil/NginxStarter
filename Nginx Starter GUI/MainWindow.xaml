@@ -177,7 +177,7 @@
 								<RowDefinition/>
 								<RowDefinition/>
 							</Grid.RowDefinitions>
-							<CheckBox x:Name="chkCNodeInPath" Content="node.exe已加入PATH" Margin="4" Unchecked="chkCNodeInPath_Unchecked" IsChecked="{Binding Coffee.IsNodeInPath}"/>
+							<CheckBox x:Name="chkCNodeInPath" Content="node.exe已加入PATH" Margin="4" IsChecked="{Binding Coffee.IsNodeInPath}"/>
 							<CheckBox x:Name="chkCCoffeeInGlobal" Content="coffee全局安装" Margin="4" Grid.Row="1" IsEnabled="{Binding ElementName=chkCNodeInPath, Path=IsChecked}" IsChecked="{Binding Coffee.IsCoffeeGlobal}"/>
 							<CheckBox x:Name="chkCBare" Content="不将代码嵌在顶级函数中" Margin="4" Grid.Row="2" IsChecked="{Binding Coffee.IsBare}"/>
 						</Grid>
@@ -191,6 +191,54 @@
 			</TabItem>
 			<TabItem Header="LESS">
 				<DockPanel>
+					<Border DockPanel.Dock="Bottom" BorderThickness="0,1,0,0" BorderBrush="{StaticResource brushSplitLineH}">
+						<StackPanel VerticalAlignment="Bottom">
+							<StackPanel Orientation="Horizontal"/>
+							<Grid x:Name="divLPaths" Margin="0,2">
+								<Grid.RowDefinitions>
+									<RowDefinition/>
+									<RowDefinition/>
+									<RowDefinition/>
+									<RowDefinition/>
+								</Grid.RowDefinitions>
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="Auto"/>
+									<ColumnDefinition/>
+									<ColumnDefinition Width="Auto"/>
+								</Grid.ColumnDefinitions>
+								<Label Content="node.exe 位置："/>
+								<TextBox x:Name="txtLNodePath" Grid.Column="1" Margin="2,4" IsEnabled="{Binding IsChecked, Converter={StaticResource ResourceKey=notConverter}, ElementName=chkLNodeInPath}" Text="{Binding Less.NodePath}"/>
+								<Button x:Name="btnLNodePathBrowse" Content="浏览..." Grid.Column="2" Width="70" Margin="4" Click="btnLNodePathBrowse_Click" IsEnabled="{Binding IsChecked, Converter={StaticResource ResourceKey=notConverter}, ElementName=chkLNodeInPath}"/>
+								<Label Content="lessc 位置：" Grid.Row="1"/>
+								<TextBox x:Name="txtLLesscPath" Grid.Column="1" Grid.Row="1" Margin="2,4" IsEnabled="{Binding IsChecked, Converter={StaticResource ResourceKey=notConverter}, ElementName=chkLLesscInGlobal}" Text="{Binding Less.LessPath}"/>
+								<Button x:Name="btnLLesscPathBrowse" Content="浏览..." Grid.Column="2" Grid.Row="1" Width="70" Margin="4" Click="btnLLesscPathBrowse_Click" IsEnabled="{Binding IsChecked, Converter={StaticResource ResourceKey=notConverter}, ElementName=chkLLesscInGlobal}"/>
+								<Label Content="输入位置/文件：" Grid.Row="2"/>
+								<TextBox x:Name="txtLInputPath" Grid.Column="1" Margin="2,4" Grid.Row="2" Text="{Binding Less.InputPath}"/>
+								<Button x:Name="btnLInputPathBrowse" Content="浏览..." Grid.Column="2" Width="70" Margin="4" Grid.Row="2" Click="btnLInputPathBrowse_Click" />
+								<Label Content="输出位置/文件：" Grid.Row="3"/>
+								<TextBox x:Name="txtLOutputPath" Grid.Column="1" Grid.Row="3" Margin="2,4" Text="{Binding Less.OutputPath}"/>
+								<Button x:Name="btnLOutputPathBrowse" Content="浏览..." Grid.Column="2" Grid.Row="3" Width="70" Margin="4" Click="btnLOutputPathBrowse_Click" />
+							</Grid>
+							<Grid x:Name="divLButtons" Margin="0,2">
+								<Button x:Name="btnLStart" Content="运行(_R)" Grid.Column="0" Width="80" Click="btnLStart_Click" />
+							</Grid>
+						</StackPanel>
+					</Border>
+					<Border DockPanel.Dock="Right" Width="150" BorderThickness="1,0,0,0" BorderBrush="{DynamicResource brushSplitLineV}">
+						<Grid x:Name="divLAddOptions" VerticalAlignment="Center">
+							<Grid.RowDefinitions>
+								<RowDefinition/>
+								<RowDefinition/>
+							</Grid.RowDefinitions>
+							<CheckBox x:Name="chkLNodeInPath" Content="node.exe已加入PATH" Margin="4" IsChecked="{Binding Less.IsNodeInPath}"/>
+							<CheckBox x:Name="chkLLesscInGlobal" Content="less全局安装" Margin="4" Grid.Row="1" IsEnabled="{Binding IsChecked, ElementName=chkLNodeInPath}" IsChecked="{Binding Less.IsLesscGlobal}"/>
+						</Grid>
+					</Border>
+					<Grid>
+						<ScrollViewer x:Name="slvLMain" VerticalScrollBarVisibility="Auto" CanContentScroll="True">
+							<TextBlock x:Name="txtLMain" Margin="0" TextWrapping="Wrap"/>
+						</ScrollViewer>
+					</Grid>
 				</DockPanel>
 			</TabItem>
 			<TabItem Header="SASS">
