@@ -190,14 +190,13 @@
 				</DockPanel>
 			</TabItem>
 			<TabItem Header="LESS">
-				<DockPanel/>
+				<DockPanel>
+				</DockPanel>
 			</TabItem>
 			<TabItem Header="SASS">
 				<DockPanel>
 					<Border DockPanel.Dock="Bottom" BorderThickness="0,1,0,0" BorderBrush="{StaticResource brushSplitLineH}">
 						<StackPanel VerticalAlignment="Bottom">
-							<StackPanel Orientation="Horizontal">
-							</StackPanel>
 							<Grid x:Name="divSPaths" Margin="0,2">
 								<Grid.RowDefinitions>
 									<RowDefinition/>
