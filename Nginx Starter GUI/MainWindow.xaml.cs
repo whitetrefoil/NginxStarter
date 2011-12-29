@@ -983,34 +983,6 @@ namespace NginxStarterGUI
 			return false;
 		}
 
-		private void btnLOutputPathBrowse_Click(object sender, RoutedEventArgs e)
-		{
-			btnLOutputPathBrowse_Fxxk();
-		}
-
-		private bool btnLOutputPathBrowse_Fxxk()
-		{
-			OpenFileDialog ofd = new OpenFileDialog();
-			if (_settings.Less.OutputPath != null)
-				ofd.InitialDirectory = _settings.Less.OutputPath;
-			ofd.Filter = Less.OfdOutputFilter;
-			ofd.FileName = "文件名会被忽略";
-			ofd.CheckFileExists = false;
-			ofd.CheckPathExists = true;
-			ofd.ValidateNames = false;
-			ofd.AddExtension = false;
-			if (ofd.ShowDialog() == true)
-			{
-				int lastSeparatorIndex = ofd.FileName.LastIndexOf('\\');
-				ofd.FileName = ofd.FileName.Remove(lastSeparatorIndex);
-				txtLOutputPath.Focus();
-				txtLOutputPath.Text = ofd.FileName;
-				btnLOutputPathBrowse.Focus();
-				return true;
-			}
-			return false;
-		}
-
 		private void setLess()
 		{
 			less.NodeJsPath = txtLNodePath.Text;
