@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using NginxStarterGUI.Classes;
 using System.IO;
+using System.Diagnostics;
 
 namespace NginxStarterGUI.TargetProgramsInfo
 {
@@ -22,10 +23,11 @@ namespace NginxStarterGUI.TargetProgramsInfo
 		public const string OfdNodeJsTitle = "选择Nodejs执行文件";
 		public const string OfdLesscFilter = "Lessc默认二进制文件|lessc|所有文件|*.*";
 		public const string OfdLesscTitle = "选择Lessc二进制文件";
-		public const string OfdInputFilter = "LESS-CSS 或 目录|*.less";
+		public const string OfdInputFilter = "LESS-CSS 文件|*.less";
 		public const string OfdInputTitle = "选择输入文件/目录";
-		public const string OfdOutputFilter = "目录|*.folder";
-		public const string OfdOutputTitle = "选择输出文件/目录";
+
+		private StreamWriter sw;
+		private string dataReceived;
 
 		#endregion
 
@@ -63,43 +65,21 @@ namespace NginxStarterGUI.TargetProgramsInfo
 
 			#region Merge paths
 
-			InputPath = !String.IsNullOrEmpty(InputPath) ? PathConverter.ConvertUnixToWin(InputPath) : ".";
-			if (Directory.Exists(InputPath))
+			if (String.IsNullOrEmpty(this.InputPath))
+				return false;
+			this.workingDirectory = Path.GetDirectoryName(this.InputPath);
+			this.InputPath = PathConverter.ConvertWinToUnix(InputPath.Substring(this.workingDirectory.Length + 1));
+			if (String.IsNullOrEmpty(this.OutputPath))
 			{
-				if (InputPath[InputPath.Length - 1] != '\\')
-					InputPath += '\\';
+				this.OutputPath = this.InputPath.Remove(this.InputPath.LastIndexOf('.'));
+				this.OutputPath += ".css";
 			}
-			if (Directory.Exists(OutputPath))
-			{
-				if (OutputPath[OutputPath.Length - 1] != '\\')
-					OutputPath += '\\';
-			}
-			if (String.IsNullOrEmpty(OutputPath))
-			{
-				workingDirectory = Path.GetDirectoryName(InputPath);
-				InputPath = PathConverter.ConvertWinToUnix(Path.GetFileName(InputPath));
-				OutputPath = PathConverter.ConvertWinToUnix(Path.GetFileName(OutputPath));
-			}
-			else
-			{
-				workingDirectory = ComparePath.Compare(InputPath, OutputPath, '\\');
-				int headerIndex = workingDirectory.Length;
-				InputPath = PathConverter.ConvertWinToUnix(InputPath.Substring(headerIndex));
-				OutputPath = PathConverter.ConvertWinToUnix(OutputPath.Substring(headerIndex));
-			}
-			if (String.IsNullOrEmpty(InputPath))
-				InputPath = ".";
-			if (String.IsNullOrEmpty(OutputPath))
-				OutputPath = ".";
 
 			#endregion
 
 			#region Set arguments
 
-			if (!String.IsNullOrEmpty(this.InputPath))
-				arguments += " " + this.InputPath;
-			if (!String.IsNullOrEmpty(this.OutputPath))
-				arguments += ":" + this.OutputPath;
+			arguments += " " + this.InputPath;
 
 			#endregion
 
@@ -107,9 +87,36 @@ namespace NginxStarterGUI.TargetProgramsInfo
 
 			setupInfo(fileName, arguments, workingDirectory);
 
+			this.IsStdoutDisplayed = false;
+
+			this.StdoutReceived -= this.handleStdoutReceived;
+			this.StdoutReceived += this.handleStdoutReceived;
+
+			this.ProcessExited -= this.handleProcessExited;
+			this.ProcessExited += this.handleProcessExited;
+
+			this.dataReceived = null;
 			return run();
 
 			#endregion
+		}
+
+		void handleStdoutReceived(object sender, DataReceivedEventArgs e)
+		{
+			this.dataReceived += e.Data + "\r\n";
+		}
+
+		void handleProcessExited(object sender, EventArgs e)
+		{
+			try
+			{
+				string filePath = this.workingDirectory + '\\' + this.OutputPath;
+				File.WriteAllText(filePath, this.dataReceived);
+			}
+			catch (Exception)
+			{
+				base.Message += "写文件失败！\n";
+			}
 		}
 
 		public override bool Stop()

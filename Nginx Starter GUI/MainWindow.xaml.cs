@@ -935,6 +935,9 @@ namespace NginxStarterGUI
 		private bool btnLLesscPathBrowse_Fxxk()
 		{
 			OpenFileDialog ofd = new OpenFileDialog();
+			ofd.DefaultExt = ".less";
+			ofd.AddExtension = true;
+			ofd.CheckFileExists = true;
 			if (_settings.Less.NodePath != null)
 				ofd.InitialDirectory = _settings.Less.NodePath;
 			ofd.Filter = Less.OfdLesscFilter;
@@ -1037,6 +1040,11 @@ namespace NginxStarterGUI
 		private void txtLMain_TextInput(object sender, TextCompositionEventArgs e)
 		{
 			slvLMain.ScrollToBottom();
+		}
+
+		private void chkLNodeInPath_Unchecked(object sender, RoutedEventArgs e)
+		{
+			chkLLesscInGlobal.IsChecked = false;
 		}
 
 		#endregion

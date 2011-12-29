@@ -23,7 +23,7 @@ namespace NginxStarterGUI.TargetProgramsInfo
 		protected string workingDirectory;
 
 		private string message;
-		public string Message
+		public virtual string Message
 		{
 			get { return message; }
 			set
@@ -32,6 +32,10 @@ namespace NginxStarterGUI.TargetProgramsInfo
 				OnPropertyChanged("Message");
 			}
 		}
+		protected event DataReceivedEventHandler StdoutReceived;
+		protected event DataReceivedEventHandler StderrReceived;
+		protected bool IsStdoutDisplayed;
+		protected bool IsStderrDisplayed;
 
 		#endregion
 
@@ -41,6 +45,8 @@ namespace NginxStarterGUI.TargetProgramsInfo
 		public TargetProgram()
 		{
 			this.info = new ProcessStartInfo();
+			this.IsStdoutDisplayed = true;
+			this.IsStderrDisplayed = true;
 			setupBw();
 		}
 
@@ -78,9 +84,19 @@ namespace NginxStarterGUI.TargetProgramsInfo
 			{
 				process.StartInfo = info;
 				process.ErrorDataReceived += (_sender, _e) =>
-					bw.ReportProgress(0, _e.Data);
+				{
+					if (this.IsStderrDisplayed)
+						bw.ReportProgress(0, _e.Data);
+					if (this.StderrReceived != null)
+						this.StderrReceived(this, _e);
+				};
 				process.OutputDataReceived += (_sender, _e) =>
-					bw.ReportProgress(0, _e.Data);
+				{
+					if (this.IsStdoutDisplayed)
+						bw.ReportProgress(0, _e.Data);
+					if (this.StdoutReceived != null)
+						this.StdoutReceived(this, _e);
+				};
 				process.Start();
 				process.BeginOutputReadLine();
 				process.BeginErrorReadLine();
