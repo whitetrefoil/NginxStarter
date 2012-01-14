@@ -60,7 +60,7 @@ namespace NginxStarterGUI.TargetProgramsInfo
 				}
 			}
 			fileName = RubyPath;
-			arguments = "\"" + PathConverter.ConvertWinToUnix(SassPath) + "\"";
+			arguments = "-e $stdout.sync=true;$stderr.sync=true;load($0=ARGV.shift) \"" + PathConverter.ConvertWinToUnix(SassPath) + "\"";
 
 			#endregion
 
