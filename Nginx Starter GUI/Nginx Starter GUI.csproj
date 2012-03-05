@@ -130,6 +130,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Classes\Args.cs" />
     <Compile Include="Classes\ComparePath.cs" />
     <Compile Include="Classes\FindInPath.cs" />
     <Compile Include="Classes\FindPathInfo.cs" />
