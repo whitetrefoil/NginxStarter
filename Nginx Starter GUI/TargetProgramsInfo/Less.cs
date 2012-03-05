@@ -40,7 +40,7 @@ namespace NginxStarterGUI.TargetProgramsInfo
 				this.NodeJsPath = FindInPath.Find("node.exe", MainWindow.WorkingDirectory, false);
 			if (this.IsLesscGlobal)
 			{
-				LesscPath = FindInPath.Find("lessc", MainWindow.WorkingDirectory, true, true);
+				LesscPath = FindInPath.Find("lessc", MainWindow.WorkingDirectory, true, false);
 				if (LesscPath.EndsWith(".bat", StringComparison.OrdinalIgnoreCase) || LesscPath.EndsWith(".cmd", StringComparison.OrdinalIgnoreCase) || LesscPath.EndsWith(".com", StringComparison.OrdinalIgnoreCase))
 				{
 					HashSet<string> possibleLesscLocations = FindPathInfo.InBat("%~dp0\\.\\", "lessc", LesscPath);
@@ -49,7 +49,7 @@ namespace NginxStarterGUI.TargetProgramsInfo
 						foreach (string possibleLesscLocation in possibleLesscLocations)
 						{
 							string temp = possibleLesscLocation.Replace("%~dp0\\.\\", string.Empty);
-							string tempFullPath = Path.GetDirectoryName(NodeJsPath) + Path.DirectorySeparatorChar + temp;
+							string tempFullPath = Path.GetDirectoryName(LesscPath) + Path.DirectorySeparatorChar + temp;
 							if (File.Exists(tempFullPath))
 							{
 								LesscPath = tempFullPath;
