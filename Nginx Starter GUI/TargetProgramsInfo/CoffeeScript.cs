@@ -40,7 +40,7 @@ namespace NginxStarterGUI.TargetProgramsInfo
 				this.NodeJsPath = FindInPath.Find("node.exe", MainWindow.WorkingDirectory, false);
 			if (this.IsCoffeeGlobal)
 			{
-				CoffeePath = FindInPath.Find("coffee", MainWindow.WorkingDirectory, true, true);
+				CoffeePath = FindInPath.Find("coffee", MainWindow.WorkingDirectory, true, false);
 				if (CoffeePath.EndsWith(".bat", StringComparison.OrdinalIgnoreCase) || CoffeePath.EndsWith(".cmd", StringComparison.OrdinalIgnoreCase) || CoffeePath.EndsWith(".com", StringComparison.OrdinalIgnoreCase))
 				{
 					HashSet<string> possibleCoffeeLocations = FindPathInfo.InBat("%~dp0\\.\\", "coffee", CoffeePath);
@@ -49,7 +49,7 @@ namespace NginxStarterGUI.TargetProgramsInfo
 						foreach (string possibleCoffeeLocation in possibleCoffeeLocations)
 						{
 							string temp = possibleCoffeeLocation.Replace("%~dp0\\.\\", string.Empty);
-							string tempFullPath = Path.GetDirectoryName(NodeJsPath) + Path.DirectorySeparatorChar + temp;
+							string tempFullPath = Path.GetDirectoryName(CoffeePath) + Path.DirectorySeparatorChar + temp;
 							if (File.Exists(tempFullPath))
 							{
 								CoffeePath = tempFullPath;
