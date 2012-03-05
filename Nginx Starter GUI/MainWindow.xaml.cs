@@ -143,6 +143,11 @@ namespace NginxStarterGUI
 				return;
 			try
 			{
+				// 尝试在保存配置文件之前删除旧的文件，希望可以解决之前的错误
+				if (File.Exists(configFilePath))
+				{
+					File.Delete(configFilePath);
+				}
 				using (FileStream fs = File.Open(configFilePath, FileMode.OpenOrCreate, FileAccess.Write, FileShare.Read))
 				{
 					XmlSerializer formatter = new XmlSerializer(typeof(Settings.Settings));
