@@ -2,6 +2,12 @@
 
 Changelog:
 
+0.0.5.3
+
+Fixed: 修复了在非管理员权限下，Nodejs程序（Coffee/LESS）无法自动查找PATH中的路径的问题
+
+----------
+
 0.0.5.2
 
 Added: LESS追加了压缩输出的选项（-x参数）
