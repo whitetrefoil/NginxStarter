@@ -64,6 +64,7 @@ namespace NginxStarterGUI.Settings
 		public string OutputPath { get; set; }
 		public bool IsNodeInPath { get; set; }
 		public bool IsLesscGlobal { get; set; }
+        public bool IsMinified { get; set; }
 	}
 
 	public class Sass : INotifyPropertyChanged

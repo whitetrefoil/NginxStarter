@@ -18,6 +18,7 @@ namespace NginxStarterGUI.TargetProgramsInfo
 		public string OutputPath { get; set; }
 		public bool IsLesscGlobal { get; set; }
 		public bool IsNodeInPath { get; set; }
+		public bool IsMinified { get; set; }
 
 		public const string OfdNodeJsFilter = "Nodejs默认执行文件|node.exe|所有执行文件|*.exe|所有文件|*.*";
 		public const string OfdNodeJsTitle = "选择Nodejs执行文件";
@@ -79,7 +80,10 @@ namespace NginxStarterGUI.TargetProgramsInfo
 
 			#region Set arguments
 
-			arguments += " " + this.InputPath;
+			arguments += " ";
+			if (this.IsMinified)
+				arguments += "-x ";
+			arguments += this.InputPath;
 
 			#endregion
 
