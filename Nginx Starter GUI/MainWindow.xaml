@@ -233,9 +233,11 @@
 							<Grid.RowDefinitions>
 								<RowDefinition/>
 								<RowDefinition/>
+                                <RowDefinition/>
 							</Grid.RowDefinitions>
 							<CheckBox x:Name="chkLNodeInPath" Content="node.exe已加入PATH" Margin="4" IsChecked="{Binding Less.IsNodeInPath}" Unchecked="chkLNodeInPath_Unchecked"/>
 							<CheckBox x:Name="chkLLesscInGlobal" Content="less全局安装" Margin="4" Grid.Row="1" IsEnabled="{Binding IsChecked, ElementName=chkLNodeInPath}" IsChecked="{Binding Less.IsLesscGlobal}"/>
+                            <CheckBox x:Name="chkLMinified" Content="压缩输出" Margin="4" Grid.Row="2" IsChecked="{Binding Less.IsMinified}"></CheckBox>
 						</Grid>
 					</Border>
 					<Grid>
