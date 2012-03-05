@@ -1,6 +1,14 @@
 这是一个自学.Net/WPF编程而新建的项目，作为Windows下启动、关闭Nginx的一个GUI，基本没有实际意义。
 
+==========
+
 Changelog:
+
+0.0.5.4
+
+Tried：尝试在保存配置文件前删除它，期望可以解决配置文件的错误问题，效果仍有待观望。
+
+----------
 
 0.0.5.3
 
@@ -80,17 +88,8 @@ Added: 启动Nginx之前“重启”、“退出”等按钮（包括任务栏�
 Added: 强制退出Nginx后追加杀死所有nginx.exe进程的操作
 Fixed: 现在退出（Quit）能正常运行了，Reload和Restart未经测试
 
+==========
+
 TODO：
 
-更改程序META信息
-添加Icon
-添加关于窗口
-在安装目录保存配置文件
-设置nginx的配置文件位置
-添加对PHP-CGI的调用操作
-设置php.ini的位置
-请求关闭时添加对进程的判断和Kill
-跟踪建立的进程
-跟踪输出的日志文件
-尝试用F#重写
-*添加对CoffeeScript、LESS、Sass的支持
+请参照Github的Issue页面
