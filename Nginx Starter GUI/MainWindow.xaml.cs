@@ -994,6 +994,7 @@ namespace NginxStarterGUI
 			less.OutputPath = txtLOutputPath.Text;
 			less.IsNodeInPath = chkLNodeInPath.IsChecked == true;
 			less.IsLesscGlobal = chkLLesscInGlobal.IsChecked == true;
+			less.IsMinified = chkLMinified.IsChecked == true;
 		}
 
 		private void setLessEvents()
