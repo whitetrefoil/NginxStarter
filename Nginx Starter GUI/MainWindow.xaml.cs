@@ -43,6 +43,12 @@ namespace NginxStarterGUI
 			this.saveConfigFile();
 			if (nginx != null)
 				nginx.quit();
+			if (coffeeScript != null)
+				coffeeScript.Stop();
+			if (less != null)
+				less.Stop();
+			if (sass != null)
+				sass.Stop();
 		}
 
 		private void Window_StateChanged(object sender, EventArgs e)
