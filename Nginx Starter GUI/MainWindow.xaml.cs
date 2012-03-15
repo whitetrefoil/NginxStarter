@@ -1023,12 +1023,6 @@ namespace NginxStarterGUI
 				lessWatchStarted();
 		}
 
-		private void btnLStop_Click(object sender, RoutedEventArgs e)
-		{
-			if (coffeeScript.Stop())
-				this.coffeeWatchStoped();
-		}
-
 		private void lessWatchStarted()
 		{
 			divLAddOptions.IsEnabled = false;
