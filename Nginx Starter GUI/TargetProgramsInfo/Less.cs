@@ -25,7 +25,7 @@ namespace NginxStarterGUI.TargetProgramsInfo
 		public const string OfdLesscFilter = "Lessc默认二进制文件|lessc|所有文件|*.*";
 		public const string OfdLesscTitle = "选择Lessc二进制文件";
 		public const string OfdInputFilter = "LESS-CSS 文件|*.less";
-		public const string OfdInputTitle = "选择输入文件/目录";
+		public const string OfdInputTitle = "选择输入文件";
 
 		private StreamWriter sw;
 		private string dataReceived;
