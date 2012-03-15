@@ -109,11 +109,11 @@ namespace NginxStarterGUI.TargetProgramsInfo
 			};
 			bw.RunWorkerCompleted += (sender, e) =>
 			{
-				if (!process.HasExited)
-				{
-					process.Kill();
-				}
-				process.Dispose();
+				this.stop();
+				//if (!process.HasExited)
+				//{
+				//    process.Kill();
+				//}
 			};
 		}
 
@@ -163,16 +163,12 @@ namespace NginxStarterGUI.TargetProgramsInfo
 		[EnvironmentPermissionAttribute(SecurityAction.LinkDemand, Unrestricted = false)]
 		protected bool stop()
 		{
-			if (process != null && !process.HasExited)
+			if (process != null)
 			{
-				process.Kill();
+				if (!process.HasExited) process.Kill();
+				process = null;
 			}
-			if (process.HasExited)
-			{
-				return true;
-			}
-			else
-				return false;
+			return true;
 		}
 
 		[EnvironmentPermissionAttribute(SecurityAction.LinkDemand, Unrestricted = false)]
