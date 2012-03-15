@@ -977,24 +977,18 @@ namespace NginxStarterGUI
 			if (_settings.Less.InputPath != null)
 				ofd.InitialDirectory = _settings.Less.InputPath;
 			ofd.Filter = Less.OfdInputFilter;
-			ofd.FileName = "文件名会被忽略";
-			ofd.CheckFileExists = false;
+			ofd.CheckFileExists = true;
 			ofd.CheckPathExists = true;
-			ofd.ValidateNames = false;
-			ofd.AddExtension = false;
+			ofd.AddExtension = true;
 			if (ofd.ShowDialog() == true)
 			{
-				if (!ofd.FileName.EndsWith(".less", true, CultureInfo.CurrentCulture) || !File.Exists(ofd.FileName))
-				{
-					int lastSeparatorIndex = ofd.FileName.LastIndexOf('\\');
-					ofd.FileName = ofd.FileName.Remove(lastSeparatorIndex);
-				}
 				txtLInputPath.Focus();
 				txtLInputPath.Text = ofd.FileName;
 				btnLInputPathBrowse.Focus();
 				return true;
 			}
-			return false;
+			else
+				return false;
 		}
 
 		private void setLess()
