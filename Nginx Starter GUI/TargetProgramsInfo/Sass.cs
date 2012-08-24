@@ -100,6 +100,7 @@ namespace NginxStarterGUI.TargetProgramsInfo
 			#region Set arguments
 
 			fileName = this.RubyPath;
+			arguments += " " + this.AddParams;
 			if (!String.IsNullOrEmpty(CodeStyle))
 				arguments += " --style " + CodeStyle;
 			if (this.IsUseLF)

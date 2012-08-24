@@ -26,20 +26,21 @@ namespace NginxStarterGUI.TargetProgramsInfo
 		/// </summary>
 		/// <param name="exePath">exe文件路径</param>
 		/// <param name="configPath">配置文件路径</param>
-		public Nginx(string exePath, string configPath)
+		public Nginx(string exePath, string configPath, string addParams)
 		{
 			this.exePath = exePath;
 			this.configPath = configPath;
+			this.AddParams = addParams;
 		}
 
 		/// <summary>
 		/// 创建一个Nginx
 		/// </summary>
 		/// <param name="exePath">exe文件路径</param>
-		public Nginx(string exePath)
-			: this(exePath, string.Empty)
-		{
-		}
+		//public Nginx(string exePath)
+		//	: this(exePath, string.Empty)
+		//{
+		//}
 
 		/// <summary>
 		/// 启动Nginx
@@ -49,7 +50,7 @@ namespace NginxStarterGUI.TargetProgramsInfo
 		public bool start()
 		{
 			this.info = new ProcessStartInfo();
-			this.info.Arguments = string.Empty;
+			this.info.Arguments = this.AddParams;
 			if (!String.IsNullOrEmpty(this.configPath))
 				this.info.Arguments += " -c " + this.configPath;
 			this.info.FileName = this.exePath;

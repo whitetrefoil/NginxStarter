@@ -215,7 +215,7 @@ namespace NginxStarterGUI
 		/// <param name="e"></param>
 		public void btnNStart_Click(object sender, RoutedEventArgs e)
 		{
-			nginx = new Nginx(txtNPath.Text, txtNConfigPath.Text);
+			nginx = new Nginx(_settings.Nginx.Path, _settings.Nginx.ConfigPath, _settings.Nginx.AddParams);
 
 			if (txtNPath.Text == String.Empty)
 			{
@@ -226,8 +226,6 @@ namespace NginxStarterGUI
 			{
 				if (nginx.start())
 				{
-					_settings.Nginx.Path = txtNPath.Text;
-					_settings.Nginx.ConfigPath = txtNConfigPath.Text;
 					this.changeButtonsStatusAfterNginxStarted();
 				}
 			}
@@ -641,14 +639,15 @@ namespace NginxStarterGUI
 
 		private void setCoffee(bool isWatch = false)
 		{
-			coffeeScript.NodeJsPath = txtCNodePath.Text;
-			coffeeScript.CoffeePath = txtCCoffeePath.Text;
-			coffeeScript.InputPath = txtCInputPath.Text;
-			coffeeScript.OutputPath = txtCOutputPath.Text;
-			coffeeScript.IsNodeInPath = chkCNodeInPath.IsChecked == true;
-			coffeeScript.IsCoffeeGlobal = chkCCoffeeInGlobal.IsChecked == true;
-			coffeeScript.IsBare = chkCBare.IsChecked == true;
+			coffeeScript.NodeJsPath = _settings.Coffee.NodePath;
+			coffeeScript.CoffeePath = _settings.Coffee.CoffeePath;
+			coffeeScript.InputPath = _settings.Coffee.InputPath;
+			coffeeScript.OutputPath = _settings.Coffee.OutputPath;
+			coffeeScript.IsNodeInPath = _settings.Coffee.IsNodeInPath;
+			coffeeScript.IsCoffeeGlobal = _settings.Coffee.IsCoffeeGlobal;
+			coffeeScript.IsBare = _settings.Coffee.IsBare;
 			coffeeScript.IsWatch = isWatch;
+			coffeeScript.AddParams = _settings.Coffee.AddParams;
 		}
 
 		private void setCoffeeEvents()
@@ -735,6 +734,7 @@ namespace NginxStarterGUI
 			sass.IsNoCache = _settings.Sass.IsNoCache;
 			sass.CodeStyle = _settings.Sass.CodeStyle;
 			sass.IsWatch = isWatch;
+			sass.AddParams = _settings.Sass.AddParams;
 		}
 
 		private void setSassEvents()
@@ -993,13 +993,14 @@ namespace NginxStarterGUI
 
 		private void setLess()
 		{
-			less.NodeJsPath = txtLNodePath.Text;
-			less.LesscPath = txtLLesscPath.Text;
-			less.InputPath = txtLInputPath.Text;
-			less.OutputPath = txtLOutputPath.Text;
-			less.IsNodeInPath = chkLNodeInPath.IsChecked == true;
-			less.IsLesscGlobal = chkLLesscInGlobal.IsChecked == true;
-			less.IsMinified = chkLMinified.IsChecked == true;
+			less.NodeJsPath = _settings.Less.NodePath;
+			less.LesscPath = _settings.Less.LessPath;
+			less.InputPath = _settings.Less.InputPath;
+			less.OutputPath = _settings.Less.OutputPath;
+			less.IsNodeInPath = _settings.Less.IsNodeInPath;
+			less.IsLesscGlobal = _settings.Less.IsLesscGlobal;
+			less.IsMinified = _settings.Less.IsMinified;
+			less.AddParams = _settings.Less.AddParams;
 		}
 
 		private void setLessEvents()
