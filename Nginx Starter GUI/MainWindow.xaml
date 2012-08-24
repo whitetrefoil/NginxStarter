@@ -31,6 +31,7 @@
 								<Grid.RowDefinitions>
 									<RowDefinition/>
 									<RowDefinition/>
+                                    <RowDefinition/>
 								</Grid.RowDefinitions>
 								<Grid.ColumnDefinitions>
 									<ColumnDefinition Width="Auto"/>
@@ -43,6 +44,8 @@
 								<Label Grid.Row="1" Content="nginx.exe 位置："/>
 								<TextBox x:Name="txtNPath" Grid.Row="1" Grid.Column="1" Margin="2,4" Text="{Binding Nginx.Path}"/>
 								<Button x:Name="btnNBrowse" Grid.Row="1" Grid.Column="2" Content="浏览...(_B)" Width="70" Margin="4" Click="btnNBrowse_Click" />
+                                <Label Grid.Row="2" Content="自定义参数："/>
+                                <TextBox x:Name="txtNAddParams" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Margin="2,4" Text="{Binding Nginx.AddParams}"/>
 							</Grid>
 							<Grid Margin="0,2">
 								<Grid.ColumnDefinitions>
@@ -72,8 +75,9 @@
 							<Grid Margin="0,2">
 								<Grid.RowDefinitions>
 									<RowDefinition/>
-									<RowDefinition/>
-								</Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
 								<Grid.ColumnDefinitions>
 									<ColumnDefinition Width="Auto"/>
 									<ColumnDefinition/>
@@ -85,7 +89,9 @@
 								<Label Grid.Row="1" Content="PHP-CGI.exe 位置："/>
 								<TextBox x:Name="txtPPath" Grid.Row="1" Grid.Column="1" Margin="2,4" Text="{Binding Nginx.path}"/>
 								<Button x:Name="btnPBrowse" Grid.Row="1" Grid.Column="2" Width="70" Margin="4" Click="btnPBrowse_Click" Content="浏览...(_B)"/>
-							</Grid>
+                                <Label Grid.Row="2" Content="自定义参数："/>
+                                <TextBox x:Name="txtPAddParams" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Margin="2,4"/>
+                            </Grid>
 						</Border>
 						<Grid Margin="0,2">
 							<Grid.ColumnDefinitions>
@@ -139,6 +145,7 @@
 									<RowDefinition/>
 									<RowDefinition/>
 									<RowDefinition/>
+                                    <RowDefinition/>
 								</Grid.RowDefinitions>
 								<Grid.ColumnDefinitions>
 									<ColumnDefinition Width="Auto"/>
@@ -157,6 +164,8 @@
 								<Label Content="输出位置/文件：" Grid.Row="3"/>
 								<TextBox x:Name="txtCOutputPath" Grid.Column="1" Grid.Row="3" Margin="2,4" Text="{Binding Coffee.OutputPath, BindsDirectlyToSource=True, IsAsync=True, Mode=TwoWay}"/>
 								<Button x:Name="btnCOutputPathBrowse" Content="浏览..." Grid.Column="2" Grid.Row="3" Width="70" Margin="4" Click="btnCOutputPathBrowse_Click" />
+                                <Label Grid.Row="4" Content="自定义参数："/>
+                                <TextBox x:Name="txtCAddParams" Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2" Margin="2,4" Text="{Binding Coffee.AddParams}"/>
 							</Grid>
 							<Grid x:Name="divCButtons" Margin="0,2">
 								<Grid.ColumnDefinitions>
@@ -200,6 +209,7 @@
 									<RowDefinition/>
 									<RowDefinition/>
 									<RowDefinition/>
+                                    <RowDefinition/>
 								</Grid.RowDefinitions>
 								<Grid.ColumnDefinitions>
 									<ColumnDefinition Width="110"/>
@@ -212,9 +222,11 @@
 								<Label Content="lessc 位置：" Grid.Row="1"/>
 								<TextBox x:Name="txtLLesscPath" Grid.Column="1" Grid.Row="1" Margin="2,4" IsEnabled="{Binding IsChecked, Converter={StaticResource ResourceKey=notConverter}, ElementName=chkLLesscInGlobal}" Text="{Binding Less.LessPath}"/>
 								<Button x:Name="btnLLesscPathBrowse" Content="浏览..." Grid.Column="2" Grid.Row="1" Width="70" Margin="4" Click="btnLLesscPathBrowse_Click" IsEnabled="{Binding IsChecked, Converter={StaticResource ResourceKey=notConverter}, ElementName=chkLLesscInGlobal}"/>
-								<Label Content="输入位置/文件：" Grid.Row="2"/>
-								<TextBox x:Name="txtLInputPath" Grid.Column="1" Margin="2,4" Grid.Row="2" Text="{Binding Less.InputPath}"/>
-								<Button x:Name="btnLInputPathBrowse" Content="浏览..." Grid.Column="2" Width="70" Margin="4" Grid.Row="2" Click="btnLInputPathBrowse_Click" />
+                                <Label Grid.Row="2" Content="自定义参数："/>
+                                <TextBox x:Name="txtLAddParams" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Margin="2,4" Text="{Binding Less.AddParams}"/>
+                                <Label Content="输入位置/文件：" Grid.Row="3"/>
+								<TextBox x:Name="txtLInputPath" Grid.Column="1" Margin="2,4" Grid.Row="3" Text="{Binding Less.InputPath}"/>
+								<Button x:Name="btnLInputPathBrowse" Content="浏览..." Grid.Column="2" Width="70" Margin="4" Grid.Row="3" Click="btnLInputPathBrowse_Click" />
 							</Grid>
 							<Grid x:Name="divLButtons" Margin="0,0,0,2">
 								<Grid.ColumnDefinitions>
@@ -257,6 +269,7 @@
 									<RowDefinition/>
 									<RowDefinition/>
 									<RowDefinition/>
+                                    <RowDefinition/>
 								</Grid.RowDefinitions>
 								<Grid.ColumnDefinitions>
 									<ColumnDefinition Width="Auto"/>
@@ -275,7 +288,9 @@
 								<Label Content="输出位置/文件：" Grid.Row="3"/>
 								<TextBox x:Name="txtSOutputPath" Grid.Column="1" Grid.Row="3" Margin="2,4" Text="{Binding Sass.OutputPath}"/>
 								<Button x:Name="btnSOutputPathBrowse" Content="浏览..." Grid.Column="2" Grid.Row="3" Width="70" Margin="4" Click="btnSOutputPathBrowse_Click" />
-							</Grid>
+                                <Label Grid.Row="4" Content="自定义参数："/>
+                                <TextBox x:Name="txtSAddParams" Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2" Margin="2,4" Text="{Binding Sass.AddParams}"/>
+                            </Grid>
 							<Grid Margin="0,2">
 								<Grid.ColumnDefinitions>
 									<ColumnDefinition/>

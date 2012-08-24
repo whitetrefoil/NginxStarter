@@ -11,6 +11,7 @@ namespace NginxStarterGUI.TargetProgramsInfo
 		private Process process;
 		public string exePath { get; set; }
 		public string configPath { get; set; }
+		public string AddParams { get; set; }
 		public bool IsRunning { get; set; }
 		public event EventHandler HasStarted;
 		public event EventHandler HasStoped;
