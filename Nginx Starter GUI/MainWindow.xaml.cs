@@ -665,7 +665,7 @@ namespace NginxStarterGUI
 			setCoffee();
 			Binding coffeeMainBinding = new Binding("Message");
 			coffeeMainBinding.Source = coffeeScript;
-			txtCMain.SetBinding(TextBlock.TextProperty, coffeeMainBinding);
+			txtCMain.SetBinding(TextBox.TextProperty, coffeeMainBinding);
 			setCoffeeEvents();
 			if (coffeeScript.Start())
 				coffeeWatchStarted();
@@ -678,7 +678,7 @@ namespace NginxStarterGUI
 			setCoffee(true);
 			Binding coffeeMainBinding = new Binding("Message");
 			coffeeMainBinding.Source = coffeeScript;
-			txtCMain.SetBinding(TextBlock.TextProperty, coffeeMainBinding);
+			txtCMain.SetBinding(TextBox.TextProperty, coffeeMainBinding);
 			setCoffeeEvents();
 			if (coffeeScript.Start())
 				coffeeWatchStarted();
@@ -752,7 +752,7 @@ namespace NginxStarterGUI
 			setSass(false);
 			Binding sassMainBinding = new Binding("Message");
 			sassMainBinding.Source = sass;
-			txtSMain.SetBinding(TextBlock.TextProperty, sassMainBinding);
+			txtSMain.SetBinding(TextBox.TextProperty, sassMainBinding);
 			setSassEvents();
 			if (sass.Start())
 				sassWatchStarted();
@@ -765,7 +765,7 @@ namespace NginxStarterGUI
 			setSass(true);
 			Binding sassMainBinding = new Binding("Message");
 			sassMainBinding.Source = sass;
-			txtSMain.SetBinding(TextBlock.TextProperty, sassMainBinding);
+			txtSMain.SetBinding(TextBox.TextProperty, sassMainBinding);
 			setSassEvents();
 			if (sass.Start())
 				sassWatchStarted();
@@ -1018,7 +1018,7 @@ namespace NginxStarterGUI
 			setLess();
 			Binding lessMainBinding = new Binding("Message");
 			lessMainBinding.Source = less;
-			txtLMain.SetBinding(TextBlock.TextProperty, lessMainBinding);
+			txtLMain.SetBinding(TextBox.TextProperty, lessMainBinding);
 			setLessEvents();
 			if (less.Start())
 				lessWatchStarted();

@@ -21,7 +21,10 @@
 		</LinearGradientBrush>
 		<sass:SassCodeStyle x:Key="sassCodeStyle"/>
 	</Window.Resources>
-	<Grid>
+    <Window.CacheMode>
+        <BitmapCache EnableClearType="True" SnapsToDevicePixels="True"/>
+    </Window.CacheMode>
+    <Grid>
 		<TabControl>
 			<TabItem Header="Nginx">
 				<DockPanel>
@@ -193,7 +196,7 @@
 					</Border>
 					<Grid>
 						<ScrollViewer x:Name="slvCMain" VerticalScrollBarVisibility="Auto" CanContentScroll="True">
-							<TextBlock x:Name="txtCMain" Margin="0" TextWrapping="Wrap"/>
+							<TextBox x:Name="txtCMain" Margin="0" TextWrapping="Wrap" IsReadOnly="True"/>
 						</ScrollViewer>
 					</Grid>
 				</DockPanel>
@@ -254,7 +257,7 @@
 					</Border>
 					<Grid>
 						<ScrollViewer x:Name="slvLMain" VerticalScrollBarVisibility="Auto" CanContentScroll="True">
-							<TextBlock x:Name="txtLMain" Margin="0" TextWrapping="Wrap"/>
+							<TextBox x:Name="txtLMain" Margin="0" TextWrapping="Wrap" IsReadOnly="True"/>
 						</ScrollViewer>
 					</Grid>
 				</DockPanel>
@@ -328,7 +331,7 @@
 					</Border>
 					<Grid>
 						<ScrollViewer x:Name="slvSMain" VerticalScrollBarVisibility="Auto" CanContentScroll="True">
-							<TextBlock x:Name="txtSMain" Margin="0" TextWrapping="Wrap"></TextBlock>
+							<TextBox x:Name="txtSMain" Margin="0" TextWrapping="Wrap" IsReadOnly="True"/>
 						</ScrollViewer>
 					</Grid>
 				</DockPanel>
