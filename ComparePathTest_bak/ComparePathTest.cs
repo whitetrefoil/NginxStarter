@@ -81,7 +81,7 @@ namespace ComparePathTest
 		[DeploymentItem("Nginx Starter GUI.exe")]
 		public void CompareTest()
 		{
-			string expected = "C:/temp1/temp2/"; // TODO: 初始化为适当的值
+			string expected = "C:/temp1/temp32/"; // TODO: 初始化为适当的值
 			string actual;
 			actual = ComparePath_Accessor.Compare(pathA, pathB, separator);
 			Assert.AreEqual<string>(expected, actual);
