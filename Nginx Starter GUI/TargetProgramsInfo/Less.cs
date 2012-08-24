@@ -80,7 +80,7 @@ namespace NginxStarterGUI.TargetProgramsInfo
 
 			#region Set arguments
 
-			arguments += " ";
+			arguments += " " + this.AddParams + " ";
 			if (this.IsMinified)
 				arguments += "-x ";
 			arguments += this.InputPath;

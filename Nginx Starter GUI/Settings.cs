@@ -31,6 +31,7 @@ namespace NginxStarterGUI.Settings
 		public event PropertyChangedEventHandler PropertyChanged;
 		public string Path { get; set; }
 		public string ConfigPath { get; set; }
+		public string AddParams { get; set; }
 	}
 
 	public class Php : INotifyPropertyChanged
@@ -53,6 +54,7 @@ namespace NginxStarterGUI.Settings
 		public bool IsNodeInPath { get; set; }
 		public bool IsCoffeeGlobal { get; set; }
 		public bool IsBare { get; set; }
+		public string AddParams { get; set; }
 	}
 
 	public class Less : INotifyPropertyChanged
@@ -65,6 +67,7 @@ namespace NginxStarterGUI.Settings
 		public bool IsNodeInPath { get; set; }
 		public bool IsLesscGlobal { get; set; }
         public bool IsMinified { get; set; }
+		public string AddParams { get; set; }
 	}
 
 	public class Sass : INotifyPropertyChanged
@@ -79,5 +82,6 @@ namespace NginxStarterGUI.Settings
 		public bool IsForce { get; set; }
 		public bool IsNoCache { get; set; }
 		public string CodeStyle { get; set; }
+		public string AddParams { get; set; }
 	}
 }

@@ -99,6 +99,7 @@ namespace NginxStarterGUI.TargetProgramsInfo
 
 			#region Set arguments
 
+			arguments += " " + this.AddParams;
 			if (this.IsBare)
 				arguments += " --bare";
 			if (this.IsWatch)

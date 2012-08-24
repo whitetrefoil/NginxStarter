@@ -21,6 +21,7 @@ namespace NginxStarterGUI.TargetProgramsInfo
 		protected string fileName;
 		protected string arguments;
 		protected string workingDirectory;
+		public string AddParams { get; set; }
 
 		private string message;
 		public virtual string Message
